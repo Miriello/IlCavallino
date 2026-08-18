@@ -1,6 +1,6 @@
 package Gestionale;
 
-import Item.Prodotto;
+import Item.Piatto;
 import Persone.Persona;
 import Utility.Vendita;
 
@@ -84,7 +84,7 @@ public class GestionaleMarketing extends JFrame {
         DefaultTableModel model = new DefaultTableModel(col, 0) {
             @Override public boolean isCellEditable(int r, int c) { return false; }
         };
-        for (Prodotto p : AppData.MENU.getProdotti()) {
+        for (Piatto p : AppData.MENU.getProdotti()) {
             model.addRow(new Object[]{p.getNome(), String.format("€ %.2f", p.getPrezzo()), p.getIngredienti()});
         }
 

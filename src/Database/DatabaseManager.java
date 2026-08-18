@@ -3,14 +3,14 @@ package Database;
 import Persone.Addetto;
 import Persone.Persona;
 import Persone.Socio;
-import Utilità.Ruolo;
+import Utility.Account;
+import Utility.Ruolo;
 
 import java.sql.*;
 
 public class DatabaseManager {
     private static Connection connessione;
 
-    // Configurabile via proprietà di sistema: -Ddb.url=... -Ddb.user=... -Ddb.password=...
     private static final String DB_URL      = System.getProperty("db.url",      "jdbc:mysql://localhost:3306/ilcavallino");
     private static final String DB_USER     = System.getProperty("db.user",     "root");
     private static final String DB_PASSWORD = System.getProperty("db.password", "");
@@ -26,12 +26,12 @@ public class DatabaseManager {
         }
     }
 
-    public static Persona autenticaUtente(String username, String password) {
+    public static Persona autenticaUtente(Account account) {
         if (connessione == null) return null;
         String sql = "SELECT * FROM utenti WHERE username = ? AND password = ?";
         try (PreparedStatement stmt = connessione.prepareStatement(sql)) {
             stmt.setString(1, username);
-            stmt.setString(2, password); // TODO: sostituire con hash bcrypt in produzione
+            stmt.setString(2, password);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
                 String nome     = rs.getString("nome");
@@ -39,9 +39,9 @@ public class DatabaseManager {
                 String cf       = rs.getString("codice_fiscale");
                 Ruolo  ruolo    = Ruolo.valueOf(rs.getString("ruolo"));
                 if (ruolo == Ruolo.SOCIO) {
-                    return new Socio(nome, cognome, cf, username, password);
+                    return new Socio(nome, cognome, cf, account);
                 } else {
-                    return new Addetto(nome, cognome, cf, username, password, ruolo);
+                    return new Addetto(nome, cognome, cf, account, ruolo);
                 }
             }
         } catch (SQLException e) {

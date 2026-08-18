@@ -1,6 +1,6 @@
 package Gestionale;
 
-import Item.Prodotto;
+import Item.Piatto;
 import Persone.Persona;
 import Utility.Vendita;
 
@@ -37,7 +37,7 @@ public class GestionaleVendita extends JFrame {
         JPanel form = new JPanel(new GridLayout(5, 2, 8, 12));
 
         prodottoCombo = new JComboBox<>();
-        for (Prodotto p : AppData.MENU.getProdotti()) prodottoCombo.addItem(p.getNome());
+        for (Piatto p : AppData.MENU.getProdotti()) prodottoCombo.addItem(p.getNome());
 
         quantitaSpinner = new JSpinner(new SpinnerNumberModel(1, 1, 999, 1));
         prezzoLabel     = new JLabel("€ 0.00");
@@ -87,7 +87,7 @@ public class GestionaleVendita extends JFrame {
     private void aggiornaCalcolo() {
         String nome = (String) prodottoCombo.getSelectedItem();
         if (nome == null) return;
-        Prodotto p = AppData.MENU.cercaProdotto(nome);
+        Piatto p = AppData.MENU.cercaProdotto(nome);
         if (p != null) {
             int qty = (int) quantitaSpinner.getValue();
             prezzoLabel.setText(String.format("€ %.2f", p.getPrezzo()));
@@ -98,7 +98,7 @@ public class GestionaleVendita extends JFrame {
     private void registraVendita() {
         String nome = (String) prodottoCombo.getSelectedItem();
         if (nome == null) return;
-        Prodotto p = AppData.MENU.cercaProdotto(nome);
+        Piatto p = AppData.MENU.cercaProdotto(nome);
         if (p == null) { JOptionPane.showMessageDialog(this, "Prodotto non trovato."); return; }
         Vendita v = new Vendita(p);
         AppData.VENDITE.aggiungiVendita(v);

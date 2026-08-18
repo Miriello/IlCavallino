@@ -5,7 +5,7 @@ import Utility.Data;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Ingrediente{
+public class Ingrediente implements Articolo {
 
     private String nome;
     private Data scadenza;

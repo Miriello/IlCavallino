@@ -1,11 +1,11 @@
 package Gestionale;
 
 import Item.Ingrediente;
-import Item.Prodotto;
+import Item.Piatto;
 import Persone.Fornitore;
 import Persone.Persona;
 import Utility.Vendita;
-import Utilità.Data;
+import Utility.Data;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -41,7 +41,7 @@ public class GestionaleSocio extends JFrame {
         String[] col = {"Prodotto", "Quantità", "Totale"};
         DefaultTableModel model = new DefaultTableModel(col, 0);
         for (Vendita v : AppData.VENDITE.getVendite()) {
-            model.addRow(new Object[]{v.getProdotto().getNome(), v.getQuantita(),
+            model.addRow(new Object[]{v.getProdotti(),
                     String.format("€ %.2f", v.prezzoTotale())});
         }
         JTable table = new JTable(model);
@@ -60,7 +60,7 @@ public class GestionaleSocio extends JFrame {
 
         String[] col = {"Nome", "Prezzo", "Ingredienti"};
         DefaultTableModel model = new DefaultTableModel(col, 0);
-        for (Prodotto p : AppData.MENU.getProdotti()) {
+        for (Piatto p : AppData.MENU.getProdotti()) {
             model.addRow(new Object[]{p.getNome(), String.format("€ %.2f", p.getPrezzo()), p.getIngredienti()});
         }
         JTable table = new JTable(model);
@@ -80,7 +80,7 @@ public class GestionaleSocio extends JFrame {
                 List<String> ing = Arrays.stream(ingF.getText().split(","))
                         .map(String::trim).filter(s -> !s.isEmpty()).collect(Collectors.toList());
                 LocalDate now = LocalDate.now();
-                Prodotto p = new Prodotto(nome, prezzo, ing, new Data(now.getDayOfMonth(), now.getMonthValue(), now.getYear()));
+                Piatto p = new Piatto(nome, prezzo, ing, new Data(now.getDayOfMonth(), now.getMonthValue(), now.getYear()));
                 AppData.MENU.aggiungiProdotto(p);
                 model.addRow(new Object[]{nome, String.format("€ %.2f", prezzo), ing});
                 nomeF.setText(""); prezzoF.setText(""); ingF.setText("");
@@ -93,7 +93,7 @@ public class GestionaleSocio extends JFrame {
             int row = table.getSelectedRow();
             if (row < 0) return;
             String nome = (String) model.getValueAt(row, 0);
-            Prodotto p = AppData.MENU.cercaProdotto(nome);
+            Piatto p = AppData.MENU.cercaProdotto(nome);
             if (p != null) AppData.MENU.rimuoviProdotto(p);
             model.removeRow(row);
         });

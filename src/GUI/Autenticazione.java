@@ -4,7 +4,7 @@ import Database.DatabaseManager;
 import Persone.Addetto;
 import Persone.Persona;
 import Persone.Socio;
-import Utilità.Ruolo;
+import Utility.Ruolo;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -26,6 +26,18 @@ public class GestioneScorte {
         magazzino.remove(i);
     }
 
+    public void prendiArticolo(Ingrediente i, int qntRichiesta){
+        if(qntRichiesta<=0){
+            throw new IllegalArgumentException("La quantità richiesta non può essere negativa");
+        }
+        int qntMagazzino = magazzino.get(i);
+        if(qntMagazzino <qntRichiesta){
+            throw new IllegalArgumentException("La quantità richiesta eccede le scorte");
+        }
+        magazzino.put(i,qntMagazzino-qntRichiesta);
+
+    }
+
     public Map<Ingrediente, Integer> getMagazzino() {
         return new HashMap<>(magazzino);
     }

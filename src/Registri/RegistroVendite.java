@@ -15,6 +15,7 @@ public class RegistroVendite extends RegistroAbstract<Vendita> {
             throw new IllegalArgumentException("Vendita non presente");
         }
         registro.remove(v);
+        System.out.println("La vendita con ID= " + v.getId() + " è stata rimossa con successo");
     }
 
     public double totaleVendite() {

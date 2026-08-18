@@ -1,28 +1,28 @@
 package Utility;
 
-import Item.Prodotto;
+import Item.Piatto;
 
 import java.util.List;
 
 public class Vendita {
     private static long contatore=0;
     private final long id;
-    private List<Prodotto> prodotti;
+    private List<Piatto> prodotti;
 
-    public Vendita(List<Prodotto> prodotti) {
+    public Vendita(List<Piatto> prodotti) {
         this.prodotti = prodotti;
         id = contatore+1;
     }
 
     public double prezzoTotale() {
         int totale = 0;
-        for (Prodotto p : prodotti) {
+        for (Piatto p : prodotti) {
             totale += p.getPrezzo();
         }
         return totale;
     }
 
-    public List<Prodotto> getProdotti() {
+    public List<Piatto> getProdotti() {
         return prodotti;
     }
 

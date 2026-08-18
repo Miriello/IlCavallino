@@ -1,22 +1,19 @@
 package Gestionale;
 
 import Item.Ingrediente;
-import Item.Prodotto;
+import Item.Piatto;
 import Gestori.GestioneMenu;
 import Gestori.GestioneScorte;
 import Persone.Fornitore;
 import Registri.RegistroFornitori;
 import Registri.RegistroVendite;
-import Utilità.Data;
-import Utilità.Sede;
+import Utility.Data;
+import Utility.Sede;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-/**
- * Stato condiviso dell'applicazione. In produzione ogni dato verrebbe dal DB;
- * qui serve come layer unico a cui tutte le finestre fanno riferimento.
- */
+
 public class AppData {
     public static final GestioneMenu      MENU      = new GestioneMenu();
     public static final GestioneScorte    SCORTE    = new GestioneScorte();
@@ -26,11 +23,11 @@ public class AppData {
     static {
         Data futuro = new Data(31, 12, 2026);
 
-        MENU.aggiungiProdotto(new Prodotto("Pasta al Pomodoro",     8.50,  Arrays.asList("pasta", "pomodoro", "basilico"),            futuro));
-        MENU.aggiungiProdotto(new Prodotto("Bistecca alla Griglia", 18.00, Arrays.asList("carne", "rosmarino", "aglio"),              futuro));
-        MENU.aggiungiProdotto(new Prodotto("Risotto ai Funghi",     12.00, Arrays.asList("riso", "funghi", "parmigiano"),             futuro));
-        MENU.aggiungiProdotto(new Prodotto("Tiramisù",               5.00, Arrays.asList("mascarpone", "savoiardi", "caffè"),         futuro));
-        MENU.aggiungiProdotto(new Prodotto("Panna Cotta",            4.50, Arrays.asList("panna", "zucchero", "vaniglia"),            futuro));
+        MENU.aggiungiProdotto(new Piatto("Pasta al Pomodoro",     8.50,  Arrays.asList("pasta", "pomodoro", "basilico"),            futuro));
+        MENU.aggiungiProdotto(new Piatto("Bistecca alla Griglia", 18.00, Arrays.asList("carne", "rosmarino", "aglio"),              futuro));
+        MENU.aggiungiProdotto(new Piatto("Risotto ai Funghi",     12.00, Arrays.asList("riso", "funghi", "parmigiano"),             futuro));
+        MENU.aggiungiProdotto(new Piatto("Tiramisù",               5.00, Arrays.asList("mascarpone", "savoiardi", "caffè"),         futuro));
+        MENU.aggiungiProdotto(new Piatto("Panna Cotta",            4.50, Arrays.asList("panna", "zucchero", "vaniglia"),            futuro));
 
         SCORTE.aggiungiArticolo(new Ingrediente("Pasta",        new Data(30,  6, 2026)));
         SCORTE.aggiungiArticolo(new Ingrediente("Pomodoro",     new Data(25,  5, 2026)));

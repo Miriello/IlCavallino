@@ -1,17 +1,17 @@
 package Gestori;
-import Item.Prodotto;
+import Item.Piatto;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class GestioneMenu {
-    private List<Prodotto> menu = new ArrayList<>();
+    private List<Piatto> menu = new ArrayList<>();
 
-    public void aggiungiProdotto(Prodotto p) {
+    public void aggiungiProdotto(Piatto p) {
         menu.add(p);
     }
 
-    public void rimuoviProdotto(Prodotto p) {
+    public void rimuoviProdotto(Piatto p) {
         if (!menu.contains(p)){
             throw new IllegalArgumentException("Prodotto non ancora aggiunto");
         }
@@ -20,13 +20,13 @@ public class GestioneMenu {
 
     public void stampaMenu() {
         System.out.println("MENU DEL GIORNO : ");
-        for (Prodotto p : menu) {
+        for (Piatto p : menu) {
             System.out.println(p);
         }
     }
 
-    public Prodotto cercaProdotto(String nome){
-        for (Prodotto p : menu) {
+    public Piatto cercaProdotto(String nome){
+        for (Piatto p : menu) {
             if (p.getNome().equals(nome)){
                 return p;
             }
@@ -34,7 +34,7 @@ public class GestioneMenu {
         return null;
     }
 
-    public List<Prodotto> getProdotti() {
+    public List<Piatto> getProdotti() {
         return new ArrayList<>(menu);
     }
 

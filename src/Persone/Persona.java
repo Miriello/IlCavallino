@@ -1,20 +1,25 @@
 package Persone;
 
-import Utilità.Ruolo;
+import Utility.Account;
+import Utility.Ruolo;
 
 public abstract class Persona {
-    protected String nome;
-    protected String cognome;
-    protected String codiceFiscale;
-    private String username;
-    private String password;
+    private String nome;
+    private String cognome;
+    private String codiceFiscale;
+    private Account account;
 
-    public Persona(String nome, String cognome, String codiceFiscale, String username, String password) {
+    public Persona(String nome, String cognome, String codiceFiscale) {
         this.nome = nome;
         this.cognome = cognome;
         this.codiceFiscale = codiceFiscale;
-        this.username = username;
-        this.password = password;
+    }
+
+    public Persona(String nome, String cognome, String codiceFiscale, Account a){
+        this.nome=nome;
+        this.cognome=cognome;
+        this.codiceFiscale= codiceFiscale;
+        this.account=a;
     }
 
     public abstract Ruolo getRuolo();
@@ -22,6 +27,5 @@ public abstract class Persona {
     public String getNome() { return nome; }
     public String getCognome() { return cognome; }
     public String getCodiceFiscale() { return codiceFiscale; }
-    public String getUsername() { return username; }
-    public String getPassword() { return password; }
+
 }

@@ -28,12 +28,12 @@ public class Prodotto implements Articolo {
         return prezzo;
     }
     public List<Ingrediente> getIngredienti() {
-        return ingredienti;
+        return new ArrayList<>(ingredienti);
     }
 
-    public List<Allergene> getAllergeni(Prodotto p) {
+    public List<Allergene> getAllergeni() {
         List<Allergene> listaAllergeni = new ArrayList<>();
-         for(Ingrediente i : p.getIngredienti()){
+         for(Ingrediente i : ingredienti){
              for(Allergene a : i.getAllergeni()){
                  listaAllergeni.add(a);
              }

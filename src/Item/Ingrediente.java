@@ -2,6 +2,7 @@ package Item;
 
 import Utility.Data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Ingrediente implements Articolo {
@@ -12,8 +13,8 @@ public class Ingrediente implements Articolo {
 
     public Ingrediente(String nome, Data scadenza, List<Allergene> allergeni) {
         this.nome = nome;
-        this.scadenza = new Data(scadenza);
-        this.allergeni= allergeni;
+        this.scadenza = scadenza;
+        this.allergeni= new ArrayList<>(allergeni);
 
     }
 
@@ -31,6 +32,6 @@ public class Ingrediente implements Articolo {
     }
 
     public List<Allergene> getAllergeni() {
-        return allergeni;
+        return new ArrayList<>(allergeni);
     }
 }

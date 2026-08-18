@@ -1,7 +1,8 @@
 package Persone;
 
 import Item.Articolo;
-import Utilità.Sede;
+import Utility.Ruolo;
+import Utility.Sede;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,4 +31,5 @@ public class Fornitore {
     public String toString() {
         return ragioneSociale + " (P.IVA: " + partitaIva + ")";
     }
+
 }

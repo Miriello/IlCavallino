@@ -12,9 +12,10 @@ public class RegistroPagamenti extends RegistroAbstract<Pagamento>{
 
     public void rimuoviPagamento(Pagamento p) {
         if (!registro.contains(p)) {
-            throw new IllegalArgumentException("Vendita non presente");
+            throw new IllegalArgumentException("Pagamento non presente");
         }
         registro.remove(p);
+        System.out.println("Il pagamento" + p.getVendita().getId() +" è stato rimosso con successo");
     }
 
     public double totalePagamenti() {
@@ -27,6 +28,8 @@ public class RegistroPagamenti extends RegistroAbstract<Pagamento>{
     public List<Pagamento> getPagamenti() {
         return getLista();
     }
+
+
 }
 
 

@@ -1,7 +1,7 @@
 package Gestionale;
 
-import Cose.Articolo;
-import Cose.Prodotto;
+import Item.Articolo;
+import Item.Prodotto;
 import Persone.Persona;
 
 import javax.swing.*;

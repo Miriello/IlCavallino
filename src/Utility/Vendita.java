@@ -1,20 +1,21 @@
-package Registri;
+package Utility;
 
-import Cose.Prodotto;
+import Item.Prodotto;
 
 import java.util.List;
 
 public class Vendita {
-    private long id;
+    private static long id=0;
     private List<Prodotto> prodotti;
 
     public Vendita(List<Prodotto> prodotti) {
         this.prodotti = prodotti;
+        id+=1;
     }
 
-    public double prezzoTotale(Vendita v) {
+    public double prezzoTotale() {
         int totale = 0;
-        for (Prodotto p : v.getProdotti()) {
+        for (Prodotto p : prodotti) {
             totale += p.getPrezzo();
         }
         return totale;
@@ -22,6 +23,10 @@ public class Vendita {
 
     public List<Prodotto> getProdotti() {
         return prodotti;
+    }
+
+    public long getId(){
+        return id;
     }
 
 }

@@ -1,4 +1,4 @@
-package Utilità;
+package Utility;
 
 public class Sede {
     private String citta;

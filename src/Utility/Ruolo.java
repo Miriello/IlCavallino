@@ -1,4 +1,4 @@
-package Utilità;
+package Utility;
 
 public enum Ruolo {
     SOCIO,CUCINA,VENDITA,MAGAZZINO,MARKETING;

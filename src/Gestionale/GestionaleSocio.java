@@ -1,11 +1,11 @@
 package Gestionale;
 
-import Cose.Articolo;
-import Cose.Ingrediente;
-import Cose.Prodotto;
+import Item.Articolo;
+import Item.Ingrediente;
+import Item.Prodotto;
 import Persone.Fornitore;
 import Persone.Persona;
-import Registri.Vendita;
+import Utility.Vendita;
 import Utilità.Data;
 
 import javax.swing.*;

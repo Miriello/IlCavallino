@@ -3,7 +3,7 @@ package Item;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Prodotto implements Articolo {
+public class Prodotto {
 
     private String nome;
     private double prezzo;
@@ -18,7 +18,7 @@ public class Prodotto implements Articolo {
     public Prodotto(Prodotto p) {
         this.nome = p.nome;
         this.prezzo = p.prezzo;
-        this.ingredienti = p.ingredienti;
+        this.ingredienti = new ArrayList<>(p.ingredienti);
     }
 
     public String getNome() {

@@ -1,6 +1,5 @@
 package Gestionale;
 
-import Item.Articolo;
 import Item.Ingrediente;
 import Persone.Fornitore;
 import Persone.Persona;

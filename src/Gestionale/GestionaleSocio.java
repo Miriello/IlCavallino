@@ -1,6 +1,5 @@
 package Gestionale;
 
-import Item.Articolo;
 import Item.Ingrediente;
 import Item.Prodotto;
 import Persone.Fornitore;
@@ -82,7 +81,7 @@ public class GestionaleSocio extends JFrame {
                         .map(String::trim).filter(s -> !s.isEmpty()).collect(Collectors.toList());
                 LocalDate now = LocalDate.now();
                 Prodotto p = new Prodotto(nome, prezzo, ing, new Data(now.getDayOfMonth(), now.getMonthValue(), now.getYear()));
-                AppData.MENU.addProdotto(p);
+                AppData.MENU.aggiungiProdotto(p);
                 model.addRow(new Object[]{nome, String.format("€ %.2f", prezzo), ing});
                 nomeF.setText(""); prezzoF.setText(""); ingF.setText("");
             } catch (NumberFormatException ex) {

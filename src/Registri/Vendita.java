@@ -2,24 +2,26 @@ package Registri;
 
 import Cose.Prodotto;
 
+import java.util.List;
+
 public class Vendita {
-    private Prodotto prodotto;
-    private int quantita;
+    private long id;
+    private List<Prodotto> prodotti;
 
-    public Vendita(Prodotto prodotto, int quantita) {
-        this.prodotto = prodotto;
-        this.quantita = quantita;
+    public Vendita(List<Prodotto> prodotti) {
+        this.prodotti = prodotti;
     }
 
-    public double prezzoTotale() {
-        return prodotto.getPrezzo() * quantita;
+    public double prezzoTotale(Vendita v) {
+        int totale = 0;
+        for (Prodotto p : v.getProdotti()) {
+            totale += p.getPrezzo();
+        }
+        return totale;
     }
 
-    public Prodotto getProdotto() { return prodotto; }
-    public int getQuantita() { return quantita; }
-
-    @Override
-    public String toString() {
-        return prodotto.getNome() + " x" + quantita + " = €" + String.format("%.2f", prezzoTotale());
+    public List<Prodotto> getProdotti() {
+        return prodotti;
     }
+
 }

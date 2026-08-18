@@ -40,7 +40,6 @@ public class PaginaLogin extends JFrame {
             }
         });
 
-        // Invio da tastiera sul campo password
         passwordField.addActionListener(loginButton.getActionListeners()[0]);
 
         add(panel);

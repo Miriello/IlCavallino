@@ -5,19 +5,19 @@ import java.util.List;
 public class RegistroVendite extends RegistroAbstract<Vendita> {
 
     public void aggiungiVendita(Vendita v) {
-        listaRegistro.add(v);
+        registro.add(v);
     }
 
     public void rimuoviVendita(Vendita v) {
-        if (!listaRegistro.contains(v)) {
+        if (!registro.contains(v)) {
             throw new IllegalArgumentException("Vendita non presente");
         }
-        listaRegistro.remove(v);
+        registro.remove(v);
     }
 
     public double totaleVendite() {
         double tot = 0;
-        for (Vendita v : listaRegistro) tot += v.prezzoTotale();
+        for (Vendita v : registro) tot += v.prezzoTotale();
         return tot;
     }
 

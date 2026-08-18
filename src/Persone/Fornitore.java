@@ -1,7 +1,5 @@
 package Persone;
 
-import Item.Articolo;
-import Utility.Ruolo;
 import Utility.Sede;
 import java.util.ArrayList;
 import java.util.List;

@@ -1,24 +1,33 @@
 package Gestori;
 
-import Item.Articolo;
+import Item.Ingrediente;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class GestioneScorte {
-    private List<Articolo> magazzino = new ArrayList<>();
+    private Map<Ingrediente,Integer> magazzino = new HashMap<>();
 
-    public void aggiungiArticolo(Articolo a){
-        magazzino.add(a);
-    }
-    public void rimuoviArticolo(Articolo a){
-        if(!magazzino.contains(a)){
-            throw new IllegalArgumentException("Articolo non presente in magazzino");
+    public void aggiungiArticolo(Ingrediente i, int q){
+        if (q <=0)
+            throw new IllegalArgumentException("La quantità non può essere negativa");
+        if(!magazzino.containsKey(i)){
+            magazzino.put(i, q);
         }
-        magazzino.remove(a);
+        int vecchiaQ = magazzino.get(i);
+        magazzino.put(i, q+vecchiaQ);
+        System.out.println("Quantità aggiornata");
     }
 
-    public List<Articolo> getMagazzino() {
-        return new ArrayList<>(magazzino);
+    public void rimuoviArticolo(Ingrediente i){
+        if(!magazzino.containsKey(i)){
+            throw new IllegalArgumentException("Ingrediente non presente in magazzino");
+        }
+        magazzino.remove(i);
     }
+
+    public Map<Ingrediente, Integer> getMagazzino() {
+        return new HashMap<>(magazzino);
+    }
+
 }

@@ -1,8 +1,8 @@
 package Gestionale;
 
-import Cose.Prodotto;
+import Item.Prodotto;
 import Persone.Persona;
-import Registri.Vendita;
+import Utility.Vendita;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;

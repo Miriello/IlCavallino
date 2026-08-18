@@ -1,6 +1,6 @@
 package Persone;
 
-import Cose.Articolo;
+import Item.Articolo;
 import Utilità.Sede;
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package Cose;
+package Item;
 
 public class Allergene {
     private String nome;

@@ -1,5 +1,7 @@
 package Registri;
 
+import Utility.Vendita;
+
 import java.util.List;
 
 public class RegistroVendite extends RegistroAbstract<Vendita> {
@@ -17,11 +19,13 @@ public class RegistroVendite extends RegistroAbstract<Vendita> {
 
     public double totaleVendite() {
         double tot = 0;
-        for (Vendita v : registro) tot += v.prezzoTotale();
+        for (Vendita v : registro)
+            tot += v.prezzoTotale();
         return tot;
     }
 
     public List<Vendita> getVendite() {
+
         return getLista();
     }
 }

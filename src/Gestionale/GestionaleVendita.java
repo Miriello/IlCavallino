@@ -1,8 +1,8 @@
 package Gestionale;
 
-import Cose.Prodotto;
+import Item.Prodotto;
 import Persone.Persona;
-import Registri.Vendita;
+import Utility.Vendita;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -100,8 +100,7 @@ public class GestionaleVendita extends JFrame {
         if (nome == null) return;
         Prodotto p = AppData.MENU.cercaProdotto(nome);
         if (p == null) { JOptionPane.showMessageDialog(this, "Prodotto non trovato."); return; }
-        int qty = (int) quantitaSpinner.getValue();
-        Vendita v = new Vendita(p, qty);
+        Vendita v = new Vendita(p);
         AppData.VENDITE.aggiungiVendita(v);
         storicoModel.addRow(new Object[]{p.getNome(), qty,
                 String.format("€ %.2f", p.getPrezzo()),

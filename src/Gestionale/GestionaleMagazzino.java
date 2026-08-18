@@ -1,7 +1,7 @@
 package Gestionale;
 
-import Cose.Articolo;
-import Cose.Ingrediente;
+import Item.Articolo;
+import Item.Ingrediente;
 import Persone.Fornitore;
 import Persone.Persona;
 import Utilità.Data;

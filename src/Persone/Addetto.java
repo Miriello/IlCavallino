@@ -1,6 +1,6 @@
 package Persone;
 
-import Utilità.Ruolo;
+import Utility.Ruolo;
 
 public class Addetto extends Persona {
     private Ruolo ruolo;

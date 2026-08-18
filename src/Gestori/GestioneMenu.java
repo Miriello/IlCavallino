@@ -1,5 +1,5 @@
 package Gestori;
-import Cose.Prodotto;
+import Item.Prodotto;
 
 import java.util.ArrayList;
 import java.util.List;

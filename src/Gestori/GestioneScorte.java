@@ -1,8 +1,7 @@
 package Gestori;
 
-import Cose.Articolo;
-import Cose.Ingrediente;
-import Cose.Prodotto;
+import Item.Articolo;
+
 import java.util.ArrayList;
 import java.util.List;
 

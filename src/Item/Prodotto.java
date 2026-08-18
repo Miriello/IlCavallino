@@ -1,6 +1,5 @@
-package Cose;
+package Item;
 
-import Utilità.Data;
 import java.util.ArrayList;
 import java.util.List;
 

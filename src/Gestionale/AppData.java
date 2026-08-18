@@ -1,7 +1,7 @@
 package Gestionale;
 
-import Cose.Ingrediente;
-import Cose.Prodotto;
+import Item.Ingrediente;
+import Item.Prodotto;
 import Gestori.GestioneMenu;
 import Gestori.GestioneScorte;
 import Persone.Fornitore;

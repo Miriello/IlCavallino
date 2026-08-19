@@ -18,10 +18,7 @@ public class RegistroAnagrafico extends RegistroAbstract<Persona>{
     }
 
     public int totalePersonale() {
-        int tot = 0;
-        for (Persona p : registro)
-            tot += 1;
-        return tot;
+        return registro.size();
     }
 
     public List<Persona> getPersonale() {

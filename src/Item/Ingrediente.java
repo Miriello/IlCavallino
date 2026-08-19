@@ -19,7 +19,7 @@ public class Ingrediente implements Articolo {
 
     public Ingrediente(Ingrediente i) {
         this.nome = i.nome;
-        this.scadenza = scadenza;
+        this.scadenza = i.scadenza;
         this.allergeni=new ArrayList<>(i.allergeni);
     }
 

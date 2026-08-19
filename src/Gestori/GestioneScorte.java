@@ -39,6 +39,9 @@ public class GestioneScorte {
             }
             magazzino.put(i, qntMagazzino - qntRichiesta);
         }
+        else{
+            System.out.println("Il prodotto non è presente in magazzino");
+        }
     }
 
     public Map<Ingrediente, Integer> getMagazzino() {

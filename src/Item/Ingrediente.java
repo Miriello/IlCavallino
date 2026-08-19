@@ -2,6 +2,7 @@ package Item;
 
 import Utility.Data;
 
+import java.security.KeyStore;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,5 +39,14 @@ public class Ingrediente implements Articolo {
     public int hashCode() {
         int M = 17;
         return M*nome.hashCode()*scadenza.hashCode();
+    }
+    public boolean equals(Object o){
+        if (o==null) return false;
+        if(!(o instanceof Ingrediente))
+          return false;
+        if(o==this)
+          return true;
+        Ingrediente c = (Item.Ingrediente) o;
+        return c.nome == this.nome;
     }
 }

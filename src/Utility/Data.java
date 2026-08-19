@@ -28,4 +28,12 @@ public class Data {
     public int hashCode(){
         return 1;
     }
+
+    public boolean equals(Object o){
+        if (o==null) return false;
+        if(!(o instanceof Data)) return false;
+        if(o==this) return true;
+        Data d = (Data) o;
+        return (d.giorno==this.giorno) & (d.mese==this.mese) & (d.anno==this.anno);
+    }
 }

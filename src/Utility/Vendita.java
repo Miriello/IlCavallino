@@ -11,7 +11,7 @@ public class Vendita {
     private List<Piatto> prodotti;
 
     public Vendita(List<Piatto> prodotti) {
-        this.prodotti = prodotti;
+        this.prodotti = new ArrayList<>(prodotti);
         id = contatore+1;
         contatore++;
     }
@@ -25,12 +25,12 @@ public class Vendita {
     }
 
     public List<Piatto> getProdotti() {
-
         return new ArrayList<>(prodotti);
     }
 
     public long getId(){
         return id;
     }
+
 
 }

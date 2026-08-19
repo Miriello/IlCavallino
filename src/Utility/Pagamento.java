@@ -13,6 +13,10 @@ public class Pagamento {
         return vendita;
     }
 
+    public String getMetodoPagamento() {
+        return metodoPagamento;
+    }
+
     public long getId(){
         return vendita.getId();
     }

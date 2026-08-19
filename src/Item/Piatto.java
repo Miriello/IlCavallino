@@ -46,4 +46,13 @@ public class Piatto implements Articolo {
     public String toString() {
         return nome + " €" + String.format("%.2f", prezzo) + " - " + ingredienti;
     }
+
+    public boolean equals(Object o){
+        if(o==null) return false;
+        if(!(o instanceof Piatto))
+            return false;
+        if(o==this) return true;
+        Piatto p = (Piatto) o;
+        return p.nome == this.nome;
+    }
 }

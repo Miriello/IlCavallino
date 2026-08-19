@@ -19,10 +19,7 @@ public class RegistroPagamenti extends RegistroAbstract<Pagamento>{
     }
 
     public double totalePagamenti() {
-        double tot = 0;
-        for (Pagamento p: registro)
-            tot += 1;
-        return tot;
+        return registro.size();
     }
 
     public List<Pagamento> getPagamenti() {

@@ -14,9 +14,11 @@ public class GestioneScorte {
         if(!magazzino.containsKey(i)){
             magazzino.put(i, q);
         }
-        int vecchiaQ = magazzino.get(i);
-        magazzino.put(i, q+vecchiaQ);
-        System.out.println("Quantità aggiornata");
+        else {
+            int vecchiaQ = magazzino.get(i);
+            magazzino.put(i, q + vecchiaQ);
+            System.out.println("Quantità aggiornata");
+        }
     }
 
     public void rimuoviArticolo(Ingrediente i){
@@ -30,12 +32,13 @@ public class GestioneScorte {
         if(qntRichiesta<=0){
             throw new IllegalArgumentException("La quantità richiesta non può essere negativa");
         }
-        int qntMagazzino = magazzino.get(i);
-        if(qntMagazzino <qntRichiesta){
-            throw new IllegalArgumentException("La quantità richiesta eccede le scorte");
+        if(magazzino.containsKey(i)) {
+            int qntMagazzino = magazzino.get(i);
+            if (qntMagazzino < qntRichiesta) {
+                throw new IllegalArgumentException("La quantità richiesta eccede le scorte");
+            }
+            magazzino.put(i, qntMagazzino - qntRichiesta);
         }
-        magazzino.put(i,qntMagazzino-qntRichiesta);
-
     }
 
     public Map<Ingrediente, Integer> getMagazzino() {

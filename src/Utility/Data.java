@@ -24,4 +24,8 @@ public class Data {
     public String toString() {
         return giorno + "/" + mese + "/" + anno;
     }
+
+    public int hashCode(){
+        return 1;
+    }
 }

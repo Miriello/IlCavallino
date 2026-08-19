@@ -17,7 +17,7 @@ public class Pagamento {
         return vendita.getId();
     }
 
-    public String toString(Pagamento p){
-        return "Pagamento con id di vendita="+ p.getVendita().getId() + "realizzato con metodo di pagamento"+ metodoPagamento;
+    public String toString(){
+        return "Pagamento con id di vendita="+ vendita.getId() + "realizzato con metodo di pagamento"+ metodoPagamento;
     }
 }

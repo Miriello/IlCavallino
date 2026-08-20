@@ -1,6 +1,5 @@
 package Persone;
 
-import Utility.Account;
 import Utility.Ruolo;
 
 public class Addetto extends Persona {

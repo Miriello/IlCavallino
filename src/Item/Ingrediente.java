@@ -38,11 +38,11 @@ public class Ingrediente implements Articolo {
     @Override
     public int hashCode() {
         int M = 17;
-        M = 19 * M + nome.hash();
+        M = 19 * M + nome.hashCode();
         M = 19 * M + scadenza.hashCode();
         return M;
     }
-        
+
     public boolean equals(Object o){
         if (o==null) return false;
         if(!(o instanceof Ingrediente))

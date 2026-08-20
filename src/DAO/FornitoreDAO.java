@@ -2,6 +2,7 @@ package DAO;
 
 import Database.DatabaseManager;
 import Item.Articolo;
+import Item.Ingrediente;
 import Persone.Fornitore;
 
 import java.sql.Connection;
@@ -24,8 +25,8 @@ public class FornitoreDAO {
                 String rS = rs.getString("ragioneSociale");
                 String email = rs.getString("email");
                 int id = rs.getInt("id");
-                List<Articolo> articoli = ArticoloDAO.findByFornitore(id);
-                fornitori.add(new Fornitore(pIva, rS, email, articoli);
+                List<Ingrediente> articoli = IngredienteDAO.findByFornitore(id);
+                fornitori.add(new Fornitore(pIva, rS, email, articoli));
             }
         } catch (SQLException e) {
             throw new RuntimeException("Errore nel caricamento dei fornitori", e);

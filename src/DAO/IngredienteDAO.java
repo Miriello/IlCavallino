@@ -9,7 +9,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class IngredienteDAO implements ArticoloDAO<Ingrediente> {
+public class IngredienteDAO {
 
     public List<Ingrediente> findAll (){
 
@@ -76,6 +76,23 @@ public class IngredienteDAO implements ArticoloDAO<Ingrediente> {
 
     public static List<Ingrediente> findByFornitore(int idFornitore){
         List<Ingrediente> ingredienti = new ArrayList<>();
+        String sql = "SELECT * FROM ingrediente i JOIN ingredienti_fornitore if ON i.id = if.idIngrediente WHERE if.idFornitore = ?";
+        try{
+            Connection conn = DatabaseManager.getConnessione();
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery();
+            while(rs.next()){
+                String nome = rs.getString("nome");
+                Date dataSql = rs.getDate("scadenza");
+                Data scadenza = new Data(dataSql.toLocalDate().getDayOfMonth(),dataSql.toLocalDate().getMonthValue(),dataSql.toLocalDate().getYear());
+                int id = rs.getInt("id");
+                List<Allergene> allergeni = AllergeneDAO.findByIngrediente(id);
+                ingredienti.add(new Ingrediente(nome, scadenza, allergeni));
+            }
+
+        }catch(SQLException e) {
+            throw new RuntimeException("Errore nel caricamento degli ingredienti", e);
+        }
         return ingredienti;
     }
 

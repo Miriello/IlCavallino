@@ -51,8 +51,4 @@ public class Ingrediente implements Articolo {
         return c.nome.equals(this.nome) && c.scadenza.equals(this.scadenza);
     }
 
-    @Override
-    public int getPrezzo() {
-        return 0;
-    }
 }

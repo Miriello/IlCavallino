@@ -1,6 +1,7 @@
 package DAO;
 
 import Database.DatabaseManager;
+import Item.Allergene;
 import Item.Ingrediente;
 import Utility.Data;
 
@@ -24,7 +25,9 @@ public class IngredientiDAO {
                 String nome = rs.getString("nome");
                 Date dataSql = rs.getDate("scadenza");
                 Data scadenza = new Data(dataSql.toLocalDate().getDayOfMonth(),dataSql.toLocalDate().getMonthValue(),dataSql.toLocalDate().getYear());
-                Ingrediente ingrediente = new Ingrediente (nome, scadenza, new ArrayList<>());
+                int id = rs.getInt("id");
+                List<Allergene> allergeni = AllergeneDAO.findByIngrediente(id);
+                Ingrediente ingrediente = new Ingrediente (nome, scadenza, allergeni);
                 ingredienti.add(ingrediente);
             }
         } catch (SQLException e ){

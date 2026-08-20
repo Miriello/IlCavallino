@@ -3,7 +3,6 @@ package Database;
 import Persone.Addetto;
 import Persone.Persona;
 import Persone.Socio;
-import Utility.Account;
 import Utility.Ruolo;
 
 import java.sql.*;

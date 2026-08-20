@@ -38,8 +38,11 @@ public class Ingrediente implements Articolo {
     @Override
     public int hashCode() {
         int M = 17;
-        return M*nome.hashCode()*scadenza.hashCode();
+        M = 19 * M + nome.hash();
+        M = 19 * M + scadenza.hashCode();
+        return M;
     }
+        
     public boolean equals(Object o){
         if (o==null) return false;
         if(!(o instanceof Ingrediente))
@@ -47,6 +50,6 @@ public class Ingrediente implements Articolo {
         if(o==this)
           return true;
         Ingrediente c = (Item.Ingrediente) o;
-        return c.nome == this.nome;
+        return c.nome.equals(this.nome) && c.scadenza.equals(this.scadenza);
     }
 }

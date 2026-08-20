@@ -26,7 +26,7 @@ public class DatabaseManager {
         }
     }
 
-    public static Persona autenticaUtente(Account account) {
+    public static Persona autenticaUtente(String username, String password) {
         if (connessione == null) return null;
         String sql = "SELECT * FROM utenti WHERE username = ? AND password = ?";
         try (PreparedStatement stmt = connessione.prepareStatement(sql)) {
@@ -39,9 +39,9 @@ public class DatabaseManager {
                 String cf       = rs.getString("codice_fiscale");
                 Ruolo  ruolo    = Ruolo.valueOf(rs.getString("ruolo"));
                 if (ruolo == Ruolo.SOCIO) {
-                    return new Socio(nome, cognome, cf, account);
+                    return new Socio(nome, cognome, cf);
                 } else {
-                    return new Addetto(nome, cognome, cf, account, ruolo);
+                    return new Addetto(nome, cognome, cf, ruolo);
                 }
             }
         } catch (SQLException e) {

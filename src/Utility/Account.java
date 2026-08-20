@@ -9,11 +9,11 @@ public class Account {
         this.password=password;
     }
 
-    private String getUsername(){
+    public String getUsername(){
         return username;
     }
 
-    private String getPassword(){
+    public String getPassword(){
         return password;
     }
 }

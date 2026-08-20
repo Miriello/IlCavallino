@@ -1,7 +1,6 @@
 package Persone;
 
 import Item.Articolo;
-import Item.Ingrediente;
 import Utility.Sede;
 import java.util.ArrayList;
 import java.util.List;

@@ -1,6 +1,7 @@
 package GUI;
 
 import Gestionale.*;
+import Persone.Credenziali;
 import Persone.Persona;
 import Utility.Account;
 
@@ -32,8 +33,7 @@ public class PaginaLogin extends JFrame {
         loginButton.addActionListener(e -> {
             String username = usernameField.getText().trim();
             String password = new String(passwordField.getPassword());
-            Account acc = (username, password);
-            Persona u = Autenticazione.login(acc);
+            Persona u = Autenticazione.login(username, password);
             if (u == null) {
                 statusLabel.setText("Credenziali non valide.");
             } else {

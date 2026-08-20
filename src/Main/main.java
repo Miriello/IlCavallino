@@ -1,7 +1,7 @@
 package Main;
 
 import Database.DatabaseManager;
-import GUI.PaginaLogin;
+import Servizi.PaginaLogin;
 
 import javax.swing.SwingUtilities;
 

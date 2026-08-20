@@ -1,7 +1,6 @@
-package GUI;
+package Servizi;
 
 import Database.DatabaseManager;
-import Persone.Credenziali;
 import Persone.Persona;
 
 public class Autenticazione {

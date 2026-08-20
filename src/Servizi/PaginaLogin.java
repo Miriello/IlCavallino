@@ -1,9 +1,7 @@
-package GUI;
+package Servizi;
 
 import Gestionale.*;
-import Persone.Credenziali;
 import Persone.Persona;
-import Utility.Account;
 
 import javax.swing.*;
 import java.awt.*;

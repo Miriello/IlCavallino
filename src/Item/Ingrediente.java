@@ -1,8 +1,6 @@
 package Item;
 
 import Utility.Data;
-
-import java.security.KeyStore;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,5 +49,10 @@ public class Ingrediente implements Articolo {
           return true;
         Ingrediente c = (Item.Ingrediente) o;
         return c.nome.equals(this.nome) && c.scadenza.equals(this.scadenza);
+    }
+
+    @Override
+    public int getPrezzo() {
+        return 0;
     }
 }

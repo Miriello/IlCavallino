@@ -11,7 +11,7 @@ public class Fornitore {
     private String email;
     private List<Articolo> beniForniti;
 
-    public Fornitore(String partitaIva, String ragioneSociale, List<Articolo> articoli, String email) {
+    public Fornitore(String partitaIva, String ragioneSociale,  String email ,List<Articolo> articoli) {
         this.partitaIva = partitaIva;
         this.ragioneSociale = ragioneSociale;
         this.email = email;

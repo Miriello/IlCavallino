@@ -23,7 +23,8 @@ public class FornitoreDAO {
                 String pIva = rs.getString("partitaIva");
                 String rS = rs.getString("ragioneSociale");
                 String email = rs.getString("email");
-                List<Articolo> articoli = ArticoloDAO.findByFornitore();
+                int id = rs.getInt("id");
+                List<Articolo> articoli = ArticoloDAO.findByFornitore(id);
                 fornitori.add(new Fornitore(pIva, rS, email, articoli);
             }
         } catch (SQLException e) {

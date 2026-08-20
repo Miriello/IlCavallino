@@ -31,16 +31,16 @@ public class AllergeneDAO {
         return allergeni;
     }
     public void insert(Allergene a){
-
+        //TODO
     }
     public void update(Allergene a) {
-
+        //TODO
     }
     public void delete (Allergene a){
-
+        //TODO
     }
-    public Allergene findById(int id){
-        return new Allergene();
+    public void findById(int id){
+        //TODO
     }
 
     public static List<Allergene> findByIngrediente(int idIngrediente) {
@@ -61,8 +61,4 @@ public class AllergeneDAO {
         }
         return allergeni;
     }
-}
-
-
-
 }

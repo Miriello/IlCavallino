@@ -9,7 +9,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class IngredienteDAO extends ArticoloDAO {
+public class IngredienteDAO implements ArticoloDAO<Ingrediente> {
 
     public List<Ingrediente> findAll (){
 

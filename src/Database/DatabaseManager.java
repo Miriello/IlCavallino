@@ -17,10 +17,10 @@ public class DatabaseManager {
     public static boolean connetti() {
         try {
             connessione = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
-            System.out.println("[DB] Connessione stabilita: " + DB_URL);
+            System.out.println("DB Connessione stabilita: " + DB_URL);
             return true;
         } catch (SQLException e) {
-            System.out.println("[DB] Non disponibile, modalità offline. (" + e.getMessage() + ")");
+            System.out.println("Connessione al DB non disponibile (" + e.getMessage() + ")");
             return false;
         }
     }
@@ -44,7 +44,7 @@ public class DatabaseManager {
                 }
             }
         } catch (SQLException e) {
-            System.err.println("[DB] Errore autenticazione: " + e.getMessage());
+            System.err.println("DB Errore autenticazione: " + e.getMessage());
         }
         return null;
     }
@@ -55,7 +55,7 @@ public class DatabaseManager {
         try {
             if (connessione != null && !connessione.isClosed()) connessione.close();
         } catch (SQLException e) {
-            System.err.println("[DB] Errore chiusura: " + e.getMessage());
+            System.err.println("DB Errore chiusura: " + e.getMessage());
         }
     }
 }

@@ -11,9 +11,9 @@ public class Addetto extends Persona {
         this.ruolo = ruolo;
     }
 
-    public Addetto(String nome, String cognome, String codiceFiscale, Ruolo ruolo, Account a) {
-        super(nome, cognome, codiceFiscale, a);
-        this.ruolo = ruolo;
+    public Addetto(Addetto a) {
+        super(a.getNome(),a.getCognome(),a.getCodiceFiscale());
+        this.ruolo=a.getRuolo();
     }
 
     @Override

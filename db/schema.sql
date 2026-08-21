@@ -119,7 +119,7 @@ CREATE TABLE IF NOT EXISTS menudelgiorno(
 CREATE TABLE IF NOT EXISTS piatti_menu(
     idMenu INT NOT NULL,
     idPiatto INT NOT NULL
-    prezzo INT NOT NULL,
+    prezzo DECIMAL(10,2) NOT NULL,
     PRIMARY KEY (idMenu, idPiatto),
     FOREIGN KEY(idMenu) REFERENCES menudelgiorno(id) ON DELETE CASCADE,
     FOREIGN KEY(idPiatto) REFERENCES piatti(id) ON DELETE CASCADE

@@ -2,6 +2,7 @@ package DAO;
 
 import Database.DatabaseManager;
 import Item.Allergene;
+import Utility.Data;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -31,10 +32,28 @@ public class AllergeneDAO {
         return allergeni;
     }
     public void insert(Allergene a){
-        //TODO
+        String sql = "INSERT INTO allergeni (nome, codiceAllergene) VALUES (?,?) ";
+        try{
+            Connection conn = DatabaseManager.getConnessione();
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setString(1,a.getNome());
+            stmt.setInt(2,a.getCodiceAllergene());
+            stmt.executeUpdate();
+        }catch (SQLException e){
+            throw new RuntimeException("Errore nel caricamento dell'allergene",e);
+        }
     }
-    public void update(Allergene a) {
-        //TODO
+    public void update(int id, Allergene a) {
+        String sql = "UPDATE allergeni" + "SET nome = ?, codiceAllergene = ? " + "WHERE id=?";
+        try{
+            Connection conn = DatabaseManager.getConnessione();
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setString(1,a.getNome());
+            stmt.setInt(2, a.getCodiceAllergene());
+            stmt.setInt(3,id);
+        }catch(SQLException e){
+            throw new RuntimeException("Errore nell'aggiornamento dell'allergene",e);
+        }
     }
     public void delete (Allergene a){
         //TODO

@@ -37,7 +37,17 @@ public class IngredienteDAO {
     }
 
     public void insert(Ingrediente ingrediente){
-        //TODO
+        String sql = "INSERT INTO ingredienti (nome,scadenza,allergeni) VALUES (?,?,?)";
+        try{
+            Connection conn = DatabaseManager.getConnessione();
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setString(1, ingrediente.getNome());
+            stmt.setDate();
+            stmt.setArray(ingrediente.getAllergeni());
+            stmt.executeUpdate();
+        } catch(SQLException e){
+            throw new RuntimeException("Errore nel caricamento dell'ingrediente",e);
+        }
     }
 
     public void delete(Ingrediente ingrediente){
@@ -45,8 +55,18 @@ public class IngredienteDAO {
     }
 
     public void update(Ingrediente ingrediente){
-        //TODO
+        String sql = "UPDATE ingredienti" + "SET nome = ?, scadenza = ?, allergeni=? " + "WHERE id=?";
+        try{
+            Connection conn = DatabaseManager.getConnessione();
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setString(1,a.getNome());
+            stmt.setString(2, a.getCodiceAllergene());
+            stmt.setA(3,id);
+        }catch(SQLException e){
+            throw new RuntimeException("Errore nell'aggiornamento dell'ingrediente",e);
+        }
     }
+
 
     public void  findById(int id){
         //TODO

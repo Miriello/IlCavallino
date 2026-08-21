@@ -4,6 +4,7 @@ import Database.DatabaseManager;
 import Item.Articolo;
 import Item.Ingrediente;
 import Persone.Fornitore;
+import Utility.Data;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -32,5 +33,34 @@ public class FornitoreDAO {
             throw new RuntimeException("Errore nel caricamento dei fornitori", e);
         }
         return fornitori;
+    }
+
+    public void insert (Fornitore f){
+        String sql = "INSERT INTO fornitori (partitaIva, ragioneSociale, email, beniForniti) VALUES (?,?,?,?)";
+        try{
+            Connection conn = DatabaseManager.getConnessione();
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setString(1, f.getPartitaIva());
+            stmt.setString(2, f.getRagioneSociale());
+            stmt.setString(3, f.getEmail());
+            stmt.setArray(4,f.getBeniForniti());
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Errore nel caricamento del fornitore", e);
+        }
+    }
+
+    public void update (int id, Fornitore f){
+        String sql = "UPDATE fornitori" + "SET partitaIva = ?, ragioneSociale = ?, email=?, beniForniti =? " + "WHERE id=?";
+        try{
+            Connection conn = DatabaseManager.getConnessione();
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setString(1,f.getPartitaIva());
+            stmt.setString(2, f.getRagioneSociale());
+            stmt.setString(3,f.getEmail());
+            stmt.executeUpdate();
+        }catch(SQLException e){
+            throw new RuntimeException("Errore nell'aggiornamento del fornitore",e);
+        }
     }
 }

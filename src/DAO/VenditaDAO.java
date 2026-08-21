@@ -25,4 +25,14 @@ public class VenditaDAO {
             throw new RuntimeException("Errore nel caricamento delle vendite",e);
         }
     }
+
+    public void insert (Vendita v ){
+        String sql = "INSERT INTO vendite () VALUES (?,?,?)";
+        try{
+            Connection conn = DatabaseManager.getConnessione();
+            PreparedStatement stmt = conn.prepareStatement(sql);
+        } catch(SQLException e ){
+            throw new RuntimeException("Errore nel caricamento della vendita",e);
+        }
+    }
 }

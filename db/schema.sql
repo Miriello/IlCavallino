@@ -75,8 +75,8 @@ CREATE TABLE IF NOT EXISTS allergeni_ingrediente(
 CREATE TABLE IF NOT EXISTS ingredienti_piatto(
     idPiatto     INT NOT NULL,
     idIngrediente INT NOT NULL,
-    PRIMARY KEY (piatto_id, idIngrediente),
-    FOREIGN KEY (piatto_id) REFERENCES piatti(id) ON DELETE CASCADE,
+    PRIMARY KEY (idPiatto, idIngrediente),
+    FOREIGN KEY (idPiatto) REFERENCES piatti(id) ON DELETE CASCADE,
     FOREIGN KEY (idIngrediente) REFERENCES ingredienti(id) ON DELETE CASCADE
 );
 

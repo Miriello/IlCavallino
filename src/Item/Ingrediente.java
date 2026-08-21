@@ -37,6 +37,10 @@ public class Ingrediente implements Articolo {
         return new ArrayList<>(allergeni);
     }
 
+    public int getId(){
+        return id;
+    }
+
     @Override
     public int hashCode() {
         int M = 17;

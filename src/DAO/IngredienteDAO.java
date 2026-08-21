@@ -118,7 +118,7 @@ public class IngredienteDAO {
 
     public static List<Ingrediente> findByPiatto(int idPiatto){
         List<Ingrediente> ingredienti = new ArrayList<>();
-        String sql = "SELECT i FROM ingredienti_piatto ip JOIN ingredienti i ON ip.idIngrediente=i.idIngrediente WHERE ip.idPiatto= ?";
+        String sql = "SELECT * FROM ingredienti_piatto ip JOIN ingredienti i ON ip.idIngrediente=i.id WHERE ip.idPiatto= ?";
         try{
             Connection conn = DatabaseManager.getConnessione();
             PreparedStatement stmt = conn.prepareStatement(sql);
@@ -139,7 +139,7 @@ public class IngredienteDAO {
 
     public static List<Ingrediente> findByFornitore(String partitaIva){
         List<Ingrediente> ingredienti = new ArrayList<>();
-        String sql = "SELECT * FROM ingrediente i JOIN ingredienti_fornitore if ON i.id = if.idIngrediente WHERE if.partitaIvaFornitore = ?";
+        String sql = "SELECT * FROM ingredienti i JOIN ingredienti_fornitore if ON i.id = if.idIngrediente WHERE if.partitaIvaFornitore = ?";
         try{
             Connection conn = DatabaseManager.getConnessione();
             PreparedStatement stmt = conn.prepareStatement(sql);

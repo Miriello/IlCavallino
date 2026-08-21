@@ -4,7 +4,7 @@ USE ilcavallino;
 -- tabella dei fornitori
 CREATE TABLE IF NOT EXISTS fornitori (
     partitaIva     VARCHAR(11)  PRIMARY KEY,
-    ragione_sociale VARCHAR(200) NOT NULL,
+    ragioneSociale VARCHAR(200) NOT NULL,
     email           VARCHAR(150)
 );
 

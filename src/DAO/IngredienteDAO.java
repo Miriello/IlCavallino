@@ -3,9 +3,9 @@ package DAO;
 import Database.DatabaseManager;
 import Item.Allergene;
 import Item.Ingrediente;
-import Utility.Data;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,8 +23,7 @@ public class IngredienteDAO {
 
             while (rs.next()){
                 String nome = rs.getString("nome");
-                Date dataSql = rs.getDate("scadenza");
-                Data scadenza = new Data(dataSql.toLocalDate().getDayOfMonth(),dataSql.toLocalDate().getMonthValue(),dataSql.toLocalDate().getYear());
+                LocalDate scadenza = rs.getDate("scadenza").toLocalDate();
                 int id = rs.getInt("id");
                 List<Allergene> allergeni = AllergeneDAO.findByIngrediente(id);
                 Ingrediente ingrediente = new Ingrediente (nome, scadenza, allergeni);
@@ -42,7 +41,7 @@ public class IngredienteDAO {
             Connection conn = DatabaseManager.getConnessione();
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setString(1, ingrediente.getNome());
-            stmt.setDate();
+            stmt.setDate(2, java.sql.Date.valueOf(ingrediente.getScadenza());
             stmt.setArray(ingrediente.getAllergeni());
             stmt.executeUpdate();
         } catch(SQLException e){

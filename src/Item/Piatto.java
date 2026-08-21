@@ -6,17 +6,20 @@ import java.util.List;
 public class Piatto implements Articolo {
 
     private String nome;
+    private int id;
     private double prezzo;
     private List<Ingrediente> ingredienti;
 
-    public Piatto(String nome, double prezzo, List<Ingrediente> ingredienti) {
+    public Piatto(String nome, int id, double prezzo, List<Ingrediente> ingredienti) {
         this.nome = nome;
+        this.id=id;
         this.prezzo = prezzo;
         this.ingredienti = new ArrayList<>(ingredienti);
     }
 
     public Piatto(Piatto p) {
         this.nome = p.nome;
+        this.id=p.id;
         this.prezzo = p.prezzo;
         this.ingredienti = new ArrayList<>(p.ingredienti);
     }

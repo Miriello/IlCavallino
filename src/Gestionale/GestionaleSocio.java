@@ -5,7 +5,6 @@ import Item.Piatto;
 import Persone.Fornitore;
 import Persone.Persona;
 import Utility.Vendita;
-import Utility.Data;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;

@@ -2,7 +2,6 @@ package DAO;
 
 import Database.DatabaseManager;
 import Item.Allergene;
-import Utility.Data;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

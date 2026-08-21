@@ -33,4 +33,17 @@ public class PiattoDAO {
         }
         return piatti;
     }
+
+    public void insert (Piatto p ){
+        String sql = "INSERT INTO piatti (nome, prezzo, ingredienti) VALUES (?,?,?)";
+        try{
+            Connection conn = DatabaseManager.getConnessione();
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setString(1, p.getNome());
+            stmt.setDouble(2, p.getPrezzo());
+            stmt.setArray(p.getIngredienti());
+        } catch (SQLException e) {
+            throw new RuntimeException("Errore nel caricamento del piatto", e);
+        }
+    }
 }

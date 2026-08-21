@@ -5,7 +5,7 @@ USE ilcavallino;
 
 -- tabella dei fornitori
 CREATE TABLE IF NOT EXISTS fornitori (
-    partita_iva     VARCHAR(11)  PRIMARY KEY,
+    partitaIva     VARCHAR(11)  PRIMARY KEY,
     ragione_sociale VARCHAR(200) NOT NULL,
     email           VARCHAR(150)
 );
@@ -34,7 +34,10 @@ CREATE TABLE IF NOT EXISTS piatti (
 
 -- tabella vendite
 CREATE TABLE IF NOT EXISTS vendite(
-    id INT AUTO_INCREMENT PRIMARY KEY
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    cfOperatore VARCHAR(16) NOT NULL,
+    dataOra TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (cfOperatore) REFERENCES persone(cf) ON DELETE CASCADE
 );
 
 -- tabella ruoli
@@ -56,7 +59,7 @@ CREATE TABLE IF NOT EXISTS persone(
 
 -- tabella degli ingredienti forniti da fornitore
 CREATE TABLE IF NOT EXISTS ingredienti_fornitore(
-    partitaIvaFornitore VARCHAR(200) NOT NULL,
+    partitaIvaFornitore VARCHAR(11) NOT NULL,
     idIngrediente INT NOT NULL,
     PRIMARY KEY (partitaIvaFornitore,idIngrediente),
     FOREIGN KEY(partitaIvaFornitore) REFERENCES fornitori(partitaIva)ON DELETE CASCADE,
@@ -89,6 +92,27 @@ CREATE TABLE IF NOT EXISTS scorte(
     PRIMARY KEY(idIngrediente),
     FOREIGN KEY (idIngrediente) REFERENCES ingredienti(id) ON DELETE CASCADE
 );
+
+-- tabelle delle vendite dei piatti
+CREATE TABLE IF NOT EXISTS vendita_piatto(
+    idVendita INT NOT NULL,
+    idPiatto INT NOT NULL,
+    quantita INT NOT NULL,
+    PRIMARY KEY (idVendita, idPiatto),
+    FOREIGN KEY(idVendita) REFERENCES vendite(id) ON DELETE CASCADE,
+    FOREIGN KEY(idPiatto) REFERENCES piatti(id) ON DELETE CASCADE
+);
+
+-- tabella dei pagamenti
+CREATE TABLE IF NOT EXISTS pagamenti(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    idVendita INT NOT NULL UNIQUE,
+    metodoPagamento VARCHAR(50) NOT NULL,
+    importo DECIMAL(10,2) NOT NULL,
+    dataOra TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY(idVendita) REFERENCES vendite(id) ON DELETE CASCADE
+);
+
 
 
 

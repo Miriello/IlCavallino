@@ -72,8 +72,8 @@ CREATE TABLE IF NOT EXISTS allergeni_ingrediente(
 );
 
 -- tabella ingredienti del piatto
-CREATE TABLE IF NOT EXISTS piatto_ingredienti(
-    piatto_id      INT NOT NULL,
+CREATE TABLE IF NOT EXISTS ingredienti_piatto(
+    idPiatto     INT NOT NULL,
     idIngrediente INT NOT NULL,
     PRIMARY KEY (piatto_id, idIngrediente),
     FOREIGN KEY (piatto_id) REFERENCES piatti(id) ON DELETE CASCADE,

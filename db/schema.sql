@@ -1,95 +1,107 @@
-    -- Schema "Il Cavallino" — compatibile MySQL 8+ / MariaDB
--- Per PostgreSQL: sostituire AUTO_INCREMENT con SERIAL, ENUM con VARCHAR + CHECK
+
 
 CREATE DATABASE IF NOT EXISTS ilcavallino CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE ilcavallino;
 
--- --------------------------------------------------------
--- Utenti del sistema (Socio e Addetti)
--- --------------------------------------------------------
-CREATE TABLE IF NOT EXISTS utenti (
-    id             INT AUTO_INCREMENT PRIMARY KEY,
-    nome           VARCHAR(100) NOT NULL,
-    cognome        VARCHAR(100) NOT NULL,
-    codice_fiscale VARCHAR(16)  NOT NULL UNIQUE,
-    username       VARCHAR(50)  NOT NULL UNIQUE,
-    password       VARCHAR(255) NOT NULL,   -- bcrypt in produzione
-    ruolo          ENUM('SOCIO','CUCINA','VENDITA','MAGAZZINO','MARKETING') NOT NULL
-);
-
--- --------------------------------------------------------
--- Fornitori
--- --------------------------------------------------------
+-- tabella dei fornitori
 CREATE TABLE IF NOT EXISTS fornitori (
-    id              INT AUTO_INCREMENT PRIMARY KEY,
-    partita_iva     VARCHAR(11)  NOT NULL UNIQUE,
+    partita_iva     VARCHAR(11)  PRIMARY KEY,
     ragione_sociale VARCHAR(200) NOT NULL,
     email           VARCHAR(150),
-    citta           VARCHAR(100),
-    regione         VARCHAR(100),
-    cap             VARCHAR(5)
 );
 
--- --------------------------------------------------------
--- Prodotti in menu
--- --------------------------------------------------------
-CREATE TABLE IF NOT EXISTS prodotti (
-    id       INT AUTO_INCREMENT PRIMARY KEY,
-    nome     VARCHAR(200)   NOT NULL,
-    prezzo   DECIMAL(10,2)  NOT NULL,
-    scadenza DATE
-);
 
-CREATE TABLE IF NOT EXISTS prodotto_ingredienti (
-    prodotto_id      INT,
-    ingrediente_nome VARCHAR(200),
-    PRIMARY KEY (prodotto_id, ingrediente_nome),
-    FOREIGN KEY (prodotto_id) REFERENCES prodotti(id) ON DELETE CASCADE
-);
+-- tabella degli ingredienti
 
--- --------------------------------------------------------
--- Ingredienti in magazzino
--- --------------------------------------------------------
 CREATE TABLE IF NOT EXISTS ingredienti (
     id       INT AUTO_INCREMENT PRIMARY KEY,
     nome     VARCHAR(200) NOT NULL,
     scadenza DATE
+    );
+
+-- tabella degli allergeni
+CREATE TABLE IF NOT EXISTS allergeni (
+    codiceAllergene VARCHAR(200) PRIMARY KEY,
+    nome VARCHAR(200) NOT NULL,
 );
 
--- --------------------------------------------------------
--- Registro vendite
--- --------------------------------------------------------
-CREATE TABLE IF NOT EXISTS vendite (
-    id          INT AUTO_INCREMENT PRIMARY KEY,
-    prodotto_id INT NOT NULL,
-    quantita    INT NOT NULL,
-    operatore   VARCHAR(50),
-    data_ora    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (prodotto_id) REFERENCES prodotti(id)
+-- tabella piatti
+CREATE TABLE IF NOT EXISTS piatti (
+    id       INT AUTO_INCREMENT PRIMARY KEY,
+    nome     VARCHAR(200)   NOT NULL,
+    prezzo   DECIMAL(10,2)  NOT NULL
+    );
+
+-- tabella vendite
+CREATE TABLE IF NOT EXISTS vendite(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+
 );
 
--- --------------------------------------------------------
--- Ordini a fornitore (placeholder)
--- --------------------------------------------------------
-CREATE TABLE IF NOT EXISTS ordini_fornitore (
-    id           INT AUTO_INCREMENT PRIMARY KEY,
-    fornitore_id INT NOT NULL,
-    data_ordine  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    stato        ENUM('IN_ATTESA','EVASO','ANNULLATO') DEFAULT 'IN_ATTESA',
-    note         TEXT,
-    FOREIGN KEY (fornitore_id) REFERENCES fornitori(id)
+-- tabella persone
+CREATE TABLE IF NOT EXISTS persone(
+    cf VARCHAR(200) PRIMARY KEY,
+    nome VARCHAR(200) NOT NULL,
+    cognome VARCHAR(200) NOT NULL,
+    idRuolo VARCHAR(200) NOT NULL,
+    FOREIGN KEY(idRuolo) REFERENCES ruoli(idRuolo) ON DELETE CASCADE
 );
 
--- --------------------------------------------------------
--- Dati demo
--- --------------------------------------------------------
-INSERT IGNORE INTO utenti (nome, cognome, codice_fiscale, username, password, ruolo) VALUES
-  ('Mario',  'Rossi',   'RSSMRA80A01H501Z', 'admin',      'admin123', 'SOCIO'),
-  ('Luigi',  'Bianchi', 'BNCLGU90B02H501Y', 'cucina1',    'pass',     'CUCINA'),
-  ('Anna',   'Verdi',   'VRDNNA85C03H501X', 'vendita1',   'pass',     'VENDITA'),
-  ('Marco',  'Neri',    'NRIMRC75D04H501W', 'magazzino1', 'pass',     'MAGAZZINO'),
-  ('Sara',   'Blu',     'BLUSRA70E05H501V', 'marketing1', 'pass',     'MARKETING');
+-- tabella ruoli
+CREATE TABLE IF NOT EXISTS ruoli(
+    idRuolo INT AUTO_INCREMENT PRIMARY KEY,
+    nomeRuolo VARCHAR(200) NOT NULL
+);
 
-INSERT IGNORE INTO fornitori (partita_iva, ragione_sociale, email, citta, regione, cap) VALUES
-  ('12345678901', 'Carni Selezionate SRL', 'ordini@carniselezionate.it', 'Milano', 'Lombardia', '20100'),
-  ('98765432109', 'Prodotti Freschi SpA',  'ordini@prodottifreschi.it',  'Roma',   'Lazio',     '00100');
+-- tabella degli ingredienti forniti da fornitore
+
+CREATE TABLE IF NOT EXISTS ingredienti_fornitore(
+    partitaIvaFornitore VARCHAR(200) NOT NULL,
+    idIngrediente INT NOT NULL,
+    PRIMARY KEY (partitaIvaFornitore,idIngrediente),
+    FOREIGN KEY(partitaIvaFornitore) REFERENCES fornitori(partitaIva)ON DELETE CASCADE,
+    FOREIGN KEY (idIngrediente) REFERENCES ingredienti(id) ON DELETE CASCADE
+)
+
+-- tabella degli allergeni degli ingredienti
+
+CREATE TABLE IF NOT EXISTS allergeni_ingrediente(
+    codiceAllergene VARCHAR(200) NOT NULL,
+    idIngrediente INT NOT NULL,
+    PRIMARY KEY(codiceAllergene,idIngrediente),
+    FOREIGN KEY (codiceAllergene) REFERENCES allergeni(codiceAllergene) ON DELETE CASCADE,
+    FOREIGN KEY (idIngrediente) REFERENCES ingredienti(id) ON DELETE CASCADE
+);
+
+-- tabella ingredienti del piatto
+
+CREATE TABLE IF NOT EXISTS piatto_ingredienti(
+    piatto_id      INT NOT NULL,
+    idIngrediente INT NOT NULL,
+    PRIMARY KEY (piatto_id, idIngrediente),
+    FOREIGN KEY (piatto_id) REFERENCES piatti(id) ON DELETE CASCADE
+    FOREIGN KEY (idIngrediente) REFERENCES ingredienti(id) ON DELETE CASCADE
+);
+
+-- tabella dei ruoli del personale
+
+CREATE TABLE IF NOT EXISTS persona_ruolo(
+    cfPersona VARCHAR(200) NOT NULL,
+    idRuolo VARCHAR(200) NOT NULL,
+    PRIMARY KEY (cfPersona,idRuolo)
+    FOREIGN KEY (cfPersona) REFERENCES persone(cf) ON DELETE CASCADE,
+    FOREIGN KEY (idRuolo) REFERENCES ruoli(id) ON DELETE CASCADE,
+);
+
+-- tabella delle scorte e delle soglie minime
+
+CREATE TABLE IF NOT EXISTS scorte(
+    idIngrediente INT NOT NULL,
+    quantita INT NOT NULL,
+    sogliaMinima INT NOT NULL,
+    PRIMARY KEY(idIngrediente),
+    FOREIGN KEY (idIngrediente) REFERENCES ingredienti(id) ON DELETE CASCADE,
+);
+
+
+

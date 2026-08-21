@@ -115,7 +115,7 @@ CREATE TABLE IF NOT EXISTS menudelgiorno(
     dataMenu DATE NOT NULL UNIQUE
 );
 
---tabella dei piatti nel menu
+-- tabella dei piatti nel menu
 CREATE TABLE IF NOT EXISTS piatti_menu(
     idMenu INT NOT NULL,
     idPiatto INT NOT NULL,

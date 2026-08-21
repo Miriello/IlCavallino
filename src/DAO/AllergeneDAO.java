@@ -3,6 +3,7 @@ package DAO;
 import Database.DatabaseManager;
 import Item.Allergene;
 
+import javax.xml.transform.Result;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -42,23 +43,42 @@ public class AllergeneDAO {
             throw new RuntimeException("Errore nel caricamento dell'allergene",e);
         }
     }
-    public void update(int id, Allergene a) {
-        String sql = "UPDATE allergeni" + "SET nome = ?, codiceAllergene = ? " + "WHERE id=?";
+    public void update(Allergene a) {
+        String sql = "UPDATE allergeni" + "SET nome = ?" + "WHERE codiceAllergene=?";
         try{
             Connection conn = DatabaseManager.getConnessione();
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setString(1,a.getNome());
             stmt.setInt(2, a.getCodiceAllergene());
-            stmt.setInt(3,id);
+            stmt.executeUpdate();
         }catch(SQLException e){
             throw new RuntimeException("Errore nell'aggiornamento dell'allergene",e);
         }
     }
     public void delete (Allergene a){
-        //TODO
+        String sql = "DELETE allergeni WHERE codiceAllergene=?";
+        try{
+            Connection conn = DatabaseManager.getConnessione();
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setInt(1,a.getCodiceAllergene());
+            stmt.executeUpdate();
+        }catch(SQLException e){
+            throw new RuntimeException("Errore nell'eliminazione dell'allergene");
+        }
     }
-    public void findById(int id){
-        //TODO
+    public Allergene findById(Allergene a){
+        String sql ="SELECT * FROM allergeni WHERE codiceAllergene = ?";
+        try{
+            Connection conn = DatabaseManager.getConnessione();
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, a.getCodiceAllergene());
+            ResultSet rs = stmt.executeQuery();
+            String nome = rs.getString("nome");
+            int codiceAllergene = rs.getInt("codiceAllergene");
+            return new Allergene(nome,codiceAllergene);
+        } catch (SQLException e) {
+            throw new RuntimeException("Errore nella selezione dell'allergene");
+        }
     }
 
     public static List<Allergene> findByIngrediente(int idIngrediente) {

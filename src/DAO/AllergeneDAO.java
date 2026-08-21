@@ -43,7 +43,7 @@ public class AllergeneDAO {
         }
     }
     public void update(Allergene a) {
-        String sql = "UPDATE allergeni " + "SET nome = ?" + "WHERE codiceAllergene=?";
+        String sql = "UPDATE allergeni " + "SET nome = ? " + "WHERE codiceAllergene=?";
         try{
             Connection conn = DatabaseManager.getConnessione();
             PreparedStatement stmt = conn.prepareStatement(sql);
@@ -85,12 +85,12 @@ public class AllergeneDAO {
 
     public static List<Allergene> findByIngrediente(int idIngrediente) {
         List<Allergene> allergeni = new ArrayList<>();
-        String sql = "SELECT * FROM allergeni a JOIN allergeni_ingrediente ia ON a.id = ia.codiceAllergene WHERE ia.idIngrediente = ?";
+        String sql = "SELECT * FROM allergeni a JOIN allergeni_ingrediente ia ON a.codiceAllergene = ia.codiceAllergene WHERE ia.idIngrediente = ?";
         try {
             Connection conn = DatabaseManager.getConnessione();
             PreparedStatement stmt = conn.prepareStatement(sql);
-            ResultSet rs = stmt.executeQuery();
             stmt.setInt(1, idIngrediente);
+            ResultSet rs = stmt.executeQuery();
             while(rs.next()) {
                 String nome = rs.getString("nome");
                 int codice = rs.getInt("codiceAllergene");

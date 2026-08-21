@@ -1,6 +1,5 @@
 package Utility;
 
-import Item.Articolo;
 import Item.Piatto;
 
 import java.util.List;
@@ -8,25 +7,23 @@ import java.util.ArrayList;
 
 public class Vendita {
 
-    private static long contatore=0;
-    private final long id;
-    private List<Articolo> prodotti;
+    private int id;
+    private List<Piatto> prodotti;
 
-    public Vendita(List<Piatto> prodotti) {
+    public Vendita(List<Piatto> prodotti, int id) {
         this.prodotti = new ArrayList<>(prodotti);
-        id = contatore+1;
-        contatore++;
+        this.id=id;
     }
 
     public double prezzoTotale() {
         double totale = 0;
-        for (Articolo a : prodotti) {
-            totale += a.getPrezzo();
+        for (Piatto p : prodotti) {
+            totale += p.getPrezzo();
         }
         return totale;
     }
 
-    public List<Articolo> getProdotti() {
+    public List<Piatto> getProdotti() {
         return new ArrayList<>(prodotti);
     }
 

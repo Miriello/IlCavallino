@@ -1,10 +1,8 @@
 package DAO;
 
 import Database.DatabaseManager;
-import Item.Articolo;
 import Item.Ingrediente;
 import Persone.Fornitore;
-import Utility.Data;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

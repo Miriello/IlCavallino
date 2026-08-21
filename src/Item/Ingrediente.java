@@ -1,31 +1,35 @@
 package Item;
 
-import Utility.Data;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Ingrediente implements Articolo {
 
     private String nome;
-    private Data scadenza;
+    private LocalDate scadenza;
     private List<Allergene> allergeni;
+    private int id;
 
-    public Ingrediente(String nome, Data scadenza, List<Allergene> allergeni) {
+    public Ingrediente(String nome, LocalDate scadenza, List<Allergene> allergeni, int id) {
         this.nome = nome;
         this.scadenza = scadenza;
         this.allergeni= new ArrayList<>(allergeni);
+        this.id=id;
     }
 
     public Ingrediente(Ingrediente i) {
         this.nome = i.nome;
         this.scadenza = i.scadenza;
         this.allergeni=new ArrayList<>(i.allergeni);
+        this.id=i.id;
     }
 
     public String getNome() {
         return nome;
     }
-    public Data getScadenza() {
+
+    public LocalDate getScadenza() {
         return scadenza;
     }
 

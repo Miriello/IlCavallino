@@ -2,7 +2,6 @@ package Item;
 
 import Persone.Fornitore;
 import Persone.Socio;
-import Utility.Data;
 
 public class AccordoFornitura {
     private Fornitore fornitore;

@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS persone(
     nome VARCHAR(200) NOT NULL,
     cognome VARCHAR(200) NOT NULL,
     idRuolo INT NOT NULL,
-    FOREIGN KEY(idRuolo) REFERENCES ruoli(idRuolo) ON DELETE CASCADE
+    FOREIGN KEY(idRuolo) REFERENCES ruoli(idRuolo)
 );
 
 -- tabella vendite
@@ -118,7 +118,7 @@ CREATE TABLE IF NOT EXISTS menudelgiorno(
 --tabella dei piatti nel menu
 CREATE TABLE IF NOT EXISTS piatti_menu(
     idMenu INT NOT NULL,
-    idPiatto INT NOT NULL
+    idPiatto INT NOT NULL,
     prezzo DECIMAL(10,2) NOT NULL,
     PRIMARY KEY (idMenu, idPiatto),
     FOREIGN KEY(idMenu) REFERENCES menudelgiorno(id) ON DELETE CASCADE,
@@ -132,8 +132,8 @@ CREATE TABLE IF NOT EXISTS accordiFornitura(
     dataAccordo DATE NOT NULL,
     durata INT NOT NULL,
     PRIMARY KEY (cfSocio, partitaIvaFornitore),
-    FOREIGN KEY(cfSocio) REFERENCES persone(cf) ON DELETE CASCADE,
-    FOREIGN KEY(partitaIvaFornitore) REFERENCES fornitori(partitaIva) ON DELETE CASCADE
+    FOREIGN KEY(cfSocio) REFERENCES persone(cf),
+    FOREIGN KEY(partitaIvaFornitore) REFERENCES fornitori(partitaIva)
 );
 
 

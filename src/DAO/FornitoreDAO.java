@@ -78,7 +78,7 @@ public class FornitoreDAO {
     }
 
     public void delete(Fornitore f){
-        String sql = "DELETE FROM fornitori WHERE partitaIvaFornitore = ? ";
+        String sql = "DELETE FROM fornitori WHERE partitaIva = ? ";
         try{
             Connection conn = DatabaseManager.getConnessione();
             PreparedStatement stmt = conn.prepareStatement(sql);

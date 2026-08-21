@@ -3,8 +3,6 @@ package DAO;
 import Database.DatabaseManager;
 import Item.Allergene;
 import Item.Ingrediente;
-
-import javax.imageio.plugins.jpeg.JPEGImageReadParam;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -21,13 +19,12 @@ public class IngredienteDAO {
             Connection conn = DatabaseManager.getConnessione();
             PreparedStatement stmt = conn.prepareStatement(sql);
             ResultSet rs = stmt.executeQuery();
-
             while (rs.next()){
                 String nome = rs.getString("nome");
                 LocalDate scadenza = rs.getDate("scadenza").toLocalDate();
                 int id = rs.getInt("id");
                 List<Allergene> allergeni = AllergeneDAO.findByIngrediente(id);
-                Ingrediente ingrediente = new Ingrediente (nome, scadenza, allergeni);
+                Ingrediente ingrediente = new Ingrediente (nome, scadenza, allergeni,id);
                 ingredienti.add(ingrediente);
             }
         } catch (SQLException e ){
@@ -37,14 +34,24 @@ public class IngredienteDAO {
     }
 
     public void insert(Ingrediente ingrediente){
-        String sql = "INSERT INTO ingredienti (nome,scadenza,allergeni) VALUES (?,?,?)";
+        String sql = "INSERT INTO ingredienti (nome,scadenza) VALUES (?,?)";
+        String sql1 = "INSERT INTO allergeni_ingrediente (codiceAllergene, idIngrediente) VALUES (?,?)";
         try{
             Connection conn = DatabaseManager.getConnessione();
-            PreparedStatement stmt = conn.prepareStatement(sql);
-            stmt.setString(1, ingrediente.getNome());
-            stmt.setDate(2, java.sql.Date.valueOf(ingrediente.getScadenza());
-
+            PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            stmt.setString(1,ingrediente.getNome());
+            stmt.setDate(2, java.sql.Date.valueOf(ingrediente.getScadenza()));
             stmt.executeUpdate();
+            ResultSet rs = stmt.getGeneratedKeys();
+            if(rs.next()){
+                int idIngrediente = rs.getInt(1);
+                for(Allergene a : ingrediente.getAllergeni()){
+                    PreparedStatement stmt1 = conn.prepareStatement(sql1);
+                    stmt1.setInt(1,a.getCodiceAllergene());
+                    stmt1.setInt(2,idIngrediente);
+                    stmt1.executeUpdate();
+                }
+            }
         } catch(SQLException e){
             throw new RuntimeException("Errore nel caricamento dell'ingrediente",e);
         }
@@ -87,7 +94,6 @@ public class IngredienteDAO {
             if(rs.next()){
                 String nome = rs.getString("nome");
                 LocalDate scadenza = rs.getDate("scadenza").toLocalDate();
-
             }
         } catch(SQLException e){
             throw new RuntimeException("Errore nella ricerca dell'ingrediente");

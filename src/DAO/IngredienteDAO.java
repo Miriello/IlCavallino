@@ -8,6 +8,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import static DAO.AllergeneDAO.findByIngrediente;
+
 public class IngredienteDAO {
 
     public List<Ingrediente> findAll (){
@@ -23,7 +25,7 @@ public class IngredienteDAO {
                 String nome = rs.getString("nome");
                 LocalDate scadenza = rs.getDate("scadenza").toLocalDate();
                 int id = rs.getInt("id");
-                List<Allergene> allergeni = AllergeneDAO.findByIngrediente(id);
+                List<Allergene> allergeni = findByIngrediente(id);
                 Ingrediente ingrediente = new Ingrediente (nome, scadenza, allergeni,id);
                 ingredienti.add(ingrediente);
             }
@@ -70,21 +72,32 @@ public class IngredienteDAO {
     }
 
     public void update(Ingrediente ingrediente){
-        String sql = "UPDATE ingredienti" + "SET nome = ?, scadenza = ?, allergeni=? " + "WHERE id=?";
+        String sql = "UPDATE ingredienti " + "SET nome = ?, scadenza = ? " + "WHERE id=?";
+        String sql1 = "DELETE FROM allergeni_ingrediente WHERE idIngrediente = ?";
+        String sql2 = "INSERT INTO allergeni_ingrediente (codiceAllergene, idIngrediente) VALUES (?,?)";
         try{
             Connection conn = DatabaseManager.getConnessione();
             PreparedStatement stmt = conn.prepareStatement(sql);
-            stmt.setInt(4,ingrediente.getId());
-            stmt.executeUpdate();
             stmt.setString(1,ingrediente.getNome());
-            stmt.setDate(2, java.sql.Date.valueOf(ingrediente.getScadenza()));
+            stmt.setDate(2,java.sql.Date.valueOf(ingrediente.getScadenza()));
+            stmt.setInt(3,ingrediente.getId());
+            stmt.executeUpdate();
+            PreparedStatement stmt1 = conn.prepareStatement(sql1);
+            stmt1.setInt(1,ingrediente.getId());
+            stmt1.executeUpdate();
+            for(Allergene a: ingrediente.getAllergeni()){
+                PreparedStatement stmt2=conn.prepareStatement(sql2);
+                stmt2.setInt(1,a.getCodiceAllergene());
+                stmt2.setInt(2,ingrediente.getId());
+                stmt2.executeUpdate();
+            }
         }catch(SQLException e){
             throw new RuntimeException("Errore nell'aggiornamento dell'ingrediente",e);
         }
     }
 
 
-    public void  findById(int id){
+    public Ingrediente findById(int id){
         String sql = "SELECT * FROM ingredienti WHERE id = ?";
         try{
             Connection conn = DatabaseManager.getConnessione();
@@ -94,10 +107,13 @@ public class IngredienteDAO {
             if(rs.next()){
                 String nome = rs.getString("nome");
                 LocalDate scadenza = rs.getDate("scadenza").toLocalDate();
+                List<Allergene> allergeni = findByIngrediente(id);
+                return new Ingrediente(nome,scadenza,allergeni,id);
             }
         } catch(SQLException e){
             throw new RuntimeException("Errore nella ricerca dell'ingrediente");
         }
+        return null;
     }
 
     public static List<Ingrediente> findByPiatto(int idPiatto){
@@ -112,7 +128,7 @@ public class IngredienteDAO {
                 String nome = rs.getString("nome");
                 LocalDate scadenza = rs.getDate("scadenza").toLocalDate();
                 int id = rs.getInt("id");
-                List<Allergene> allergeni = AllergeneDAO.findByIngrediente(id);
+                List<Allergene> allergeni = findByIngrediente(id);
                 ingredienti.add(new Ingrediente(nome, scadenza, allergeni,id));
             }
         } catch(SQLException e){
@@ -133,7 +149,7 @@ public class IngredienteDAO {
                 String nome = rs.getString("nome");
                 LocalDate scadenza = rs.getDate("scadenza").toLocalDate();
                 int id = rs.getInt("id");
-                List<Allergene> allergeni = AllergeneDAO.findByIngrediente(id);
+                List<Allergene> allergeni = findByIngrediente(id);
                 ingredienti.add(new Ingrediente(nome, scadenza, allergeni,id));
             }
         }catch(SQLException e) {

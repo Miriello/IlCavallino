@@ -3,12 +3,14 @@ package DAO;
 import Database.DatabaseManager;
 import Item.Ingrediente;
 import Persone.Fornitore;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static DAO.IngredienteDAO.findByFornitore;
+
 public class FornitoreDAO {
+
     public List<Fornitore> findAll(){
         List<Fornitore> fornitori = new ArrayList<>();
         String sql = "SELECT * FROM fornitori";
@@ -20,7 +22,7 @@ public class FornitoreDAO {
                 String pIva = rs.getString("partitaIva");
                 String rS = rs.getString("ragioneSociale");
                 String email = rs.getString("email");
-                List<Ingrediente> articoli = IngredienteDAO.findByFornitore(pIva);
+                List<Ingrediente> articoli = findByFornitore(pIva);
                 fornitori.add(new Fornitore(pIva, rS, email, articoli));
             }
         } catch (SQLException e) {
@@ -46,7 +48,7 @@ public class FornitoreDAO {
                 stmt1.executeUpdate();
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Errore nel caricamento del fornitore", e);
+            throw new RuntimeException("Errore nell'inserimento del fornitore", e);
         }
     }
 
@@ -62,14 +64,48 @@ public class FornitoreDAO {
             stmt.setString(2,f.getEmail());
             stmt.executeUpdate();
             PreparedStatement stmt1 = conn.prepareStatement(sql1);
+            stmt1.setString(1,f.getPartitaIva());
             stmt1.executeUpdate();
             for(Ingrediente i: f.getBeniForniti()){
                 PreparedStatement stmt2 = conn.prepareStatement(sql2);
                 stmt2.setInt(1,i.getId());
                 stmt2.setString(2,f.getPartitaIva());
+                stmt2.executeUpdate();
             }
         }catch(SQLException e){
             throw new RuntimeException("Errore nell'aggiornamento del fornitore",e);
         }
+    }
+
+    public void delete(Fornitore f){
+        String sql = "DELETE FROM fornitori WHERE partitaIvaFornitore = ? ";
+        try{
+            Connection conn = DatabaseManager.getConnessione();
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setString(1,f.getPartitaIva());
+            stmt.executeUpdate();
+        } catch(SQLException e){
+            throw new RuntimeException("Errore nell'eliminazione del fornitore",e);
+        }
+    }
+
+    public Fornitore findByPartitaIva(String pIva){
+        String sql = "SELECT * FROM fornitori WHERE partitaIva = ?";
+        try{
+            Connection conn = DatabaseManager.getConnessione();
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setString(1,pIva);
+            ResultSet rs = stmt.executeQuery();
+            if(rs.next()){
+                String ragioneSociale = rs.getString("ragioneSociale");
+                String email = rs.getString("email");
+                List<Ingrediente> articoli = findByFornitore(pIva);
+                return new Fornitore(pIva, ragioneSociale, email, articoli);
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Errore nella ricerca del fornitore",e);
+        }
+        return null;
     }
 }

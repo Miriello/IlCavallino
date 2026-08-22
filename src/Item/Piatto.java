@@ -27,6 +27,11 @@ public class Piatto implements Articolo {
     public String getNome() {
         return nome;
     }
+
+    public int getId(){
+        return id;
+    }
+
     public double getPrezzo() {
         return prezzo;
     }

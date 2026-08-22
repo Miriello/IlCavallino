@@ -26,7 +26,7 @@ public class PiattoDAO {
                 int prezzo = rs.getInt("prezzo");
                 int id = rs.getInt("id");
                 List<Ingrediente> ingredienti = IngredienteDAO.findByPiatto(id);
-                piatti.add(new Piatto(nome, prezzo, ingredienti));
+                piatti.add(new Piatto(nome, id, prezzo, ingredienti));
             }
         } catch (SQLException e) {
             throw new RuntimeException(" Errore durante il caricamento ", e);
@@ -35,15 +35,69 @@ public class PiattoDAO {
     }
 
     public void insert (Piatto p ){
-        String sql = "INSERT INTO piatti (nome, prezzo, ingredienti) VALUES (?,?,?)";
+        String sql = "INSERT INTO piatti (nome, prezzo) VALUES (?,?)";
+        String sql1= "INSERT INTO ingredienti_piatto (idIngrediente, idPiatto) VALUES (?,?)";
         try{
             Connection conn = DatabaseManager.getConnessione();
-            PreparedStatement stmt = conn.prepareStatement(sql);
+            PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             stmt.setString(1, p.getNome());
             stmt.setDouble(2, p.getPrezzo());
-            stmt.setArray(p.getIngredienti());
+            stmt.executeUpdate();
+            ResultSet rs = stmt.getGeneratedKeys();
+            if(rs.next()){
+                int idPiatto = rs.getInt(1);
+                for (Ingrediente i : p.getIngredienti()) {
+                    PreparedStatement stmt1 = conn.prepareStatement(sql1);
+                    stmt1.setInt(1, idPiatto);
+                    stmt1.setInt(2, i.getId());
+                    stmt1.executeUpdate();
+                }
+            }
         } catch (SQLException e) {
             throw new RuntimeException("Errore nel caricamento del piatto", e);
         }
+    }
+
+    public void update(Piatto p){
+
+    }
+
+    public void delete (Piatto p){
+        String sql = "DELETE FROM piatti WHERE id = ? ";
+        String sql1 = "DELETE FROM ingredienti_piatto (idIngrediente, idPiatto) VALUES (?,?)";
+        try {
+            Connection conn = DatabaseManager.getConnessione();
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setInt(1,p.getId());
+            stmt.executeUpdate();
+            for(Ingrediente i : p.getIngredienti()){
+                PreparedStatement stmt1 = conn.prepareStatement(sql1);
+                stmt1.setInt(1,i.getId());
+                stmt1.setInt(2,p.getId());
+                stmt1.executeUpdate();
+            }
+        } catch (SQLException e){
+            throw new RuntimeException("Errore nella cancellazione del piatto");
+        }
+
+    }
+
+    public Piatto findById(int idPiatto){
+        String sql = "SELECT * FROM piatti WHERE id = ?";
+        try {
+            Connection conn = DatabaseManager.getConnessione();
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setInt(1,idPiatto);
+            ResultSet rs = stmt.getResultSet();
+            if(rs.next()){
+                String nome = rs.getString("nome");
+                Double prezzo = rs.getDouble("prezzo");
+                List<Ingrediente> ingredienti = IngredienteDAO.findByPiatto(idPiatto);
+                return new Piatto(nome,idPiatto,prezzo,ingredienti);
+            }
+        } catch(SQLException e){
+            throw new RuntimeException("Errore nel caricamento del piatto");
+        }
+        return null;
     }
 }

@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS piatti (
 
 -- tabella ruoli
 CREATE TABLE IF NOT EXISTS ruoli(
-    idRuolo INT AUTO_INCREMENT PRIMARY KEY,
+    id INT AUTO_INCREMENT PRIMARY KEY,
     nomeRuolo VARCHAR(200) NOT NULL
 );
 
@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS persone(
     nome VARCHAR(200) NOT NULL,
     cognome VARCHAR(200) NOT NULL,
     idRuolo INT NOT NULL,
-    FOREIGN KEY(idRuolo) REFERENCES ruoli(idRuolo)
+    FOREIGN KEY(idRuolo) REFERENCES ruoli(id)
 );
 
 -- tabella vendite

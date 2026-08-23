@@ -124,7 +124,7 @@ public class PiattoDAO {
             ResultSet rs = stmt.executeQuery();
             while(rs.next()){
                 String nome = rs.getString("nome");
-                int idPiatto = rs.getInt("idPiatto");
+                int idPiatto = rs.getInt("id");
                 Double prezzo = rs.getDouble("prezzo");
                 List<Ingrediente> ingredienti = findByPiatto(idPiatto);
                 risultato.add(new Piatto(nome,idPiatto,prezzo,ingredienti));

@@ -1,23 +1,20 @@
 package Utility;
 
 import Item.Piatto;
-import Persone.Persona;
 
-import java.util.List;
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Vendita {
 
     private int id;
     private String cfoperatore;
-    private List<Piatto> prodotti;
-    private int quantita;
+    private Map<Piatto, Integer> prodotti;
 
-    public Vendita(int id ,String cfoperatore, List<Piatto> prodotti,int quantita) {
+    public Vendita(int id ,String cfoperatore, Map<Piatto> prodotti) {
         this.id=id;
         this.cfoperatore=cfoperatore;
-        this.prodotti = new ArrayList<>(prodotti);
-        this.quantita=quantita;
+        this.prodotti = new HashMap<>(prodotti);
     }
 
     public double prezzoTotale() {
@@ -40,7 +37,4 @@ public class Vendita {
         return cfoperatore;
     }
 
-    public int getQuantita(){
-        return quantita;
-    }
 }

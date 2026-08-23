@@ -6,7 +6,6 @@ import Utility.Vendita;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -15,7 +14,7 @@ import static DAO.PiattoDAO.findByVendita;
 public class VenditaDAO {
 
     public List<Vendita> findAll(){
-        List<Vendita> vendite = new ArrayList();
+        List<Vendita> vendite = new ArrayList<>();
         String sql = "SELECT * FROM vendite";
         try{
             Connection conn = DatabaseManager.getConnessione();

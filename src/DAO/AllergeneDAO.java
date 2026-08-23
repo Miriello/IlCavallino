@@ -43,7 +43,7 @@ public class AllergeneDAO {
         }
     }
     public void update(Allergene a) {
-        String sql = "UPDATE allergeni " + "SET nome = ? " + "WHERE codiceAllergene=?";
+        String sql = "UPDATE allergeni SET nome = ? WHERE codiceAllergene=?";
         try{
             Connection conn = DatabaseManager.getConnessione();
             PreparedStatement stmt = conn.prepareStatement(sql);

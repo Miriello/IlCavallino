@@ -1,13 +1,14 @@
 package DAO;
 
 import Database.DatabaseManager;
-import Item.Allergene;
 import Item.Ingrediente;
 import Item.Piatto;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import static DAO.IngredienteDAO.findByPiatto;
 
 public class PiattoDAO {
 
@@ -25,7 +26,7 @@ public class PiattoDAO {
                 String nome = rs.getString("nome");
                 int prezzo = rs.getInt("prezzo");
                 int id = rs.getInt("id");
-                List<Ingrediente> ingredienti = IngredienteDAO.findByPiatto(id);
+                List<Ingrediente> ingredienti = findByPiatto(id);
                 piatti.add(new Piatto(nome, id, prezzo, ingredienti));
             }
         } catch (SQLException e) {
@@ -48,8 +49,8 @@ public class PiattoDAO {
                 int idPiatto = rs.getInt(1);
                 for (Ingrediente i : p.getIngredienti()) {
                     PreparedStatement stmt1 = conn.prepareStatement(sql1);
-                    stmt1.setInt(1, idPiatto);
-                    stmt1.setInt(2, i.getId());
+                    stmt1.setInt(1, i.getId());
+                    stmt1.setInt(2, idPiatto);
                     stmt1.executeUpdate();
                 }
             }
@@ -59,27 +60,40 @@ public class PiattoDAO {
     }
 
     public void update(Piatto p){
-
+        String sql = "UPDATE piatti SET nome = ?, prezzo = ? WHERE id= ?";
+        String sql1 = "DELETE from ingredienti_piatto WHERE idPiatto = ?";
+        String sql2 = "INSERT INTO ingredienti_piatto (idIngrediente, idPiatto) VALUES (?,?)";
+        try{
+            Connection conn = DatabaseManager.getConnessione();
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setString(1,p.getNome());
+            stmt.setDouble(2,p.getPrezzo());
+            stmt.setInt(3,p.getId());
+            stmt.executeUpdate();
+            PreparedStatement stmt1 = conn.prepareStatement(sql1);
+            stmt1.setInt(1,p.getId());
+            stmt1.executeUpdate();
+            for(Ingrediente i : p.getIngredienti()){
+                PreparedStatement stmt2 = conn.prepareStatement(sql2);
+                stmt2.setInt(1,i.getId());
+                stmt2.setInt(2,p.getId());
+                stmt2.executeUpdate();
+            }
+        }catch(SQLException e){
+            throw new RuntimeException("Errore nell'aggiornamento del piatto");
+        }
     }
 
     public void delete (Piatto p){
         String sql = "DELETE FROM piatti WHERE id = ? ";
-        String sql1 = "DELETE FROM ingredienti_piatto (idIngrediente, idPiatto) VALUES (?,?)";
         try {
             Connection conn = DatabaseManager.getConnessione();
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setInt(1,p.getId());
             stmt.executeUpdate();
-            for(Ingrediente i : p.getIngredienti()){
-                PreparedStatement stmt1 = conn.prepareStatement(sql1);
-                stmt1.setInt(1,i.getId());
-                stmt1.setInt(2,p.getId());
-                stmt1.executeUpdate();
-            }
         } catch (SQLException e){
             throw new RuntimeException("Errore nella cancellazione del piatto");
         }
-
     }
 
     public Piatto findById(int idPiatto){
@@ -88,16 +102,36 @@ public class PiattoDAO {
             Connection conn = DatabaseManager.getConnessione();
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setInt(1,idPiatto);
-            ResultSet rs = stmt.getResultSet();
+            ResultSet rs = stmt.executeQuery();
             if(rs.next()){
                 String nome = rs.getString("nome");
                 Double prezzo = rs.getDouble("prezzo");
-                List<Ingrediente> ingredienti = IngredienteDAO.findByPiatto(idPiatto);
+                List<Ingrediente> ingredienti = findByPiatto(idPiatto);
                 return new Piatto(nome,idPiatto,prezzo,ingredienti);
             }
         } catch(SQLException e){
             throw new RuntimeException("Errore nel caricamento del piatto");
         }
         return null;
+    }
+    public static List<Piatto> findByVendita(int id) {
+        String sql = "SELECT * FROM vendita_piatto WHERE idVendita = ?";
+        List<Piatto> risultato = new ArrayList<>();
+        try{
+            Connection conn = DatabaseManager.getConnessione();
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setInt(1,id);
+            ResultSet rs = stmt.executeQuery();
+            while(rs.next()){
+                String nome = rs.getString("nome");
+                int idPiatto = rs.getInt("idPiatto");
+                Double prezzo = rs.getDouble("prezzo");
+                List<Ingrediente> ingredienti = findByPiatto(id);
+                risultato.add(new Piatto(nome,idPiatto,prezzo,ingredienti));
+            }
+            return risultato;
+        } catch(SQLException e){
+            throw new RuntimeException("Errore nella ricarca dei Piatti",e);
+        }
     }
 }

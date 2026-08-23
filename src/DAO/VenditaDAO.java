@@ -6,6 +6,7 @@ import Utility.Vendita;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -38,41 +39,56 @@ public class VenditaDAO {
         String sql1 = "INSERT INTO vendita_piatto (idVendita, idPiatto, quantita) VALUES (?,?,?)";
         try{
             Connection conn = DatabaseManager.getConnessione();
-            PreparedStatement stmt = conn.prepareStatement(sql);
+            PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             stmt.setString(1, v.getOperatore());
             stmt.executeUpdate();
-            for (Piatto p : v.getProdotti()){
-                PreparedStatement stmt1 = conn.prepareStatement(sql1);
-                stmt1.setInt(1,v.getId());
-                stmt1.setInt(2,p.getId());
-                stmt1.executeUpdate();
+            ResultSet rs = stmt.getGeneratedKeys();
+            if(rs.next()) {
+                int idVendita = rs.getInt(1);
+                for (Map.Entry<Piatto, Integer> entry :
+                        v.getProdotti().entrySet()) {
+                    PreparedStatement stmt1 = conn.prepareStatement(sql1);
+                    stmt1.setInt(1, idVendita);
+                    stmt1.setInt(2, entry.getKey().getId());
+                    stmt1.setInt(3, entry.getValue());
+                    stmt1.executeUpdate();
+                }
             }
         } catch(SQLException e ){
             throw new RuntimeException("Errore nel caricamento della vendita",e);
         }
     }
 
-    public void update (Vendita v){
-        String sql = "UPDATE FROM vendite WHERE id = ?";
-        String sql1 = "DELETE FROM vendita_piatto WHERE idPiatto = ?";
-        String sql2 = "INSERT INTO vendita_piatto (id";
-        try {
+
+    public void delete(Vendita v){
+        String sql = "DELETE FROM vendite WHERE id=?";
+        try{
             Connection conn = DatabaseManager.getConnessione();
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setInt(1,v.getId());
             stmt.executeUpdate();
-        } catch (SQLException e ){
-            throw new RuntimeException("Errore nell'aggiornamento della vendita");
+        } catch(SQLException e){
+            throw new RuntimeException("Errore nell'eliminazione della vendita",e);
         }
-    }
-
-    public void delete(Vendita v){
-
     }
 
 
 
     public Vendita findById(int idVendita){
+        String sql = "SELECT * FROM vendite WHERE id = ?";
+        try{
+            Connection conn = DatabaseManager.getConnessione();
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setInt(1,idVendita);
+            ResultSet rs = stmt.executeQuery();
+            while(rs.next()){
+                String cfoperatore = rs.getString("cfoperatore");
+                Map<Piatto, Integer> prodotti = findByVendita(idVendita);
+                return new Vendita(idVendita,cfoperatore,prodotti);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Errore nella ricerca della vendita",e);
+        }
         return null;
     }
 }

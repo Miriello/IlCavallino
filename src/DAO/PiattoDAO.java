@@ -118,7 +118,7 @@ public class PiattoDAO {
         return null;
     }
     public static Map<Piatto,Integer> findByVendita(int idVendita) {
-        String sql = "SELECT p.nome, p.id, p.prezzo vp.quantita FROM piatti p JOIN vendita_piatto vp ON p.id=vp.idPiatto WHERE idVendita=?";
+        String sql = "SELECT p.nome, p.id, p.prezzo, vp.quantita FROM piatti p JOIN vendita_piatto vp ON p.id=vp.idPiatto WHERE idVendita=?";
         Map<Piatto, Integer> risultato = new HashMap<>();
         try{
             Connection conn = DatabaseManager.getConnessione();

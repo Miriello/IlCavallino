@@ -2,6 +2,8 @@ package DAO;
 
 import Database.DatabaseManager;
 import Persone.Persona;
+import Utility.Ruolo;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,18 +13,20 @@ import java.util.List;
 
 public class PersonaDAO {
     public List<Persona> findAll() {
-        String sql = "SELECT * FROM persone";
+        String sql = "SELECT * FROM persone p JOIN ruoli r on p.idRuolo=r.id";
         List<Persona> persone = new ArrayList<>();
         try {
             Connection conn = DatabaseManager.getConnessione();
             PreparedStatement stmt = conn.prepareStatement(sql);
             ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
+            while (rs.next()) {
                 String cf = rs.getString("cf");
                 String nome = rs.getString("nome");
                 String cognome = rs.getString("cognome");
                 int idRuolo = rs.getInt("idRuolo");
-                persone.add(new Persona(nome,cognome,cf));
+                String nomeRuolo = rs.getString("nomeRuolo");
+                Ruolo r = new Ruolo (idRuolo,nomeRuolo);
+                persone.add(new Persona(nome,cognome,cf,r));
             }
             return persone;
         } catch (SQLException e) {
@@ -37,7 +41,7 @@ public class PersonaDAO {
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setString(1,p.getCodiceFiscale());
             stmt.setString(2,p.getNome());
-            stmt.setString(3,p.getNome());
+            stmt.setString(3,p.getCognome());
             stmt.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Errone nell'inserimento della persona", e);

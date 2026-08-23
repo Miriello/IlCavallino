@@ -10,9 +10,10 @@ public class Vendita {
     private int id;
     private List<Piatto> prodotti;
 
-    public Vendita(List<Piatto> prodotti, int id) {
-        this.prodotti = new ArrayList<>(prodotti);
+    public Vendita(int id ,List<Piatto> prodotti) {
         this.id=id;
+        this.prodotti = new ArrayList<>(prodotti);
+
     }
 
     public double prezzoTotale() {

@@ -34,4 +34,7 @@ public class Persona {
         return codiceFiscale;
     }
 
+    public Ruolo getRuolo(){
+        return ruolo;
+    }
 }

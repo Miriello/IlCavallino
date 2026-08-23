@@ -1,21 +1,21 @@
 package Utility;
 
 public class Ruolo{
-    private int idRuolo;
+    private int id;
     private String nomeRuolo;
 
     public Ruolo (int idRuolo, String nomeRuolo){
-        this.idRuolo=idRuolo;
+        this.id=idRuolo;
         this.nomeRuolo=nomeRuolo;
     }
 
     public Ruolo(Ruolo r){
-        this.idRuolo=r.idRuolo;
+        this.id=r.id;
         this.nomeRuolo=r.nomeRuolo;
     }
 
     public int getIdRuolo(){
-        return idRuolo;
+        return id;
     }
 
     public String getNomeRuolo(){

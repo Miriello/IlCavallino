@@ -35,13 +35,14 @@ public class PersonaDAO {
     }
 
     public void insert(Persona p){
-        String sql = "INSERT INTO persone (cf, nome, cognome) VALUES (?,?,?)";
+        String sql = "INSERT INTO persone (cf, nome, cognome,idRuolo) VALUES (?,?,?,?)";
         try{
             Connection conn = DatabaseManager.getConnessione();
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setString(1,p.getCodiceFiscale());
             stmt.setString(2,p.getNome());
             stmt.setString(3,p.getCognome());
+            stmt.setInt(4,p.getRuolo().getIdRuolo());
             stmt.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Errone nell'inserimento della persona", e);
@@ -49,13 +50,14 @@ public class PersonaDAO {
     }
 
     public void update(Persona p){
-        String sql ="UPDATE persone SET nome = ?, cognome = ? WHERE cf=?";
+        String sql ="UPDATE persone SET nome = ?, cognome = ? idRuolo=? WHERE cf=?";
         try{
             Connection conn = DatabaseManager.getConnessione();
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setString(1,p.getNome());
             stmt.setString(2,p.getCognome());
-            stmt.setString(3,p.getCodiceFiscale());
+            stmt.setInt(3,p.getRuolo().getIdRuolo());
+            stmt.setString(4,p.getCodiceFiscale());
             stmt.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Errore nell'aggiornamento della persona",e);
@@ -75,7 +77,7 @@ public class PersonaDAO {
     }
 
     public Persona findByCf(String cf){
-        String sql = "SELECT * FROM persone WHERE cf =?";
+        String sql = "SELECT * FROM persone p JOIN ruoli r ON p.idRuolo = r.id WHERE cf =?";
         try{
             Connection conn = DatabaseManager.getConnessione();
             PreparedStatement stmt = conn.prepareStatement(sql);
@@ -84,7 +86,9 @@ public class PersonaDAO {
             if(rs.next()){
                 String nome = rs.getString("nome");
                 String cognome = rs.getString("cognome");
-                return new Persona(nome,cognome,cf);
+                int idRuolo = rs.getInt("idRuolo");
+                String nomeRuolo = rs.getString("nomeRuolo");
+                return new Persona(nome,cognome,cf, new Ruolo(idRuolo,nomeRuolo));
             }
         } catch (SQLException e) {
             throw new RuntimeException("Errore nella ricerca della persona",e);

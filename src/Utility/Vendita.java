@@ -1,6 +1,7 @@
 package Utility;
 
 import Item.Piatto;
+import Persone.Persona;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -8,12 +9,15 @@ import java.util.ArrayList;
 public class Vendita {
 
     private int id;
+    private String cfoperatore;
     private List<Piatto> prodotti;
+    private int quantita;
 
-    public Vendita(int id ,List<Piatto> prodotti) {
+    public Vendita(int id ,String cfoperatore, List<Piatto> prodotti,int quantita) {
         this.id=id;
+        this.cfoperatore=cfoperatore;
         this.prodotti = new ArrayList<>(prodotti);
-
+        this.quantita=quantita;
     }
 
     public double prezzoTotale() {
@@ -28,9 +32,15 @@ public class Vendita {
         return new ArrayList<>(prodotti);
     }
 
-    public long getId(){
+    public int getId(){
         return id;
     }
 
+    public String getOperatore(){
+        return cfoperatore;
+    }
 
+    public int getQuantita(){
+        return quantita;
+    }
 }

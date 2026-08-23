@@ -14,7 +14,7 @@ public class Ruolo{
         this.nomeRuolo=r.nomeRuolo;
     }
 
-    public int getIdRuolo(){
+    public int getId(){
         return id;
     }
 

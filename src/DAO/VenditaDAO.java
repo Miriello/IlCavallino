@@ -24,7 +24,7 @@ public class VenditaDAO {
                 String cfoperatore =rs.getString("cfOperatore");
                 int quantita = rs.getInt("quantita");
                 List<Piatto> piatti = findByVendita(id);
-                vendite.add(new Vendita(id, cfoperatore, piatti, quantita));
+                vendite.add(new Vendita(id, cfoperatore, piatti));
             }
             return vendite;
         }catch (SQLException e ){
@@ -45,7 +45,6 @@ public class VenditaDAO {
                 PreparedStatement stmt1 = conn.prepareStatement(sql1);
                 stmt1.setInt(1,v.getId());
                 stmt1.setInt(2,p.getId());
-                stmt1.setInt(3,v.getQuantita());
                 stmt1.executeUpdate();
             }
         } catch(SQLException e ){

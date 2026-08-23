@@ -42,7 +42,7 @@ public class PersonaDAO {
             stmt.setString(1,p.getCodiceFiscale());
             stmt.setString(2,p.getNome());
             stmt.setString(3,p.getCognome());
-            stmt.setInt(4,p.getRuolo().getIdRuolo());
+            stmt.setInt(4,p.getRuolo().getId());
             stmt.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Errone nell'inserimento della persona", e);
@@ -50,13 +50,13 @@ public class PersonaDAO {
     }
 
     public void update(Persona p){
-        String sql ="UPDATE persone SET nome = ?, cognome = ? idRuolo=? WHERE cf=?";
+        String sql ="UPDATE persone SET nome = ?, cognome = ? , idRuolo=? WHERE cf=?";
         try{
             Connection conn = DatabaseManager.getConnessione();
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setString(1,p.getNome());
             stmt.setString(2,p.getCognome());
-            stmt.setInt(3,p.getRuolo().getIdRuolo());
+            stmt.setInt(3,p.getRuolo().getId());
             stmt.setString(4,p.getCodiceFiscale());
             stmt.executeUpdate();
         } catch (SQLException e) {

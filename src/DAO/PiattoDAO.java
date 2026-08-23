@@ -114,19 +114,19 @@ public class PiattoDAO {
         }
         return null;
     }
-    public static List<Piatto> findByVendita(int id) {
-        String sql = "SELECT * FROM vendita_piatto WHERE idVendita = ?";
+    public static List<Piatto> findByVendita(int idVendita) {
+        String sql = "SELECT p.nome, p.id, p.prezzo FROM piatti p JOIN vendita_piatto vp ON p.id=vp.idPiatto WHERE idVendita=?";
         List<Piatto> risultato = new ArrayList<>();
         try{
             Connection conn = DatabaseManager.getConnessione();
             PreparedStatement stmt = conn.prepareStatement(sql);
-            stmt.setInt(1,id);
+            stmt.setInt(1,idVendita);
             ResultSet rs = stmt.executeQuery();
             while(rs.next()){
                 String nome = rs.getString("nome");
                 int idPiatto = rs.getInt("idPiatto");
                 Double prezzo = rs.getDouble("prezzo");
-                List<Ingrediente> ingredienti = findByPiatto(id);
+                List<Ingrediente> ingredienti = findByPiatto(idPiatto);
                 risultato.add(new Piatto(nome,idPiatto,prezzo,ingredienti));
             }
             return risultato;

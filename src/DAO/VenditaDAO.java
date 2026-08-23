@@ -32,12 +32,37 @@ public class VenditaDAO {
 
 
     public void insert (Vendita v ){
-        String sql = "INSERT INTO vendite () VALUES (?,?,?)";
+        String sql = "INSERT INTO vendite (idVendita, idPiatto) VALUES (?,?)";
+
         try{
             Connection conn = DatabaseManager.getConnessione();
             PreparedStatement stmt = conn.prepareStatement(sql);
         } catch(SQLException e ){
             throw new RuntimeException("Errore nel caricamento della vendita",e);
         }
+    }
+
+    public void update (Vendita v){
+        String sql = "UPDATE FROM vendite WHERE id = ?";
+        String sql1 = "DELETE FROM vendita_piatto WHERE idPiatto = ?";
+        String sql2 = "INSERT INTO vendita_piatto (id"
+        try {
+            Connection conn = DatabaseManager.getConnessione();
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setInt(1,v.getId());
+            stmt.executeUpdate();
+        } catch (SQLException e ){
+            throw new RuntimeException("Errore nell'aggiornamento della vendita");
+        }
+    }
+
+    public void delete(Vendita v){
+
+    }
+
+
+
+    public Vendita findById(int idVendita){
+        return null;
     }
 }

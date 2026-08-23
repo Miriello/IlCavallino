@@ -4,9 +4,12 @@ import Database.DatabaseManager;
 import Item.Ingrediente;
 import Item.Piatto;
 
+import javax.swing.event.InternalFrameEvent;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static DAO.IngredienteDAO.findByPiatto;
 
@@ -114,9 +117,9 @@ public class PiattoDAO {
         }
         return null;
     }
-    public static List<Piatto> findByVendita(int idVendita) {
-        String sql = "SELECT p.nome, p.id, p.prezzo FROM piatti p JOIN vendita_piatto vp ON p.id=vp.idPiatto WHERE idVendita=?";
-        List<Piatto> risultato = new ArrayList<>();
+    public static Map<Piatto,Integer> findByVendita(int idVendita) {
+        String sql = "SELECT p.nome, p.id, p.prezzo vp.quantita FROM piatti p JOIN vendita_piatto vp ON p.id=vp.idPiatto WHERE idVendita=?";
+        Map<Piatto, Integer> risultato = new HashMap<>();
         try{
             Connection conn = DatabaseManager.getConnessione();
             PreparedStatement stmt = conn.prepareStatement(sql);
@@ -126,8 +129,9 @@ public class PiattoDAO {
                 String nome = rs.getString("nome");
                 int idPiatto = rs.getInt("id");
                 Double prezzo = rs.getDouble("prezzo");
+                int quantita = rs.getInt("quantita");
                 List<Ingrediente> ingredienti = findByPiatto(idPiatto);
-                risultato.add(new Piatto(nome,idPiatto,prezzo,ingredienti));
+                risultato.put((new Piatto(nome,idPiatto,prezzo,ingredienti)),quantita);
             }
             return risultato;
         } catch(SQLException e){

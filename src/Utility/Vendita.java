@@ -2,7 +2,9 @@ package Utility;
 
 import Item.Piatto;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Vendita {
@@ -11,7 +13,7 @@ public class Vendita {
     private String cfoperatore;
     private Map<Piatto, Integer> prodotti;
 
-    public Vendita(int id ,String cfoperatore, Map<Piatto> prodotti) {
+    public Vendita(int id ,String cfoperatore, Map<Piatto,Integer> prodotti) {
         this.id=id;
         this.cfoperatore=cfoperatore;
         this.prodotti = new HashMap<>(prodotti);
@@ -19,14 +21,14 @@ public class Vendita {
 
     public double prezzoTotale() {
         double totale = 0;
-        for (Piatto p : prodotti) {
-            totale += p.getPrezzo();
+        for (Map.Entry<Piatto,Integer> entry: prodotti.entrySet()){
+            totale+= entry.getKey().getPrezzo()*entry.getValue();
         }
         return totale;
     }
 
-    public List<Piatto> getProdotti() {
-        return new ArrayList<>(prodotti);
+    public Map<Piatto,Integer> getProdotti() {
+        return new HashMap<>(prodotti);
     }
 
     public int getId(){

@@ -7,13 +7,14 @@ import Utility.Vendita;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static DAO.PiattoDAO.findByVendita;
 
 public class VenditaDAO {
 
     public List<Vendita> findAll(){
-        List<Vendita> vendite = new ArrayList<>();
+        List<Vendita> vendite = new ArrayList();
         String sql = "SELECT * FROM vendite";
         try{
             Connection conn = DatabaseManager.getConnessione();
@@ -22,9 +23,8 @@ public class VenditaDAO {
             while(rs.next()){
                 int id = rs.getInt("id");
                 String cfoperatore =rs.getString("cfOperatore");
-                int quantita = rs.getInt("quantita");
-                List<Piatto> piatti = findByVendita(id);
-                vendite.add(new Vendita(id, cfoperatore, piatti));
+                Map<Piatto,Integer> prodotti = findByVendita(id);
+                vendite.add(new Vendita(id, cfoperatore, prodotti));
             }
             return vendite;
         }catch (SQLException e ){

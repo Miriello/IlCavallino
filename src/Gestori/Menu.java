@@ -2,10 +2,17 @@ package Gestori;
 
 import Item.Piatto;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-public class GestioneMenu {
+public class Menu {
     private List<Piatto> menu = new ArrayList<>();
+    private Date data;
+
+    public Menu(List<Piatto> piatti, Date data){
+        this.menu=piatti;
+        this.data=data;
+    }
 
     public void aggiungiProdotto(Piatto p) {
         menu.add(p);

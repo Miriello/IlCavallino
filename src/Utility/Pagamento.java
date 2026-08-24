@@ -9,7 +9,7 @@ public class Pagamento {
         this.metodoPagamento=metodoPagamento;
     }
 
-    public int getidVendita(){
+    public int getIdVendita(){
         return idVendita;
     }
 

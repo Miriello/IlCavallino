@@ -50,8 +50,8 @@ CREATE TABLE IF NOT EXISTS account(
     username VARCHAR(32) NOT NULL PRIMARY KEY,
     password VARCHAR(32) NOT NULL,
     cfOperatore VARCHAR(16) NOT NULL UNIQUE,
-    FOREIGN KEY (cfOperatore) REFERENCE persone(cf)
-)
+    FOREIGN KEY (cfOperatore) REFERENCES persone(cf)
+);
 
 -- tabella vendite
 CREATE TABLE IF NOT EXISTS vendite(

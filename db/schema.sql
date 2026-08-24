@@ -61,6 +61,13 @@ CREATE TABLE IF NOT EXISTS vendite(
     FOREIGN KEY (cfOperatore) REFERENCES persone(cf)
     );
 
+-- tabella pagamenti
+CREATE TABLE IF NOT EXISTS pagamenti(
+    idVendita INT PRIMARY KEY,
+    metodoPagamento VARCHAR(50) NOT NULL,
+    FOREIGN KEY idVendita REFERENCES vendita(id)
+);
+
 -- tabella degli ingredienti forniti da fornitore
 CREATE TABLE IF NOT EXISTS ingredienti_fornitore(
     partitaIvaFornitore VARCHAR(11) NOT NULL,

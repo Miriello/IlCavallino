@@ -49,7 +49,8 @@ public class DatabaseManager {
         return null;
     }
 
-    public static Connection getConnessione() { return connessione; }
+    public static Connection getConnessione() {
+        return connessione; }
 
     public static void chiudi() {
         try {

@@ -1,15 +1,15 @@
 package Gestori;
 
 import Item.Piatto;
-
+import java.time.LocalDate;
 import java.util.*;
 
 public class Menu {
     private int id;
     private Map<Piatto,Double> piatti = new HashMap<>();
-    private Date data;
+    private LocalDate data;
 
-    public Menu(int id,Map<Piatto,Double> piatti, Date data){
+    public Menu(int id,Map<Piatto,Double> piatti, LocalDate data){
         this.id=id;
         this.piatti=new HashMap<>(piatti);
         this.data=data;
@@ -35,7 +35,7 @@ public class Menu {
         return id;
     }
 
-    public Date getData(){
+    public LocalDate getData(){
         return data;
     }
 

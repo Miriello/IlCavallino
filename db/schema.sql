@@ -27,7 +27,6 @@ CREATE TABLE IF NOT EXISTS allergeni (
 CREATE TABLE IF NOT EXISTS piatti (
     id       INT AUTO_INCREMENT PRIMARY KEY,
     nome     VARCHAR(200)   NOT NULL,
-    prezzo   DECIMAL(10,2)  NOT NULL
 );
 
 -- tabella ruoli
@@ -61,12 +60,6 @@ CREATE TABLE IF NOT EXISTS vendite(
     FOREIGN KEY (cfOperatore) REFERENCES persone(cf)
     );
 
--- tabella pagamenti
-CREATE TABLE IF NOT EXISTS pagamenti(
-    idVendita INT PRIMARY KEY,
-    metodoPagamento VARCHAR(50) NOT NULL,
-    FOREIGN KEY (idVendita) REFERENCES vendite(id)
-);
 
 -- tabella degli ingredienti forniti da fornitore
 CREATE TABLE IF NOT EXISTS ingredienti_fornitore(
@@ -127,20 +120,22 @@ CREATE TABLE IF NOT EXISTS pagamenti(
     FOREIGN KEY(idVendita) REFERENCES vendite(id) ON DELETE CASCADE
 );
 
--- tabella piatti_menu
-CREATE TABLE IF NOT EXISTS piatti_menu(
-    idMenu INT AUTO_INCREMENT PRIMARY KEY,
-    idPiatto INT NOT NULL,
-    prezzoVendita DECIMAL(10,2) NOT NULL,
-    FOREIGN KEY (idMenu) REFERENCE menu(id),
-    FOREIGN KEY(idPiatto) REFERENCES piatti(id)
-);
-
 -- tabella menu
 CREATE TABLE IF NOT EXISTS menu(
     id INT AUTO_INCREMENT PRIMARY KEY,
     dataMenu DATE NOT NULL UNIQUE
 );
+
+-- tabella piatti_menu
+CREATE TABLE IF NOT EXISTS piatti_menu(
+    idMenu INT PRIMARY KEY,
+    idPiatto INT NOT NULL,
+    prezzoVendita DECIMAL(10,2) NOT NULL,
+    FOREIGN KEY (idMenu) REFERENCES menu(id),
+    FOREIGN KEY(idPiatto) REFERENCES piatti(id)
+);
+
+
 
 
 

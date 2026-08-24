@@ -72,6 +72,7 @@ CREATE TABLE IF NOT EXISTS pagamenti(
 CREATE TABLE IF NOT EXISTS ingredienti_fornitore(
     partitaIvaFornitore VARCHAR(11) NOT NULL,
     idIngrediente INT NOT NULL,
+    prezzoUnitario DECIMAL (10,2) NOT NULL,
     PRIMARY KEY (partitaIvaFornitore,idIngrediente),
     FOREIGN KEY(partitaIvaFornitore) REFERENCES fornitori(partitaIva)ON DELETE CASCADE,
     FOREIGN KEY (idIngrediente) REFERENCES ingredienti(id) ON DELETE CASCADE
@@ -140,16 +141,6 @@ CREATE TABLE IF NOT EXISTS piatti_menu(
     FOREIGN KEY(idPiatto) REFERENCES piatti(id) ON DELETE CASCADE
 );
 
--- tabella degli accordi di fornitura
-CREATE TABLE IF NOT EXISTS accordiFornitura(
-    cfSocio VARCHAR(16) NOT NULL,
-    partitaIvaFornitore VARCHAR(11) NOT NULL,
-    dataAccordo DATE NOT NULL,
-    durata INT NOT NULL,
-    PRIMARY KEY (cfSocio, partitaIvaFornitore),
-    FOREIGN KEY(cfSocio) REFERENCES persone(cf),
-    FOREIGN KEY(partitaIvaFornitore) REFERENCES fornitori(partitaIva)
-);
 
 
 

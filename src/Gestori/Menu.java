@@ -6,10 +6,12 @@ import java.util.Date;
 import java.util.List;
 
 public class Menu {
+    private int id;
     private List<Piatto> menu = new ArrayList<>();
     private Date data;
 
-    public Menu(List<Piatto> piatti, Date data){
+    public Menu(int id,List<Piatto> piatti, Date data){
+        this.id=id;
         this.menu=piatti;
         this.data=data;
     }
@@ -43,6 +45,14 @@ public class Menu {
 
     public List<Piatto> getProdotti() {
         return new ArrayList<>(menu);
+    }
+
+    public int getId(){
+        return id;
+    }
+
+    public Date getData(){
+        return data;
     }
 
 }

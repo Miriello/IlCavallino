@@ -3,8 +3,6 @@ package DAO;
 import Database.DatabaseManager;
 import Gestori.Menu;
 import Item.Piatto;
-
-import javax.print.attribute.standard.RequestingUserName;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -118,6 +116,7 @@ public class MenuDAO {
         try{
             Connection conn = DatabaseManager.getConnessione();
             PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setDate(1,java.sql.Date.valueOf(data));
             ResultSet rs = stmt.executeQuery();
             while(rs.next()){
                 int id = rs.getInt("id");

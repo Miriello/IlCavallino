@@ -4,6 +4,7 @@ import Database.DatabaseManager;
 import Gestori.Menu;
 import Item.Piatto;
 
+import javax.print.attribute.standard.RequestingUserName;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -108,6 +109,23 @@ public class MenuDAO {
             }
         } catch (SQLException e){
             throw new RuntimeException("Errore nella ricerca del menu",e);
+        }
+        return null;
+    }
+
+    public Menu findByData(LocalDate data){
+        String sql = "SELECT * FROM menu WHERE dataMenu = ?";
+        try{
+            Connection conn = DatabaseManager.getConnessione();
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery();
+            while(rs.next()){
+                int id = rs.getInt("id");
+                Menu m = findById(id);
+                return m;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Errore nel caricamento del menu",e);
         }
         return null;
     }

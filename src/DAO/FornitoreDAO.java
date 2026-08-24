@@ -6,6 +6,7 @@ import Persone.Fornitore;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static DAO.IngredienteDAO.findByFornitore;
 
@@ -33,7 +34,7 @@ public class FornitoreDAO {
 
     public void insert (Fornitore f){
         String sql = "INSERT INTO fornitori (partitaIva, ragioneSociale, email) VALUES (?,?,?)";
-        String sql1 = "INSERT INTO ingredienti_fornitore (idIngrediente, partitaIvaFornitore) VALUES (?,?)";
+        String sql1 = "INSERT INTO ingredienti_fornitore (idIngrediente, partitaIvaFornitore, costoUnitario) VALUES (?,?,?)";
         try{
             Connection conn = DatabaseManager.getConnessione();
             PreparedStatement stmt = conn.prepareStatement(sql);
@@ -41,10 +42,13 @@ public class FornitoreDAO {
             stmt.setString(2, f.getRagioneSociale());
             stmt.setString(3, f.getEmail());
             stmt.executeUpdate();
-            for(Ingrediente i: f.getBeniForniti()){
+            for(Map.Entry<Ingrediente,Double> entry : f.getBeniForniti().entrySet()){
+                Ingrediente i = entry.getKey();
+                double costoUnitario =entry.getValue();
                 PreparedStatement stmt1= conn.prepareStatement(sql1);
                 stmt1.setInt(1,i.getId());
                 stmt1.setString(2,f.getPartitaIva());
+                stmt1.setDouble(3,costoUnitario);
                 stmt1.executeUpdate();
             }
         } catch (SQLException e) {

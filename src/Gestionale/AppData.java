@@ -1,6 +1,6 @@
 package Gestionale;
 
-import Gestori.GestioneMenu;
+import Gestori.Menu;
 import Gestori.GestioneScorte;
 import Registri.RegistroFornitori;
 import Registri.RegistroVendite;
@@ -8,7 +8,7 @@ import Registri.RegistroVendite;
 
 public class AppData {
 
-    public static final GestioneMenu      MENU      = new GestioneMenu();
+    public static final Menu MENU      = new Menu();
     public static final GestioneScorte    SCORTE    = new GestioneScorte();
     public static final RegistroVendite   VENDITE   = new RegistroVendite();
     public static final RegistroFornitori FORNITORI = new RegistroFornitori();

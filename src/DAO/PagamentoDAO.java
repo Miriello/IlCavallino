@@ -35,11 +35,11 @@ public class PagamentoDAO {
         try{
             Connection conn = DatabaseManager.getConnessione();
             PreparedStatement stmt = conn.prepareStatement(sql);
-            stmt.setInt(1,p.getidVendita());
+            stmt.setInt(1,p.getIdVendita());
             stmt.setString(2,p.getMetodoPagamento());
             stmt.executeUpdate();
         } catch (SQLException e ){
-            throw new RuntimeException("Errore nell'inserimento del pagamento";
+            throw new RuntimeException("Errore nell'inserimento del pagamento",e);
         }
     }
 
@@ -49,7 +49,7 @@ public class PagamentoDAO {
             Connection conn = DatabaseManager.getConnessione();
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setString(1,p.getMetodoPagamento());
-            stmt.setInt(2,p.getidVendita());
+            stmt.setInt(2,p.getIdVendita());
             stmt.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Errore nell'aggiornamento del pagamento",e);
@@ -61,11 +61,28 @@ public class PagamentoDAO {
         try{
             Connection conn = DatabaseManager.getConnessione();
             PreparedStatement stmt = conn.prepareStatement(sql);
-            stmt.setInt(1,p.getidVendita());
+            stmt.setInt(1,p.getIdVendita());
             stmt.executeUpdate();
         } catch(SQLException e){
             throw new RuntimeException("Errore nella cancellazione del pagamento",e);
         }
+    }
+
+    public Pagamento findByVendita(int idVendita){
+        String sql = "SELECT * FROM pagamenti WHERE idVendita =?";
+        try{
+            Connection conn = DatabaseManager.getConnessione();
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setInt(1,idVendita);
+            ResultSet rs = stmt.executeQuery();
+            while(rs.next()){
+                String metodoPagamento = rs.getString("metodoPagamento");
+                return new Pagamento(idVendita, metodoPagamento);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Errore nella ricerca del pagamento", e);
+        }
+        return null;
     }
 
 }

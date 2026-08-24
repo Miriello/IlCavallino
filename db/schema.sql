@@ -125,7 +125,7 @@ CREATE TABLE IF NOT EXISTS pagamenti(
 );
 
 -- tabella del menu del giorno
-CREATE TABLE IF NOT EXISTS menudelgiorno(
+CREATE TABLE IF NOT EXISTS menu(
     id INT AUTO_INCREMENT PRIMARY KEY,
     dataMenu DATE NOT NULL UNIQUE
 );
@@ -136,7 +136,7 @@ CREATE TABLE IF NOT EXISTS piatti_menu(
     idPiatto INT NOT NULL,
     prezzo DECIMAL(10,2) NOT NULL,
     PRIMARY KEY (idMenu, idPiatto),
-    FOREIGN KEY(idMenu) REFERENCES menudelgiorno(id) ON DELETE CASCADE,
+    FOREIGN KEY(idMenu) REFERENCES menu(id) ON DELETE CASCADE,
     FOREIGN KEY(idPiatto) REFERENCES piatti(id) ON DELETE CASCADE
 );
 

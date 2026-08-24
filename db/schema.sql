@@ -128,9 +128,10 @@ CREATE TABLE IF NOT EXISTS menu(
 
 -- tabella piatti_menu
 CREATE TABLE IF NOT EXISTS piatti_menu(
-    idMenu INT PRIMARY KEY,
+    idMenu INT,
     idPiatto INT NOT NULL,
     prezzoVendita DECIMAL(10,2) NOT NULL,
+    PRIMARY KEY (idMenu, idPiatto),
     FOREIGN KEY (idMenu) REFERENCES menu(id),
     FOREIGN KEY(idPiatto) REFERENCES piatti(id)
 );

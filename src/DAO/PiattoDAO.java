@@ -3,8 +3,6 @@ package DAO;
 import Database.DatabaseManager;
 import Item.Ingrediente;
 import Item.Piatto;
-
-import javax.swing.event.InternalFrameEvent;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,7 +17,7 @@ public class PiattoDAO {
 
         List<Piatto> piatti = new ArrayList<>();
 
-        String sql = "SELECT * FROM piatto JOIN ";
+        String sql = "SELECT * FROM piatti";
         try {
             Connection conn = DatabaseManager.getConnessione();
             PreparedStatement stmt = conn.prepareStatement(sql);
@@ -27,7 +25,6 @@ public class PiattoDAO {
 
             while (rs.next()) {
                 String nome = rs.getString("nome");
-                int prezzo = rs.getInt("prezzo");
                 int id = rs.getInt("id");
                 Map<Ingrediente,Double> ingredienti = findByPiatto(id);
                 piatti.add(new Piatto(nome, id, ingredienti));
@@ -39,7 +36,7 @@ public class PiattoDAO {
     }
 
     public void insert (Piatto p ){
-        String sql = "INSERT INTO piatti (nome) VALUES (?,?)";
+        String sql = "INSERT INTO piatti (nome) VALUES (?)";
         String sql1= "INSERT INTO ingredienti_piatto (idIngrediente, idPiatto,quantita) VALUES (?,?,?)";
         try{
             Connection conn = DatabaseManager.getConnessione();
@@ -131,10 +128,9 @@ public class PiattoDAO {
             while(rs.next()){
                 String nome = rs.getString("nome");
                 int idPiatto = rs.getInt("id");
-                Double prezzo = rs.getDouble("prezzo");
                 int quantita = rs.getInt("quantita");
                 Map<Ingrediente,Double> ingredienti = findByPiatto(idPiatto);
-                risultato.put((new Piatto(nome,idPiatto,prezzo,ingredienti)),quantita);
+                risultato.put((new Piatto(nome,idPiatto,ingredienti)),quantita);
             }
             return risultato;
         } catch(SQLException e){

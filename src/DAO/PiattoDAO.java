@@ -155,5 +155,26 @@ public class PiattoDAO {
         }
         return 0;
     }
+
+    public static Map<Piatto,Double> findByMenu(int idMenu){
+        Map<Piatto,Double> piatti = new HashMap<>();
+        String sql = "SELECT * FROM piatti p JOIN piatti_menu pm ON p.id = pm.idPiatto WHERE pm.idMenu =?";
+        try{
+            Connection conn = DatabaseManager.getConnessione();
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setInt(1,idMenu);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()){
+                String nome = rs.getString("nome");
+                int idPiatto = rs.getInt("id");
+                double prezzoVendita = rs.getDouble("prezzoVendita");
+                Map<Ingrediente,Double> ingredienti = IngredienteDAO.findByPiatto(idPiatto);
+                piatti.put(new Piatto(nome,idPiatto,ingredienti),prezzoVendita);
+            }
+            return piatti;
+        } catch (SQLException e ){
+            throw new RuntimeException("Errore nella ricerca dei piatti",e);
+        }
+    }
 }
 

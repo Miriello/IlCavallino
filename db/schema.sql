@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS vendite(
 CREATE TABLE IF NOT EXISTS pagamenti(
     idVendita INT PRIMARY KEY,
     metodoPagamento VARCHAR(50) NOT NULL,
-    FOREIGN KEY idVendita REFERENCES vendita(id)
+    FOREIGN KEY (idVendita) REFERENCES vendite(id)
 );
 
 -- tabella degli ingredienti forniti da fornitore

@@ -1,27 +1,23 @@
 package Utility;
 
 public class Pagamento {
-    private Vendita vendita;
+    private int  idVendita;
     private String metodoPagamento;
 
-    public Pagamento(Vendita v, String mp){
-        this.vendita=v;
-        this.metodoPagamento=mp;
+    public Pagamento(int idVendita, String metodoPagamento){
+        this.idVendita= idVendita;
+        this.metodoPagamento=metodoPagamento;
     }
 
-    public Vendita getVendita(){
-        return vendita;
+    public int getidVendita(){
+        return idVendita;
     }
 
     public String getMetodoPagamento() {
         return metodoPagamento;
     }
 
-    public long getId(){
-        return vendita.getId();
-    }
-
     public String toString(){
-        return "Pagamento con id di vendita="+ vendita.getId() + "realizzato con metodo di pagamento"+ metodoPagamento;
+        return "Pagamento con id di vendita="+ idVendita + "realizzato con metodo di pagamento"+ metodoPagamento;
     }
 }

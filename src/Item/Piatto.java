@@ -43,7 +43,7 @@ public class Piatto implements Articolo {
     }
 
     public Map<Ingrediente, Double> getIngredienti() {
-        return ingredienti;
+        return new HashMap<>(ingredienti);
     }
 
     @Override

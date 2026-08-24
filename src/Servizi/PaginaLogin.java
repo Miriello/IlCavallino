@@ -31,7 +31,7 @@ public class PaginaLogin extends JFrame {
         loginButton.addActionListener(e -> {
             String username = usernameField.getText().trim();
             String password = new String(passwordField.getPassword());
-            Persona u = Autenticazione.login(username, password);
+            Persona u = LoginService.login(username, password);
             if (u == null) {
                 statusLabel.setText("Credenziali non valide.");
             } else {

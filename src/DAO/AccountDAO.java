@@ -17,6 +17,7 @@ public class AccountDAO {
             stmt.setString(1,a.getUsername());
             stmt.setString(2,a.getPassword());
             stmt.setString(3,a.getCfOperatore());
+            stmt.executeUpdate();
         } catch (SQLException e){
             throw new RuntimeException("Errore nell'inserimento dell'account",e);
         }
@@ -36,7 +37,7 @@ public class AccountDAO {
     }
 
     public void updateUsername(Account a){
-        String sql= "DELETE FROM account WHERE username =? ";
+        String sql= "DELETE FROM account WHERE username =?";
         String sql1 = "INSERT INTO account (username,password,cfOperatore) VALUES (?,?,?)";
         try{
             Connection conn = DatabaseManager.getConnessione();
@@ -47,6 +48,7 @@ public class AccountDAO {
             stmt1.setString(1,a.getUsername());
             stmt1.setString(2, a.getPassword());
             stmt1.setString(3, a.getCfOperatore());
+            stmt1.executeUpdate();
         } catch (SQLException e){
             throw new RuntimeException("Errore nel aggiornamento dell'username",e);
         }

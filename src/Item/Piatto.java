@@ -1,27 +1,26 @@
 package Item;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Piatto implements Articolo {
 
     private String nome;
     private int id;
-    private double prezzo;
-    private List<Ingrediente> ingredienti;
+    private Map<Ingrediente, Integer> ingredienti;
 
-    public Piatto(String nome, int id, double prezzo, List<Ingrediente> ingredienti) {
+    public Piatto(String nome, int id, Map<Ingrediente,Integer> ingredienti) {
         this.nome = nome;
         this.id=id;
-        this.prezzo = prezzo;
-        this.ingredienti = new ArrayList<>(ingredienti);
+        this.ingredienti = new HashMap<>(ingredienti);
     }
 
     public Piatto(Piatto p) {
         this.nome = p.nome;
         this.id=p.id;
-        this.prezzo = p.prezzo;
-        this.ingredienti = new ArrayList<>(p.ingredienti);
+        this.ingredienti = new HashMap<>(p.ingredienti);
     }
 
     public String getNome() {
@@ -32,16 +31,10 @@ public class Piatto implements Articolo {
         return id;
     }
 
-    public double getPrezzo() {
-        return prezzo;
-    }
-    public List<Ingrediente> getIngredienti() {
-        return new ArrayList<>(ingredienti);
-    }
 
     public List<Allergene> getAllergeni() {
         List<Allergene> listaAllergeni = new ArrayList<>();
-         for(Ingrediente i : ingredienti){
+         for(Ingrediente i : ingredienti.keySet()){
              for(Allergene a : i.getAllergeni()){
                  listaAllergeni.add(a);
              }
@@ -52,7 +45,7 @@ public class Piatto implements Articolo {
 
     @Override
     public String toString() {
-        return nome + " €" + String.format("%.2f", prezzo) + " - " + ingredienti;
+        return nome;
     }
 
     public boolean equals(Object o){

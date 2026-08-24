@@ -45,6 +45,14 @@ CREATE TABLE IF NOT EXISTS persone(
     FOREIGN KEY(idRuolo) REFERENCES ruoli(id)
 );
 
+-- tabella account
+CREATE TABLE IF NOT EXISTS account(
+    username VARCHAR(32) NOT NULL PRIMARY KEY,
+    password VARCHAR(32) NOT NULL,
+    cfOperatore VARCHAR(16) NOT NULL UNIQUE,
+    FOREIGN KEY (cfOperatore) REFERENCE persone(cf)
+)
+
 -- tabella vendite
 CREATE TABLE IF NOT EXISTS vendite(
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -135,6 +143,7 @@ CREATE TABLE IF NOT EXISTS accordiFornitura(
     FOREIGN KEY(cfSocio) REFERENCES persone(cf),
     FOREIGN KEY(partitaIvaFornitore) REFERENCES fornitori(partitaIva)
 );
+
 
 
 

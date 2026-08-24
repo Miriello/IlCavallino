@@ -9,9 +9,9 @@ public class Piatto implements Articolo {
 
     private String nome;
     private int id;
-    private Map<Ingrediente, Integer> ingredienti;
+    private Map<Ingrediente, Double> ingredienti;
 
-    public Piatto(String nome, int id, Map<Ingrediente,Integer> ingredienti) {
+    public Piatto(String nome, int id, Map<Ingrediente,Double> ingredienti) {
         this.nome = nome;
         this.id=id;
         this.ingredienti = new HashMap<>(ingredienti);
@@ -42,6 +42,9 @@ public class Piatto implements Articolo {
          return listaAllergeni;
     }
 
+    public Map<Ingrediente, Double> getIngredienti() {
+        return ingredienti;
+    }
 
     @Override
     public String toString() {

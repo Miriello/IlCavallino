@@ -94,7 +94,7 @@ CREATE TABLE IF NOT EXISTS ingredienti_piatto(
 -- tabella delle scorte e delle soglie minime
 CREATE TABLE IF NOT EXISTS scorte(
     idIngrediente INT NOT NULL,
-    quantita INT NOT NULL,
+    quantita DECIMAL(10,2) NOT NULL,
     sogliaMinima INT NOT NULL,
     PRIMARY KEY(idIngrediente),
     FOREIGN KEY (idIngrediente) REFERENCES ingredienti(id) ON DELETE CASCADE

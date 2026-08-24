@@ -1,11 +1,18 @@
 package Gestionale;
 
+import DAO.MenuDAO;
+import DAO.ScorteDAO;
+import Gestori.Scorte;
+import Item.Ingrediente;
 import Item.Piatto;
 import Persone.Persona;
+import Gestori.Menu;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.time.LocalDate;
+import java.util.Map;
 
 public class GestionaleCucina extends JFrame {
 
@@ -31,8 +38,16 @@ public class GestionaleCucina extends JFrame {
         DefaultTableModel model = new DefaultTableModel(col, 0) {
             @Override public boolean isCellEditable(int r, int c) { return false; }
         };
-        for (Piatto p : AppData.MENU.getProdotti()) {
-            model.addRow(new Object[]{p.getNome(), String.format("€ %.2f", p.getPrezzo()), p.getIngredienti()});
+        MenuDAO menuDao = new MenuDAO();
+        Menu oggi = menuDao.findByData(LocalDate.now());
+        if(oggi != null ){
+            for(Map.Entry<Piatto,Double> entry: oggi.getProdotti().entrySet()){
+                Piatto p = entry.getKey();
+                double prezzo = entry.getValue();
+                model.addRow(new Object[]{
+                        p.getNome(),String.format("€ %.2f",prezzo), p.getIngredienti()
+                });
+            }
         }
 
         JLabel nota = new JLabel("  Visualizzazione sola lettura — modifiche dal pannello Socio");
@@ -51,9 +66,12 @@ public class GestionaleCucina extends JFrame {
         DefaultTableModel model = new DefaultTableModel(col, 0) {
             @Override public boolean isCellEditable(int r, int c) { return false; }
         };
-        for (Articolo a : AppData.SCORTE.getMagazzino()) {
-            model.addRow(new Object[]{a.getNome(), a.getClass().getSimpleName()});
+        ScorteDAO scorteDao = new ScorteDAO();
+        Map<Ingrediente,Double> scorte = scorteDao.findAll();
+        for(Map.Entry<Ingrediente,Double> entry :scorte.entrySet()){
+            
         }
+
         panel.add(new JScrollPane(new JTable(model)), BorderLayout.CENTER);
         return panel;
     }

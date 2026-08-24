@@ -14,16 +14,16 @@ import java.util.Map;
 
 public class ScorteDAO {
 
-    public Map<Ingrediente,Integer> findAll(){
+    public Map<Ingrediente,Double> findAll(){
         String sql = "SELECT * FROM scorte";
-        Map<Ingrediente,Integer> scorte = new HashMap<>();
+        Map<Ingrediente,Double> scorte = new HashMap<>();
         try{
             Connection conn = DatabaseManager.getConnessione();
             PreparedStatement stmt = conn.prepareStatement(sql);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()){
                int idIngrediente = rs.getInt("idIngrediente");
-               int quantita = rs.getInt("quantita");
+               Double quantita = rs.getDouble("quantita");
                Ingrediente i = IngredienteDAO.findById(idIngrediente);
                scorte.put(i,quantita);
             }
@@ -33,13 +33,13 @@ public class ScorteDAO {
         }
     }
 
-    public void insert(Ingrediente i, int quantita, int sogliaMinima){
+    public void insert(Ingrediente i, Double quantita, int sogliaMinima){
         String sql = "INSERT INTO scorte (idIngrediente,quantita,sogliaMinima) VALUES (?,?,?)";
         try{
             Connection conn = DatabaseManager.getConnessione();
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setInt(1,i.getId());
-            stmt.setInt(2,quantita);
+            stmt.setDouble(2,quantita);
             stmt.setInt(3,sogliaMinima);
             stmt.executeUpdate();
         } catch (SQLException e){
@@ -47,12 +47,12 @@ public class ScorteDAO {
         }
     }
 
-    public void updateQuantita(int idIngrediente, int nuovaQuantita){
+    public void updateQuantita(int idIngrediente, Double nuovaQuantita){
         String sql = "UPDATE scorte SET quantita = ? WHERE idIngrediente = ?";
         try{
             Connection conn = DatabaseManager.getConnessione();
             PreparedStatement stmt = conn.prepareStatement(sql);
-            stmt.setInt(1,nuovaQuantita);
+            stmt.setDouble(1,nuovaQuantita);
             stmt.setInt(2,idIngrediente);
             stmt.executeUpdate();
         } catch (SQLException e){
@@ -73,7 +73,7 @@ public class ScorteDAO {
         }
     }
 
-    public Integer findQuantitaIngrediente(int idIngrediente){
+    public Double findQuantitaIngrediente(int idIngrediente){
         String sql = "SELECT s.quantita FROM scorte s WHERE idIngrediente =?";
         try{
             Connection conn = DatabaseManager.getConnessione();
@@ -81,7 +81,7 @@ public class ScorteDAO {
             stmt.setInt(1,idIngrediente);
             ResultSet rs = stmt.executeQuery();
             if(rs.next()){
-                int quantita = rs.getInt("quantita");
+                Double quantita = rs.getDouble("quantita");
                 return quantita;
             }
         } catch (SQLException e) {

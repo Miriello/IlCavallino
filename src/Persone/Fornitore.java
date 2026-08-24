@@ -2,10 +2,11 @@ package Persone;
 
 
 import Item.Ingrediente;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+
+
+//LA STRUTTURA DATI DEI BENI FORNITI SERVE AD IDENTIFICARE L'INGREDIENTE E IL SUO COSTO UNITARIO
 
 public class Fornitore {
     private String partitaIva;

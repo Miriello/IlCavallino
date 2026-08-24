@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS allergeni (
 -- tabella piatti
 CREATE TABLE IF NOT EXISTS piatti (
     id       INT AUTO_INCREMENT PRIMARY KEY,
-    nome     VARCHAR(200)   NOT NULL,
+    nome     VARCHAR(200)   NOT NULL
 );
 
 -- tabella ruoli

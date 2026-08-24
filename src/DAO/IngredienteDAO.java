@@ -140,8 +140,8 @@ public class IngredienteDAO {
         return ingredienti;
     }
 
-    public static List<Ingrediente> findByFornitore(String partitaIva){
-        List<Ingrediente> ingredienti = new ArrayList<>();
+    public static Map<Ingrediente,Double> findByFornitore(String partitaIva){
+        Map<Ingrediente,Double> ingredienti = new HashMap<>();
         String sql = "SELECT * FROM ingredienti i JOIN ingredienti_fornitore if ON i.id = if.idIngrediente WHERE if.partitaIvaFornitore = ?";
         try{
             Connection conn = DatabaseManager.getConnessione();
@@ -151,9 +151,10 @@ public class IngredienteDAO {
             while(rs.next()){
                 String nome = rs.getString("nome");
                 LocalDate scadenza = rs.getDate("scadenza").toLocalDate();
+                double costoUnitario = rs.getDouble("costoUnitario");
                 int id = rs.getInt("id");
                 List<Allergene> allergeni = findByIngrediente(id);
-                ingredienti.add(new Ingrediente(nome, scadenza, allergeni,id));
+                ingredienti.put(new Ingrediente(nome, scadenza, allergeni,id),costoUnitario);
             }
         }catch(SQLException e) {
             throw new RuntimeException("Errore nel caricamento degli ingredienti", e);

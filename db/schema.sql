@@ -72,7 +72,7 @@ CREATE TABLE IF NOT EXISTS pagamenti(
 CREATE TABLE IF NOT EXISTS ingredienti_fornitore(
     partitaIvaFornitore VARCHAR(11) NOT NULL,
     idIngrediente INT NOT NULL,
-    prezzoUnitario DECIMAL (10,2) NOT NULL,
+    costoUnitario DECIMAL (10,2) NOT NULL,
     PRIMARY KEY (partitaIvaFornitore,idIngrediente),
     FOREIGN KEY(partitaIvaFornitore) REFERENCES fornitori(partitaIva)ON DELETE CASCADE,
     FOREIGN KEY (idIngrediente) REFERENCES ingredienti(id) ON DELETE CASCADE

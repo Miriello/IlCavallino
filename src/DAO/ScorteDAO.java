@@ -8,9 +8,30 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ScorteDAO {
+
+    public Map<Ingrediente,Integer> findAll(){
+        String sql = "SELECT * FROM scorte";
+        Map<Ingrediente,Integer> scorte = new HashMap<>();
+        try{
+            Connection conn = DatabaseManager.getConnessione();
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()){
+               int idIngrediente = rs.getInt("idIngrediente");
+               int quantita = rs.getInt("quantita");
+               Ingrediente i = IngredienteDAO.findById(idIngrediente);
+               scorte.put(i,quantita);
+            }
+            return scorte;
+        }catch (SQLException e){
+            throw new RuntimeException("Errore nel caricamento delle scorte",e);
+        }
+    }
 
     public void insert(Ingrediente i, int quantita, int sogliaMinima){
         String sql = "INSERT INTO scorte (idIngrediente,quantita,sogliaMinima) VALUES (?,?,?)";
@@ -66,10 +87,10 @@ public class ScorteDAO {
         } catch (SQLException e) {
             throw new RuntimeException("Errore nella ricerca della quantità dell'ingrediente",e);
         }
-        return 0;
+        return null;
     }
     public List<Ingrediente> findSottoSoglia(){
-        String sql = "SELECT * FROM scorte WHERE quantita < sogliaMinima";
+        String sql = "SELECT * FROM scorte WHERE quantita <= sogliaMinima";
         List<Ingrediente> ingredienti = new ArrayList<>() ;
         try{
             Connection conn = DatabaseManager.getConnessione();

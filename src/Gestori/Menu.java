@@ -1,50 +1,34 @@
 package Gestori;
 
 import Item.Piatto;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+
+import java.util.*;
 
 public class Menu {
     private int id;
-    private List<Piatto> menu = new ArrayList<>();
+    private Map<Piatto,Double> piatti = new HashMap<>();
     private Date data;
 
-    public Menu(int id,List<Piatto> piatti, Date data){
+    public Menu(int id,Map<Piatto,Double> piatti, Date data){
         this.id=id;
-        this.menu=piatti;
+        this.piatti=new HashMap<>(piatti);
         this.data=data;
     }
 
-    public void aggiungiProdotto(Piatto p) {
-        menu.add(p);
+    public void aggiungiProdotto(Piatto p, Double prezzo) {
+        piatti.put(p,prezzo);
     }
 
     public void rimuoviProdotto(Piatto p) {
-        if (!menu.contains(p)){
+        if (!piatti.containsKey(p)){
             throw new IllegalArgumentException("Prodotto non ancora aggiunto");
         }
-        menu.remove(p);
+        piatti.remove(p);
     }
 
-    public void stampaMenu() {
-        System.out.println("MENU DEL GIORNO : ");
-        for (Piatto p : menu) {
-            System.out.println(p);
-        }
-    }
 
-    public Piatto cercaProdotto(String nome){
-        for (Piatto p : menu) {
-            if (p.getNome().equals(nome)){
-                return p;
-            }
-        }
-        return null;
-    }
-
-    public List<Piatto> getProdotti() {
-        return new ArrayList<>(menu);
+    public Map<Piatto,Double> getProdotti() {
+        return new HashMap<>(piatti);
     }
 
     public int getId(){

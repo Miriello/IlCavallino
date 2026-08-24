@@ -5,8 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Scorte {
-    private Map<Ingrediente,Integer> scorte
-            = new HashMap<>();
+    private Map<Ingrediente,Integer> scorte = new HashMap<>();
 
     public void aggiungiArticolo(Ingrediente i, int q){
         if (q <=0)

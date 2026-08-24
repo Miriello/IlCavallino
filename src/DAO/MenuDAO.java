@@ -65,6 +65,7 @@ public class MenuDAO {
             Connection conn = DatabaseManager.getConnessione();
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setDate(1,java.sql.Date.valueOf(m.getData()));
+            stmt.setInt(2,m.getId());
             stmt.executeUpdate();
             PreparedStatement stmt1 = conn.prepareStatement(sql1);
             stmt1.setInt(1,m.getId());

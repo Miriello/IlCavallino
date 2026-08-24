@@ -99,7 +99,7 @@ public class IngredienteDAO {
     }
 
 
-    public Ingrediente findById(int id){
+    public static Ingrediente findById(int id){
         String sql = "SELECT * FROM ingredienti WHERE id = ?";
         try{
             Connection conn = DatabaseManager.getConnessione();

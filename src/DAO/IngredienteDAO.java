@@ -6,7 +6,9 @@ import Item.Ingrediente;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static DAO.AllergeneDAO.findByIngrediente;
 
@@ -116,8 +118,8 @@ public class IngredienteDAO {
         return null;
     }
 
-    public static List<Ingrediente> findByPiatto(int idPiatto){
-        List<Ingrediente> ingredienti = new ArrayList<>();
+    public static Map<Ingrediente,Double> findByPiatto(int idPiatto){
+        Map<Ingrediente,Double> ingredienti = new HashMap<>();
         String sql = "SELECT * FROM ingredienti_piatto ip JOIN ingredienti i ON ip.idIngrediente=i.id WHERE ip.idPiatto= ?";
         try{
             Connection conn = DatabaseManager.getConnessione();
@@ -128,8 +130,9 @@ public class IngredienteDAO {
                 String nome = rs.getString("nome");
                 LocalDate scadenza = rs.getDate("scadenza").toLocalDate();
                 int id = rs.getInt("id");
+                Double quantita = rs.getDouble("quantita");
                 List<Allergene> allergeni = findByIngrediente(id);
-                ingredienti.add(new Ingrediente(nome, scadenza, allergeni,id));
+                ingredienti.put(new Ingrediente(nome, scadenza, allergeni,id),quantita);
             }
         } catch(SQLException e){
             throw new RuntimeException("Caricamento degli ingredienti non riuscito", e);

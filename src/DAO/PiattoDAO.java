@@ -26,7 +26,7 @@ public class PiattoDAO {
             while (rs.next()) {
                 String nome = rs.getString("nome");
                 int id = rs.getInt("id");
-                Map<Ingrediente,Double> ingredienti = findByPiatto(id);
+                Map<Ingrediente, Double> ingredienti = findByPiatto(id);
                 piatti.add(new Piatto(nome, id, ingredienti));
             }
         } catch (SQLException e) {
@@ -35,24 +35,24 @@ public class PiattoDAO {
         return piatti;
     }
 
-    public void insert (Piatto p ){
+    public void insert(Piatto p) {
         String sql = "INSERT INTO piatti (nome) VALUES (?)";
-        String sql1= "INSERT INTO ingredienti_piatto (idIngrediente, idPiatto,quantita) VALUES (?,?,?)";
-        try{
+        String sql1 = "INSERT INTO ingredienti_piatto (idIngrediente, idPiatto,quantita) VALUES (?,?,?)";
+        try {
             Connection conn = DatabaseManager.getConnessione();
             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             stmt.setString(1, p.getNome());
             stmt.executeUpdate();
             ResultSet rs = stmt.getGeneratedKeys();
-            while(rs.next()){
+            while (rs.next()) {
                 int idPiatto = rs.getInt(1);
-                for (Map.Entry<Ingrediente,Double> entry : p.getIngredienti().entrySet()) {
+                for (Map.Entry<Ingrediente, Double> entry : p.getIngredienti().entrySet()) {
                     Ingrediente i = entry.getKey();
                     double quantita = entry.getValue();
                     PreparedStatement stmt1 = conn.prepareStatement(sql1);
                     stmt1.setInt(1, i.getId());
                     stmt1.setInt(2, idPiatto);
-                    stmt1.setDouble(3,quantita);
+                    stmt1.setDouble(3, quantita);
                     stmt1.executeUpdate();
                 }
             }
@@ -61,80 +61,99 @@ public class PiattoDAO {
         }
     }
 
-    public void update(Piatto p){
+    public void update(Piatto p) {
         String sql = "UPDATE piatti SET nome = ? WHERE id= ?";
         String sql1 = "DELETE from ingredienti_piatto WHERE idPiatto = ?";
         String sql2 = "INSERT INTO ingredienti_piatto (idIngrediente, idPiatto,quantita) VALUES (?,?,?)";
-        try{
+        try {
             Connection conn = DatabaseManager.getConnessione();
             PreparedStatement stmt = conn.prepareStatement(sql);
-            stmt.setString(1,p.getNome());
-            stmt.setInt(2,p.getId());
+            stmt.setString(1, p.getNome());
+            stmt.setInt(2, p.getId());
             stmt.executeUpdate();
             PreparedStatement stmt1 = conn.prepareStatement(sql1);
-            stmt1.setInt(1,p.getId());
+            stmt1.setInt(1, p.getId());
             stmt1.executeUpdate();
-            for (Map.Entry<Ingrediente,Double> entry : p.getIngredienti().entrySet()) {
+            for (Map.Entry<Ingrediente, Double> entry : p.getIngredienti().entrySet()) {
                 Ingrediente i = entry.getKey();
                 double quantita = entry.getValue();
                 PreparedStatement stmt2 = conn.prepareStatement(sql2);
-                stmt2.setInt(1,i.getId());
-                stmt2.setInt(2,p.getId());
-                stmt2.setDouble(3,quantita);
+                stmt2.setInt(1, i.getId());
+                stmt2.setInt(2, p.getId());
+                stmt2.setDouble(3, quantita);
                 stmt2.executeUpdate();
             }
-        }catch(SQLException e){
+        } catch (SQLException e) {
             throw new RuntimeException("Errore nell'aggiornamento del piatto");
         }
     }
 
-    public void delete (Piatto p){
+    public void delete(Piatto p) {
         String sql = "DELETE FROM piatti WHERE id = ? ";
         try {
             Connection conn = DatabaseManager.getConnessione();
             PreparedStatement stmt = conn.prepareStatement(sql);
-            stmt.setInt(1,p.getId());
+            stmt.setInt(1, p.getId());
             stmt.executeUpdate();
-        } catch (SQLException e){
+        } catch (SQLException e) {
             throw new RuntimeException("Errore nella cancellazione del piatto");
         }
     }
 
-    public Piatto findById(int idPiatto){
+    public Piatto findById(int idPiatto) {
         String sql = "SELECT * FROM piatti WHERE id = ?";
         try {
             Connection conn = DatabaseManager.getConnessione();
             PreparedStatement stmt = conn.prepareStatement(sql);
-            stmt.setInt(1,idPiatto);
+            stmt.setInt(1, idPiatto);
             ResultSet rs = stmt.executeQuery();
-            if(rs.next()){
+            if (rs.next()) {
                 String nome = rs.getString("nome");
-                Map<Ingrediente,Double> ingredienti = findByPiatto(idPiatto);
-                return new Piatto(nome,idPiatto,ingredienti);
+                Map<Ingrediente, Double> ingredienti = findByPiatto(idPiatto);
+                return new Piatto(nome, idPiatto, ingredienti);
             }
-        } catch(SQLException e){
+        } catch (SQLException e) {
             throw new RuntimeException("Errore nel caricamento del piatto");
         }
         return null;
     }
-    public static Map<Piatto,Integer> findByVendita(int idVendita) {
+
+    public static Map<Piatto, Integer> findByVendita(int idVendita) {
         String sql = "SELECT p.nome, p.id, vp.quantita FROM piatti p JOIN vendita_piatto vp ON p.id=vp.idPiatto WHERE idVendita=?";
         Map<Piatto, Integer> risultato = new HashMap<>();
-        try{
+        try {
             Connection conn = DatabaseManager.getConnessione();
             PreparedStatement stmt = conn.prepareStatement(sql);
-            stmt.setInt(1,idVendita);
+            stmt.setInt(1, idVendita);
             ResultSet rs = stmt.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 String nome = rs.getString("nome");
                 int idPiatto = rs.getInt("id");
                 int quantita = rs.getInt("quantita");
-                Map<Ingrediente,Double> ingredienti = findByPiatto(idPiatto);
-                risultato.put((new Piatto(nome,idPiatto,ingredienti)),quantita);
+                Map<Ingrediente, Double> ingredienti = findByPiatto(idPiatto);
+                risultato.put((new Piatto(nome, idPiatto, ingredienti)), quantita);
             }
             return risultato;
-        } catch(SQLException e){
-            throw new RuntimeException("Errore nella ricarca dei Piatti",e);
+        } catch (SQLException e) {
+            throw new RuntimeException("Errore nella ricarca dei Piatti", e);
         }
     }
+
+    public double calcolaCosto(int idPiatto) {
+        String sql = "SELECT SUM(ip.quantita * if.costoUnitario) AS costoPiatto FROM ingredienti_piatto ip JOIN ingredienti_fornitore if ON ip.idIngrediente = if.idIngrediente WHERE ip.idPiatto=?";
+        try {
+            Connection conn = DatabaseManager.getConnessione();
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, idPiatto);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                double costo = rs.getDouble("costoPiatto");
+                return costo;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Errore nel calcolo del costo del piatto", e);
+        }
+        return 0;
+    }
 }
+

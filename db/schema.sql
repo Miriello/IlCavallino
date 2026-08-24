@@ -74,6 +74,7 @@ CREATE TABLE IF NOT EXISTS ingredienti_fornitore(
     idIngrediente INT NOT NULL,
     costoUnitario DECIMAL (10,2) NOT NULL,
     PRIMARY KEY (partitaIvaFornitore,idIngrediente),
+    UNIQUE (idIngrediente),
     FOREIGN KEY(partitaIvaFornitore) REFERENCES fornitori(partitaIva)ON DELETE CASCADE,
     FOREIGN KEY (idIngrediente) REFERENCES ingredienti(id) ON DELETE CASCADE
 );

@@ -23,7 +23,7 @@ public class FornitoreDAO {
                 String pIva = rs.getString("partitaIva");
                 String rS = rs.getString("ragioneSociale");
                 String email = rs.getString("email");
-                List<Ingrediente> articoli = findByFornitore(pIva);
+                Map<Ingrediente,Double> articoli = findByFornitore(pIva);
                 fornitori.add(new Fornitore(pIva, rS, email, articoli));
             }
         } catch (SQLException e) {
@@ -57,9 +57,9 @@ public class FornitoreDAO {
     }
 
     public void update (Fornitore f){
-        String sql = "UPDATE fornitori " + "SET ragioneSociale = ?, email=? " + "WHERE partitaIva=?";
+        String sql = "UPDATE fornitori SET ragioneSociale = ?, email=? WHERE partitaIva=?";
         String sql1= "DELETE FROM ingredienti_fornitore " + "WHERE partitaIvaFornitore= ?";
-        String sql2 = "INSERT INTO ingredienti_fornitore (idIngrediente, partitaIvaFornitore) VALUES (?,?)";
+        String sql2 = "INSERT INTO ingredienti_fornitore (idIngrediente, partitaIvaFornitore,costoUnitario) VALUES (?,?,?)";
         try{
             Connection conn = DatabaseManager.getConnessione();
             PreparedStatement stmt = conn.prepareStatement(sql);
@@ -70,10 +70,13 @@ public class FornitoreDAO {
             PreparedStatement stmt1 = conn.prepareStatement(sql1);
             stmt1.setString(1,f.getPartitaIva());
             stmt1.executeUpdate();
-            for(Ingrediente i: f.getBeniForniti()){
+            for(Map.Entry<Ingrediente, Double> entry : f.getBeniForniti().entrySet()){
+                Ingrediente i = entry.getKey();
+                Double costoUnitario = entry.getValue();
                 PreparedStatement stmt2 = conn.prepareStatement(sql2);
                 stmt2.setInt(1,i.getId());
                 stmt2.setString(2,f.getPartitaIva());
+                stmt2.setDouble(3,costoUnitario);
                 stmt2.executeUpdate();
             }
         }catch(SQLException e){
@@ -103,7 +106,7 @@ public class FornitoreDAO {
             if(rs.next()){
                 String ragioneSociale = rs.getString("ragioneSociale");
                 String email = rs.getString("email");
-                List<Ingrediente> articoli = findByFornitore(pIva);
+                Map<Ingrediente,Double> articoli = findByFornitore(pIva);
                 return new Fornitore(pIva, ragioneSociale, email, articoli);
             }
 

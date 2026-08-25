@@ -21,7 +21,7 @@ public class GestionaleVendita extends JFrame {
         setLocationRelativeTo(null);
         JTabbedPane tabs = new JTabbedPane();
         tabs.addTab("Nuova Vendita",      new PannelloVendite(utente));
-        tabs.addTab("Storico Giornaliero", new PannelloStorico());
+        tabs.addTab("Storico Vendite", new PannelloStorico());
         add(tabs);
         setVisible(true);
     }

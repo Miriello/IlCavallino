@@ -20,7 +20,12 @@ public class PannelloScorte extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         String[] col = {"Ingrediente", "Quantità"};
-        model = new DefaultTableModel(col, 0);
+        model = new DefaultTableModel(col, 0){
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
         table = new JTable(model);
         add (new JScrollPane(table),BorderLayout.CENTER);
         scorteDAO = new ScorteDAO();
@@ -64,7 +69,7 @@ public class PannelloScorte extends JPanel {
         add(form, BorderLayout.SOUTH);
     }
 
-    public void aggiornaTabella(){
+    private void aggiornaTabella(){
         model.setRowCount(0);
         Map<Ingrediente,Double> scorte = scorteDAO.findAll();
         for(Map.Entry<Ingrediente,Double> entry : scorte.entrySet()){

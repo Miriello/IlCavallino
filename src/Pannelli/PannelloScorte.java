@@ -11,6 +11,7 @@ import java.util.Map;
 
 public class PannelloScorte extends JPanel {
 
+    private final JTable table;
     private ScorteDAO scorteDAO;
     private DefaultTableModel model;
 
@@ -20,6 +21,8 @@ public class PannelloScorte extends JPanel {
 
         String[] col = {"Ingrediente", "Quantità"};
         model = new DefaultTableModel(col, 0);
+        table = new JTable(model);
+        add (new JScrollPane(table),BorderLayout.CENTER);
         scorteDAO = new ScorteDAO();
         aggiornaTabella();
 
@@ -30,7 +33,7 @@ public class PannelloScorte extends JPanel {
         }
         JSpinner quantitaSpinner = new JSpinner(new SpinnerNumberModel(0.0,0.0,10000.0,0.1));
         JSpinner sogliaSpinner = new JSpinner(new SpinnerNumberModel(5,0,10000,1));
-        
+
         JButton aggiorna = new JButton("Aggiorna");
         aggiorna.addActionListener(e-> {
             Ingrediente i = (Ingrediente) ingredienteJComboBox.getSelectedItem();

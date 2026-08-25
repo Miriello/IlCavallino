@@ -17,10 +17,7 @@ public class PannelloAnagrafico extends JPanel {
     private RuoloDAO ruoloDAO;
     private PersonaDAO personaDAO;
     private DefaultTableModel model;
-    private JTable table;;
-    private JTextField usernameField;
-    private JTextField passwordField;
-
+    private JTable table;
 
     public PannelloAnagrafico(){
         personaDAO = new PersonaDAO();
@@ -79,6 +76,16 @@ public class PannelloAnagrafico extends JPanel {
         panel.add(usernameField);
         panel.add(new JLabel("Password iniziale: "));
         panel.add(passwordField);
+        int scelta = JOptionPane.showConfirmDialog(
+                this,
+                panel,
+                "Aggiungi persona",
+                JOptionPane.OK_CANCEL_OPTION,
+                JOptionPane.PLAIN_MESSAGE
+        );
+        if (scelta != JOptionPane.OK_OPTION) {
+            return;
+        }
 
         String nome = nomeField.getText();
         String cognome = cognomeField.getText();
@@ -87,8 +94,9 @@ public class PannelloAnagrafico extends JPanel {
         String password = passwordField.getText();
         Ruolo ruolo = (Ruolo) ruoloCombo.getSelectedItem();
 
-        if(nome == null || cognome == null || cf == null || username== null || password==null || ruolo ==null){
+        if(nome == "" || cognome == "" || cf == "" || username== "" || password=="" || ruolo == null){
             JOptionPane.showMessageDialog(this,"Compila tutti i campi");
+            return;
         }
         Persona p = new Persona(nome,cognome,cf,ruolo);
         Account a = new Account(username,password,cf);

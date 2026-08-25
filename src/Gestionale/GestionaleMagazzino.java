@@ -1,5 +1,6 @@
 package Gestionale;
 
+import DAO.FornitoreDAO;
 import DAO.IngredienteDAO;
 import DAO.ScorteDAO;
 import Item.Ingrediente;
@@ -20,7 +21,7 @@ public class GestionaleMagazzino extends JFrame {
 
         JTabbedPane tabs = new JTabbedPane();
         tabs.addTab("Scorte Magazzino",   creaPanelScorte());
-        tabs.addTab("Fornitori & Ordini", creaPanelFornitori());
+        tabs.addTab("Fornitori", creaPanelFornitori());
 
         add(tabs);
         setVisible(true);
@@ -41,7 +42,6 @@ public class GestionaleMagazzino extends JFrame {
                     i.getNome(),
                     quantita
             });
-
         }
         JPanel form = new JPanel(new FlowLayout(FlowLayout.LEFT,6,4));
         JComboBox<Ingrediente> ingredienteJComboBox = new JComboBox<>();
@@ -50,8 +50,16 @@ public class GestionaleMagazzino extends JFrame {
         }
         JSpinner quantitaSpinner = new JSpinner(new SpinnerNumberModel(0.0,0.0,10000.0,0.1));
         JButton aggiorna = new JButton("Aggiorna");
+        aggiorna.addActionListener(e-> );
 
-        panel.add(new JScrollPane(table), BorderLayout.CENTER);
+        JSpinner sogliaSpinner = new JSpinner(new SpinnerNumberModel(5,0,10000,1));
+        form.add(new JLabel("Ingrediente"));
+        form.add(ingredienteJComboBox);
+        form.add(new JLabel("Quantita:"));
+        form.add(quantitaSpinner);
+        form.add(new JLabel("Soglia minima: "));
+        form.add(sogliaSpinner);
+        form.add(aggiorna);
         panel.add(form, BorderLayout.SOUTH);
         return panel;
     }
@@ -60,27 +68,19 @@ public class GestionaleMagazzino extends JFrame {
         JPanel panel = new JPanel(new BorderLayout(5, 5));
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        String[] col = {"Fornitore", "P.IVA", "Email", "Città"};
+        String[] col = {"P.IVA", "Ragione Sociale", "Email", "Ingredienti Forniti" };
         DefaultTableModel model = new DefaultTableModel(col, 0);
-        for (Fornitore f : AppData.FORNITORI.getLista()) {
-            model.addRow(new Object[]{f.getRagioneSociale(), f.getPartitaIva(),
-                    f.getEmail(), f.getSede() != null ? f.getSede().getCitta() : ""});
+        FornitoreDAO fornitoreDAO = new FornitoreDAO();
+        for (Fornitore f : fornitoreDAO.findAll()) {
+            f.getPartitaIva();
+            f.getRagioneSociale();
+            f.getEmail();
+            for (Map.Entry<Ingrediente, Double> entry : f.getBeniForniti().entrySet()) {
+                Ingrediente i = entry.getKey();
+                double costo = entry.getValue();
+            }
         }
-        JTable table = new JTable(model);
 
-        JButton ordinaBtn = new JButton("Invia Ordine al Fornitore selezionato");
-        ordinaBtn.addActionListener(e -> {
-            int row = table.getSelectedRow();
-            if (row < 0) { JOptionPane.showMessageDialog(this, "Seleziona un fornitore."); return; }
-            String nome = (String) model.getValueAt(row, 0);
-            String email = (String) model.getValueAt(row, 2);
-            JOptionPane.showMessageDialog(this,
-                    "Ordine inviato a: " + nome + "\nEmail: " + email +
-                    "\n\n(In produzione: query INSERT su tabella ordini + invio email via SMTP)");
-        });
-
-        panel.add(new JScrollPane(table), BorderLayout.CENTER);
-        panel.add(ordinaBtn, BorderLayout.SOUTH);
         return panel;
     }
 }

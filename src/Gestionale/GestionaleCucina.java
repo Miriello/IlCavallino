@@ -4,7 +4,6 @@ import Pannelli.PannelloIngredienti;
 import Pannelli.PannelloMenu;
 import Persone.Persona;
 import javax.swing.*;
-import java.awt.*;
 
 public class GestionaleCucina extends JFrame {
 

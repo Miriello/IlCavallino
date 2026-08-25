@@ -31,6 +31,11 @@ public class PannelloFornitori extends JPanel{
         };
         aggiornaTabella();
         add(new JScrollPane(new JTable(model)), BorderLayout.CENTER);
+        JButton aggiungi = new JButton("Aggiungi Fornitore");
+        aggiungi.addActionListener(e ->aggiungiFornitore());
+        JPanel pulsanti = new JPanel();
+        pulsanti.add(aggiungi);
+        add(pulsanti,BorderLayout.SOUTH);
     }
 
     public void aggiungiFornitore(){
@@ -62,7 +67,7 @@ public class PannelloFornitori extends JPanel{
         String ragioneSociale = RagioneSocialeField.getText();
         String email = EmailField.getText();
 
-        if(pIva == "" || ragioneSociale == "" || email == ""){
+        if(pIva.isBlank() || ragioneSociale.isBlank()|| email.isBlank()){
             JOptionPane.showMessageDialog(this,"Compila tutti i campi");
             return;
         }
@@ -70,7 +75,7 @@ public class PannelloFornitori extends JPanel{
         Fornitore f = new Fornitore(pIva,ragioneSociale,email, beniForniti);
         fornitoreDAO.insert(f);
         aggiornaTabella();
-        JOptionPane.showMessageDialog(this,"Persona aggiunta correttamente");
+        JOptionPane.showMessageDialog(this,"Fornitore aggiunto correttamente");
     }
 
     public void aggiornaTabella(){

@@ -21,6 +21,15 @@ public class PannelloMenu extends JPanel {
         model = new DefaultTableModel(col, 0) {
             @Override public boolean isCellEditable(int r, int c) { return false; }
         };
+        aggiornaTabella();
+        add(new JScrollPane(new JTable(model)), BorderLayout.CENTER);
+    }
+
+    public void aggiungiPiatto(){
+
+    }
+
+    public void aggiornaTabella(){
         menuDAO = new MenuDAO();
         Menu menuDelGiorno = menuDAO.findByData(LocalDate.now());
         if(menuDelGiorno != null ){
@@ -32,10 +41,5 @@ public class PannelloMenu extends JPanel {
                 });
             }
         }
-        add(new JScrollPane(new JTable(model)), BorderLayout.CENTER);
-    }
-
-    public void aggiungiPiatto(){
-
     }
 }

@@ -8,7 +8,10 @@ import java.awt.*;
 
 public class PaginaLogin extends JFrame {
 
+    private LoginService loginService;
+
     public PaginaLogin() {
+        loginService = new LoginService();
         setTitle("Login — Il Cavallino");
         setSize(360, 230);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -31,7 +34,7 @@ public class PaginaLogin extends JFrame {
         loginButton.addActionListener(e -> {
             String username = usernameField.getText().trim();
             String password = new String(passwordField.getPassword());
-            Persona u = LoginService.login(username, password);
+            Persona u = loginService.login(username, password);
             if (u == null) {
                 statusLabel.setText("Credenziali non valide.");
             } else {
@@ -47,12 +50,13 @@ public class PaginaLogin extends JFrame {
     }
 
     private void apriGestionale(Persona u) {
-        switch (u.getRuolo()) {
-            case SOCIO     -> new GestionaleSocio(u);
-            case CUCINA    -> new GestionaleCucina(u);
-            case VENDITA   -> new GestionaleVendita(u);
-            case MAGAZZINO -> new GestionaleMagazzino(u);
-            case MARKETING -> new GestionaleMarketing(u);
+        String ruolo = u.getRuolo().getNomeRuolo();
+        switch (ruolo) {
+            case "SOCIO"     -> new GestionaleSocio(u);
+            case "CUCINA"    -> new GestionaleCucina(u);
+            case "VENDITA"   -> new GestionaleVendita(u);
+            case "MAGAZZINO" -> new GestionaleMagazzino(u);
+            case "MARKETING" -> new GestionaleMarketing(u);
         }
     }
 }

@@ -15,7 +15,7 @@ public class LoginService {
         this.personaDAO= new PersonaDAO();
     }
 
-    public Persona login (String username, String password){
+    public Persona login(String username, String password){
         Account account = accountDAO.findByUsername(username);
         if( account == null ){
             return null;

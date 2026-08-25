@@ -19,6 +19,7 @@ public class Persona {
         this.nome=p.nome;
         this.cognome=p.cognome;
         this.codiceFiscale= p.codiceFiscale;
+        this.ruolo = new Ruolo(p.ruolo);
     }
 
 

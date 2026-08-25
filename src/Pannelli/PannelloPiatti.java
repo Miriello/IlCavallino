@@ -48,7 +48,6 @@ public class PannelloPiatti extends JPanel {
         for (Ingrediente i : IngredienteDAO.findAll()){
             ingredienteJComboBox.addItem(i);
         }
-
         JButton aggiungiIngrediente = new JButton("Aggiungi Ingrediente");
         aggiungiIngrediente.addActionListener(e -> {
             Ingrediente i = (Ingrediente) ingredienteJComboBox.getSelectedItem();

@@ -76,7 +76,7 @@ public class PannelloIngredienti extends JPanel{
         JPanel panel = new JPanel(new GridLayout(4,2,5,5));
         panel.add(new JLabel("Nome: "));
         panel.add(nomeField);
-        panel.add(new JLabel("Scadenza (GG-MM-AAAA): "));
+        panel.add(new JLabel("Scadenza (AAAA-MM-GG): "));
         panel.add(scadenzaField);
         panel.add(allergeneJComboBox);
         panel.add(aggiungiAllergene);

@@ -1,6 +1,7 @@
 package Pannelli;
 
 import DAO.FornitoreDAO;
+import DAO.IngredienteDAO;
 import Item.Ingrediente;
 import Persone.Fornitore;
 import Persone.Persona;
@@ -43,6 +44,32 @@ public class PannelloFornitori extends JPanel{
         JTextField RagioneSocialeField = new JTextField();
         JTextField EmailField = new JTextField();
 
+        JComboBox<Ingrediente> ingredienteJComboBox = new JComboBox<>();
+        JTextField costoField = new JTextField();
+
+        Map<Ingrediente,Double> beniForniti = new HashMap<>();
+        DefaultListModel<String> ingredientiString = new DefaultListModel<>();
+        JList<String> listaBeni = new JList<>();
+
+        for (Ingrediente i : IngredienteDAO.findAll()){
+            ingredienteJComboBox.addItem(i);
+        }
+
+        JButton aggiungiIngrediente = new JButton("Aggiungi Ingrediente");
+        aggiungiIngrediente.addActionListener(e -> {
+            Ingrediente i = (Ingrediente) ingredienteJComboBox.getSelectedItem();
+            String costo = costoField.getText().trim();
+
+            if(i==null||costo.isBlank()){
+                JOptionPane.showMessageDialog(this, "Seleziona un ingrediente e imposta il suo costo");
+                return;
+            }
+            double costoD = Double.parseDouble(costo);
+            beniForniti.put(i,costoD);
+            costoField.setText("");
+        });
+
+
 
         JPanel panel = new JPanel(new GridLayout(6,2,5,5));
         panel.add(new JLabel("P.Iva: "));
@@ -51,6 +78,12 @@ public class PannelloFornitori extends JPanel{
         panel.add(RagioneSocialeField);
         panel.add(new JLabel("Email: "));
         panel.add(EmailField);
+        panel.add(new JLabel("Ingrediente: "));
+        panel.add(ingredienteJComboBox);
+        panel.add(new JLabel("Costo: "));
+        panel.add(costoField);
+        panel.add(aggiungiIngrediente);
+        panel.add(new JScrollPane(listaBeni));
 
         int scelta = JOptionPane.showConfirmDialog(
                 this,
@@ -71,7 +104,7 @@ public class PannelloFornitori extends JPanel{
             JOptionPane.showMessageDialog(this,"Compila tutti i campi");
             return;
         }
-        Map<Ingrediente,Double> beniForniti = new HashMap<>();
+
         Fornitore f = new Fornitore(pIva,ragioneSociale,email, beniForniti);
         fornitoreDAO.insert(f);
         aggiornaTabella();

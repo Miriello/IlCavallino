@@ -19,7 +19,8 @@ public class PannelloIngredienti extends JPanel{
 
         String[] col = {"Ingrediente", "Quantita disponibile"};
         model = new DefaultTableModel(col, 0) {
-            @Override public boolean isCellEditable(int r, int c) { return false; }
+            public boolean isCellEditable(int r, int c) {
+                return false; }
         };
         scorteDAO = new ScorteDAO();
         Map<Ingrediente,Double> scorte = scorteDAO.findAll();

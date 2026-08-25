@@ -19,15 +19,20 @@ public class PannelloFornitori extends JPanel{
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         String[] col = {"P.IVA", "Ragione Sociale", "Email", "Ingredienti Forniti" };
-        DefaultTableModel model = new DefaultTableModel(col, 0);
-        FornitoreDAO fornitoreDAO = new FornitoreDAO();
+        model = new DefaultTableModel(col, 0);
+        fornitoreDAO = new FornitoreDAO();
         for (Fornitore f : fornitoreDAO.findAll()) {
-            f.getPartitaIva();
-            f.getRagioneSociale();
-            f.getEmail();
+            model.addRow(new Object[]{
+                    f.getPartitaIva(),
+                    f.getRagioneSociale(),
+                    f.getEmail()});
             for (Map.Entry<Ingrediente, Double> entry : f.getBeniForniti().entrySet()) {
                 Ingrediente i = entry.getKey();
                 double costo = entry.getValue();
+                model.addRow(new Object[]{
+                        i.getNome(),
+                        costo
+                });
             }
         }
     }

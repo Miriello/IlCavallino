@@ -1,6 +1,7 @@
 package Pannelli;
 
 
+import DAO.IngredienteDAO;
 import DAO.PiattoDAO;
 import Item.Allergene;
 import Item.Ingrediente;
@@ -35,11 +36,41 @@ public class PannelloPiatti extends JPanel {
     }
 
     public void aggiungiPiatto(){
+        Map<Ingrediente,Double> ingredientiPiatto = new HashMap<>();
         PiattoDAO piattoDAO = new PiattoDAO();
+        IngredienteDAO ingredienteDAO = new IngredienteDAO();
         JTextField nomePiattoField = new JTextField();
-        JPanel panel = new JPanel(new GridLayout(6,2,5,5));
+        JTextField quantitaField = new JTextField();
+        JComboBox<Ingrediente> ingredienteJComboBox = new JComboBox<>();
+        DefaultListModel<String> ingredientiModel = new DefaultListModel<>();
+        JList<String> listaIngredienti = new JList<>(ingredientiModel);
+
+        for (Ingrediente i : IngredienteDAO.findAll()){
+            ingredienteJComboBox.addItem(i);
+        }
+
+        JButton aggiungiIngrediente = new JButton("Aggiungi Ingrediente");
+        aggiungiIngrediente.addActionListener(e -> {
+            Ingrediente i = (Ingrediente) ingredienteJComboBox.getSelectedItem();
+            String quantita = quantitaField.getText().trim();
+            if(i==null||quantita.isBlank()){
+                JOptionPane.showMessageDialog(this,"Selezionare ingrediente e quantità");
+                return;
+            }
+            double quantitaD = Double.parseDouble(quantita);
+            ingredientiPiatto.put(i,quantitaD);
+            ingredientiModel.addElement(i.getNome()+" x "+ quantitaD);
+        });
+
+        JPanel panel = new JPanel(new GridLayout(4,2,5,5));
         panel.add(new JLabel("Nome piatto: "));
         panel.add(nomePiattoField);
+        panel.add(new JLabel("Ingrediente: "));
+        panel.add(ingredienteJComboBox);
+        panel.add(new JLabel("Quantità: "));
+        panel.add(quantitaField);
+        panel.add(aggiungiIngrediente);
+        panel.add(new JScrollPane(listaIngredienti));
         int scelta = JOptionPane.showConfirmDialog(
                 this,
                 panel,
@@ -55,10 +86,10 @@ public class PannelloPiatti extends JPanel {
             JOptionPane.showMessageDialog(this,"Compila tutti i campi");
             return;
         }
-        Piatto p = new Piatto(nomePiatto,0,new HashMap<>());
+        Piatto p = new Piatto(nomePiatto,0,ingredientiPiatto);
         piattoDAO.insert(p);
         aggiornaTabella();
-        JOptionPane.showMessageDialog(this,"Fornitore aggiunto correttamente");
+        JOptionPane.showMessageDialog(this,"Piatto aggiunto correttamente");
     }
 
     public void aggiornaTabella(){

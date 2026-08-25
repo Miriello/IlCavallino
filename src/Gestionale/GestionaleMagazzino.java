@@ -5,7 +5,6 @@ import Pannelli.PannelloFornitori;
 import Pannelli.PannelloScorte;
 import Persone.Persona;
 import javax.swing.*;
-import java.awt.*;
 
 
 public class GestionaleMagazzino extends JFrame {

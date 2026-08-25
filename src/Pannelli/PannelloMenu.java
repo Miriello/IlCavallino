@@ -32,11 +32,6 @@ public class PannelloMenu extends JPanel {
                 });
             }
         }
-
-        JLabel nota = new JLabel("  Visualizzazione sola lettura — modifiche dal pannello Socio");
-        nota.setForeground(Color.GRAY);
-
         add(new JScrollPane(new JTable(model)), BorderLayout.CENTER);
-        add(nota, BorderLayout.SOUTH);
     }
 }

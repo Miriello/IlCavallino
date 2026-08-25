@@ -5,14 +5,11 @@ import Pannelli.PannelloStorico;
 import Pannelli.PannelloVendite;
 import Persone.Persona;
 import javax.swing.*;
-import java.awt.*;
-
 
 public class GestionaleVendita extends JFrame {
 
     private Persona utente;
-
-
+    
     public GestionaleVendita(Persona utente) {
         this.utente = utente;
         setTitle("Gestionale Vendita — " + utente.getNome() + " " + utente.getCognome());

@@ -38,9 +38,9 @@ public class GestionaleCucina extends JFrame {
             @Override public boolean isCellEditable(int r, int c) { return false; }
         };
         MenuDAO menuDao = new MenuDAO();
-        Menu oggi = menuDao.findByData(LocalDate.now());
-        if(oggi != null ){
-            for(Map.Entry<Piatto,Double> entry: oggi.getProdotti().entrySet()){
+        Menu menuDelGiorno = menuDao.findByData(LocalDate.now());
+        if(menuDelGiorno != null ){
+            for(Map.Entry<Piatto,Double> entry: menuDelGiorno.getProdotti().entrySet()){
                 Piatto p = entry.getKey();
                 double prezzo = entry.getValue();
                 model.addRow(new Object[]{

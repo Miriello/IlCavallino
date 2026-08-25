@@ -1,5 +1,6 @@
 package Gestionale;
 
+import DAO.MenuDAO;
 import Item.Piatto;
 import Persone.Persona;
 import Utility.Vendita;
@@ -7,6 +8,9 @@ import Utility.Vendita;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
 
 public class GestionaleVendita extends JFrame {
 
@@ -15,8 +19,17 @@ public class GestionaleVendita extends JFrame {
     private JLabel prezzoLabel;
     private JLabel totaleLabel;
     private DefaultTableModel storicoModel;
+    private DefaultTableModel carrelloModel;
+    private Persona utente;
+    private Gestori.Menu menuDelGiorno;
+    private Map<Piatto,Integer> carrello = new HashMap<>();
+
 
     public GestionaleVendita(Persona utente) {
+        this.utente = utente;
+
+        MenuDAO menuDAO = new MenuDAO();
+        this.menuDelGiorno = menuDAO.findByData(LocalDate.now()) ;
         setTitle("Gestionale Vendita — " + utente.getNome() + " " + utente.getCognome());
         setSize(750, 500);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -35,9 +48,26 @@ public class GestionaleVendita extends JFrame {
         panel.setBorder(BorderFactory.createEmptyBorder(25, 30, 25, 30));
 
         JPanel form = new JPanel(new GridLayout(5, 2, 8, 12));
+        String [] colonne = {
+                "Piatto", "Quantità", "Prezzo","Totale"
+        };
+
+        carrelloModel = new DefaultTableModel(colonne,0){
+            @Override
+            public boolean isCellEditable(int r, int c){
+                return false;
+            }
+        };
+
+        JTable tabella = new JTable(carrelloModel);
+        panel.add(new JScrollPane(tabella),BorderLayout.CENTER);
 
         prodottoCombo = new JComboBox<>();
-        for (Piatto p : AppData.MENU.getProdotti()) prodottoCombo.addItem(p.getNome());
+        if(menuDelGiorno!=null){
+            for(Piatto p : menuDelGiorno.getProdotti().keySet()){
+                prodottoCombo.addItem(p.getNome());
+            }
+        }
 
         quantitaSpinner = new JSpinner(new SpinnerNumberModel(1, 1, 999, 1));
         prezzoLabel     = new JLabel("€ 0.00");
@@ -48,11 +78,11 @@ public class GestionaleVendita extends JFrame {
         quantitaSpinner.addChangeListener(e -> aggiornaCalcolo());
         aggiornaCalcolo();
 
-        JButton registraBtn = new JButton("Registra Vendita");
+        JButton registraBtn = new JButton("Aggiungi al carrello");
         registraBtn.setBackground(new Color(46, 139, 87));
         registraBtn.setForeground(Color.WHITE);
         registraBtn.setFont(registraBtn.getFont().deriveFont(Font.BOLD, 13f));
-        registraBtn.addActionListener(e -> registraVendita());
+        registraBtn.addActionListener(e -> aggiungiAllOrdine());
 
         form.add(new JLabel("Prodotto:"));        form.add(prodottoCombo);
         form.add(new JLabel("Quantità:"));        form.add(quantitaSpinner);
@@ -86,25 +116,46 @@ public class GestionaleVendita extends JFrame {
 
     private void aggiornaCalcolo() {
         String nome = (String) prodottoCombo.getSelectedItem();
-        if (nome == null) return;
-        Piatto p = AppData.MENU.cercaProdotto(nome);
-        if (p != null) {
-            int qty = (int) quantitaSpinner.getValue();
-            prezzoLabel.setText(String.format("€ %.2f", p.getPrezzo()));
-            totaleLabel.setText(String.format("€ %.2f", p.getPrezzo() * qty));
+        if (nome == null || menuDelGiorno == null) return;
+        for (Map.Entry<Piatto,Double> entry : menuDelGiorno.getProdotti().entrySet()){
+            Piatto p = entry.getKey();
+            if(p.getNome().equals(nome)){
+                double prezzo = entry.getValue();
+                int quantita = (int) quantitaSpinner.getValue();
+                prezzoLabel.setText(String.format("€ %2.f", prezzo));
+                totaleLabel.setText(String.format("€ %2.f", prezzo * quantita));
+                return;
+            }
         }
     }
 
-    private void registraVendita() {
+    private void aggiornaCarrello(){
+        carrelloModel.setRowCount(0);
+        for(Map.Entry<Piatto,Integer> entry ; menuDelGiorno.getProdotti().entrySet()){
+            Piatto p = entry.getKey();
+            int quantita = entry.getValue();
+            Double prezzo = menuDelGiorno.getProdotti().get(p);
+            double subtotale = prezzo * quantita;
+            carrelloModel.addRow(new Object[]{
+                    p.getNome(),
+                    quantita,
+                    String.format("€ %2.f", prezzo),
+                    String.format("€ %2.f", subtotale)
+            });
+        }
+    }
+
+    private void aggiungiAllOrdine() {
         String nome = (String) prodottoCombo.getSelectedItem();
-        if (nome == null) return;
-        Piatto p = AppData.MENU.cercaProdotto(nome);
-        if (p == null) { JOptionPane.showMessageDialog(this, "Prodotto non trovato."); return; }
-        Vendita v = new Vendita(p);
-        AppData.VENDITE.aggiungiVendita(v);
-        storicoModel.addRow(new Object[]{p.getNome(), qty,
-                String.format("€ %.2f", p.getPrezzo()),
-                String.format("€ %.2f", v.prezzoTotale())});
-        JOptionPane.showMessageDialog(this, "Vendita registrata:\n" + v);
+        if (nome == null || menuDelGiorno == null) return;
+        int quantita = (int) quantitaSpinner.getValue();
+        for (Piatto p : menuDelGiorno.getProdotti().keySet()) {
+            if (p.getNome().equals(nome)) {
+                carrello.put(p, carrello.getOrDefault(p, 0) + quantita);
+                JOptionPane.showMessageDialog(this, "Aggiunto all'ordine: " + quantita + "x" + p.getNome());
+
+            }
+            aggiornaCarrello();
+        }
     }
 }

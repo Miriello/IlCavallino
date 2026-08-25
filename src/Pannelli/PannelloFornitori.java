@@ -19,21 +19,30 @@ public class PannelloFornitori extends JPanel{
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         String[] col = {"P.IVA", "Ragione Sociale", "Email", "Ingredienti Forniti" };
-        model = new DefaultTableModel(col, 0);
+        model = new DefaultTableModel(col, 0) {
+            @Override
+            public boolean isCellEditable(int r, int c) {
+                return false;
+            }
+        };
         fornitoreDAO = new FornitoreDAO();
         for (Fornitore f : fornitoreDAO.findAll()) {
+            StringBuilder sb = new StringBuilder();
+
+            for (Map.Entry<Ingrediente, Double> entry : f.getBeniForniti().entrySet()) {
+                if (!sb.isEmpty()) {
+                    sb.append(", ");
+                    sb.append(entry.getKey().getNome());
+                    sb.append(String.format("€ %.2f",entry.getValue()));
+                    sb.append(")");
+                }
+            }
             model.addRow(new Object[]{
                     f.getPartitaIva(),
                     f.getRagioneSociale(),
-                    f.getEmail()});
-            for (Map.Entry<Ingrediente, Double> entry : f.getBeniForniti().entrySet()) {
-                Ingrediente i = entry.getKey();
-                double costo = entry.getValue();
-                model.addRow(new Object[]{
-                        i.getNome(),
-                        costo
-                });
-            }
+                    f.getEmail(),
+                    sb.toString()});
         }
+        add(new JScrollPane(new JTable(model)), BorderLayout.CENTER);
     }
 }

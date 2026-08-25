@@ -1,6 +1,7 @@
 package Gestionale;
 
 import DAO.MenuDAO;
+import DAO.VenditaDAO;
 import Item.Piatto;
 import Persone.Persona;
 import Utility.Vendita;
@@ -78,18 +79,24 @@ public class GestionaleVendita extends JFrame {
         quantitaSpinner.addChangeListener(e -> aggiornaCalcolo());
         aggiornaCalcolo();
 
-        JButton registraBtn = new JButton("Aggiungi al carrello");
-        registraBtn.setBackground(new Color(46, 139, 87));
-        registraBtn.setForeground(Color.WHITE);
-        registraBtn.setFont(registraBtn.getFont().deriveFont(Font.BOLD, 13f));
-        registraBtn.addActionListener(e -> aggiungiAllOrdine());
+        JButton registraPiatto = new JButton("Aggiungi al carrello");
+        registraPiatto.setBackground(new Color(46, 139, 87));
+        registraPiatto.setForeground(Color.WHITE);
+        registraPiatto.setFont(registraPiatto.getFont().deriveFont(Font.BOLD, 13f));
+        registraPiatto.addActionListener(e -> aggiungiAllOrdine());
+
+        JButton registraVendita = new JButton ("Registra vendita");
+        registraVendita.setBackground(new Color(46,139,87));
+        registraVendita.setForeground((Color.WHITE));
+        registraVendita.setFont(registraVendita.getFont().deriveFont(Font.BOLD, 13f));
+        registraVendita.addActionListener(e-> registraVendita());
 
         form.add(new JLabel("Prodotto:"));        form.add(prodottoCombo);
         form.add(new JLabel("Quantità:"));        form.add(quantitaSpinner);
         form.add(new JLabel("Prezzo unitario:")); form.add(prezzoLabel);
         form.add(new JLabel("Totale:"));          form.add(totaleLabel);
-        form.add(new JLabel(""));                 form.add(registraBtn);
-
+        form.add(new JLabel(""));                 form.add(registraPiatto);
+        form.add(new JLabel(""));                 form.add(registraVendita);
         panel.add(form, BorderLayout.NORTH);
         return panel;
     }
@@ -98,15 +105,19 @@ public class GestionaleVendita extends JFrame {
         JPanel panel = new JPanel(new BorderLayout(5, 5));
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        String[] col = {"Prodotto", "Quantità", "Prezzo Unit.", "Totale"};
-        storicoModel = new DefaultTableModel(col, 0);
-        for (Vendita v : AppData.VENDITE.getVendite()) {
-            storicoModel.addRow(new Object[]{v.getProdotto().getNome(), v.getQuantita(),
-                    String.format("€ %.2f", v.getProdotto().getPrezzo()),
-                    String.format("€ %.2f", v.prezzoTotale())});
+        String[] colonne = {"Piatto", "Quantità", "Prezzo", "Totale"};
+        storicoModel = new DefaultTableModel(colonne, 0);
+        VenditaDAO venditaDAO = new VenditaDAO();
+        double incasso = 0;
+        for (Vendita v : venditaDAO.findAll()){
+            for(Map.Entry<Piatto,Integer> entry : v.getProdotti().entrySet()){
+                Piatto P = entry.getKey();
+                int quantita = entry.getValue();
+                incasso +=
+            }
         }
 
-        JLabel incassoLabel = new JLabel(String.format("  Incasso: € %.2f", AppData.VENDITE.totaleVendite()));
+        JLabel incassoLabel = new JLabel(String.format("  Incasso: € %.2f", ));
         incassoLabel.setFont(incassoLabel.getFont().deriveFont(Font.BOLD));
 
         panel.add(new JScrollPane(new JTable(storicoModel)), BorderLayout.CENTER);
@@ -117,13 +128,13 @@ public class GestionaleVendita extends JFrame {
     private void aggiornaCalcolo() {
         String nome = (String) prodottoCombo.getSelectedItem();
         if (nome == null || menuDelGiorno == null) return;
-        for (Map.Entry<Piatto,Double> entry : menuDelGiorno.getProdotti().entrySet()){
+        for (Map.Entry<Piatto,Integer> entry : carrello.entrySet()){
             Piatto p = entry.getKey();
             if(p.getNome().equals(nome)){
                 double prezzo = entry.getValue();
                 int quantita = (int) quantitaSpinner.getValue();
-                prezzoLabel.setText(String.format("€ %2.f", prezzo));
-                totaleLabel.setText(String.format("€ %2.f", prezzo * quantita));
+                prezzoLabel.setText(String.format("€ %.2f", prezzo));
+                totaleLabel.setText(String.format("€ %.2f", prezzo * quantita));
                 return;
             }
         }
@@ -131,7 +142,7 @@ public class GestionaleVendita extends JFrame {
 
     private void aggiornaCarrello(){
         carrelloModel.setRowCount(0);
-        for(Map.Entry<Piatto,Integer> entry ; menuDelGiorno.getProdotti().entrySet()){
+        for(Map.Entry<Piatto,Integer> entry : carrello.entrySet()){
             Piatto p = entry.getKey();
             int quantita = entry.getValue();
             Double prezzo = menuDelGiorno.getProdotti().get(p);
@@ -139,8 +150,8 @@ public class GestionaleVendita extends JFrame {
             carrelloModel.addRow(new Object[]{
                     p.getNome(),
                     quantita,
-                    String.format("€ %2.f", prezzo),
-                    String.format("€ %2.f", subtotale)
+                    String.format("€ %.2f", prezzo),
+                    String.format("€ %.2f", subtotale)
             });
         }
     }
@@ -155,7 +166,33 @@ public class GestionaleVendita extends JFrame {
                 JOptionPane.showMessageDialog(this, "Aggiunto all'ordine: " + quantita + "x" + p.getNome());
 
             }
-            aggiornaCarrello();
+            break;
         }
+        aggiornaCarrello();
     }
+
+    private void registraVendita(){
+        if(carrello.isEmpty()){
+            JOptionPane.showMessageDialog(this,"Il carrello è vuoto");
+            return;
+        }
+        Vendita v = new Vendita(0, utente.getCodiceFiscale(),carrello);
+        VenditaDAO venditaDAO = new VenditaDAO();
+        venditaDAO.insert(v);
+        JOptionPane.showMessageDialog(this,"La vendita è stata contabilizzata");
+        carrello.clear();
+        aggiornaCarrello();
+    }
+
+    private double calcolaTotale(){
+        double totale = 0;
+        for (Map.Entry<Piatto,Integer> entry : carrello.entrySet()){
+            Piatto p = entry.getKey();
+            int quantita = entry.getValue();
+            double prezzo = menuDelGiorno.getProdotti().get(p);
+            totale += prezzo * quantita;
+        }
+        return totale;
+    }
+
 }

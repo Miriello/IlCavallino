@@ -16,13 +16,6 @@ public class Vendita {
         this.prodotti = new HashMap<>(prodotti);
     }
 
-    public double prezzoTotale() {
-        double totale = 0;
-        for (Map.Entry<Piatto,Integer> entry: prodotti.entrySet()){
-            totale+= entry.getKey().getPrezzo()*entry.getValue();
-        }
-        return totale;
-    }
 
     public Map<Piatto,Integer> getProdotti() {
         return new HashMap<>(prodotti);

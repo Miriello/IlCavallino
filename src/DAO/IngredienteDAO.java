@@ -14,7 +14,7 @@ import static DAO.AllergeneDAO.findByIngrediente;
 
 public class IngredienteDAO {
 
-    public List<Ingrediente> findAll (){
+    public static List<Ingrediente> findAll(){
 
         List<Ingrediente> ingredienti = new ArrayList<>();
 

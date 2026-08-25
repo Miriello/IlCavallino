@@ -20,7 +20,7 @@ public class GestionaleMarketing extends JFrame {
 
         JTabbedPane tabs = new JTabbedPane();
         tabs.addTab("Report Vendite", creaPanelReport());
-        tabs.addTab("Analisi Menu",   creaPanelMenu());
+        tabs.addTab("Analisi Menu", creaPanelMenu());
 
         add(tabs);
         setVisible(true);
@@ -73,26 +73,6 @@ public class GestionaleMarketing extends JFrame {
 
         panel.add(new JScrollPane(new JTable(model)), BorderLayout.CENTER);
         panel.add(south, BorderLayout.SOUTH);
-        return panel;
-    }
-
-    private JPanel creaPanelMenu() {
-        JPanel panel = new JPanel(new BorderLayout(5, 5));
-        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-
-        String[] col = {"Piatto", "Prezzo", "Ingredienti"};
-        DefaultTableModel model = new DefaultTableModel(col, 0) {
-            @Override public boolean isCellEditable(int r, int c) { return false; }
-        };
-        for (Piatto p : AppData.MENU.getProdotti()) {
-            model.addRow(new Object[]{p.getNome(), String.format("€ %.2f", p.getPrezzo()), p.getIngredienti()});
-        }
-
-        JLabel nota = new JLabel("  Analisi menu — sola lettura");
-        nota.setForeground(Color.GRAY);
-
-        panel.add(new JScrollPane(new JTable(model)), BorderLayout.CENTER);
-        panel.add(nota, BorderLayout.SOUTH);
         return panel;
     }
 }

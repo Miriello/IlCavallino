@@ -42,39 +42,39 @@ public class PannelloMenu extends JPanel {
         aggiungiPiatto.addActionListener(e -> {
             Piatto p = (Piatto) piattoJComboBox.getSelectedItem();
             String prezzo = prezzoVendita.getText().trim();
-            if(p==null||prezzo.isBlank()){
-                JOptionPane.showMessageDialog(this,"Selezionare un piatto e inserire un prezzo di vendita");
+            if (p == null || prezzo.isBlank()) {
+                JOptionPane.showMessageDialog(this, "Selezionare un piatto e inserire un prezzo di vendita");
                 return;
             }
             double prezzoD = Double.parseDouble(prezzo);
             piattiMenu.put(p,prezzoD);
             piattiModel.addElement(p.getNome()+String.format("€ %.2f",prezzoD));
-            JPanel panel = new JPanel(new GridLayout(3,2,5,5));
-            panel.add(new JLabel("Piatto: "));
-            panel.add(piattoJComboBox);
-            panel.add(new JLabel("Prezzo di vendita: "));
-            panel.add(prezzoVendita);
-            panel.add(aggiungiPiatto);
-            panel.add(new JScrollPane(listaPiatti));
-
-            int scelta =
-                    JOptionPane.showConfirmDialog(this, panel, "Crea Menu del Giorno", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE
-                    );
-
-            if (scelta != JOptionPane.OK_OPTION) {
-                return;
-            }
-            if(piattiMenu.isEmpty()){
-                JOptionPane.showMessageDialog(this,"Aggiungi almeno un piatto");
-                return;
-            }
-            LocalDate oggi = LocalDate.now();
-            Menu menu = new Menu(0,piattiMenu,oggi);
-            menuDAO.insert(menu);
-            aggiornaTabella();
-            JOptionPane.showMessageDialog(this,"Menu creato correttamente");
         });
+        JPanel panel = new JPanel(new GridLayout(3,2,5,5));
+        panel.add(new JLabel("Piatto: "));
+        panel.add(piattoJComboBox);
+        panel.add(new JLabel("Prezzo di vendita: "));
+        panel.add(prezzoVendita);
+        panel.add(aggiungiPiatto);
+        panel.add(new JScrollPane(listaPiatti));
+        int scelta =
+                JOptionPane.showConfirmDialog(this, panel, "Crea Menu del Giorno", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE
+                );
+
+        if (scelta != JOptionPane.OK_OPTION) {
+            return;
+        }
+        if(piattiMenu.isEmpty()){
+            JOptionPane.showMessageDialog(this,"Aggiungi almeno un piatto");
+            return;
+        }
+        LocalDate oggi = LocalDate.now();
+        Menu menu = new Menu(0,piattiMenu,oggi);
+        menuDAO.insert(menu);
+        aggiornaTabella();
+        JOptionPane.showMessageDialog(this,"Menu creato correttamente");
     }
+
 
     public void aggiornaTabella(){
         menuDAO = new MenuDAO();

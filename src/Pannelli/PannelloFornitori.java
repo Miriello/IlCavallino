@@ -4,10 +4,6 @@ import DAO.FornitoreDAO;
 import DAO.IngredienteDAO;
 import Item.Ingrediente;
 import Persone.Fornitore;
-import Persone.Persona;
-import Utility.Account;
-import Utility.Ruolo;
-
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -49,7 +45,7 @@ public class PannelloFornitori extends JPanel{
 
         Map<Ingrediente,Double> beniForniti = new HashMap<>();
         DefaultListModel<String> ingredientiString = new DefaultListModel<>();
-        JList<String> listaBeni = new JList<>();
+        JList<String> listaBeni = new JList<>(ingredientiString);
 
         for (Ingrediente i : IngredienteDAO.findAll()){
             ingredienteJComboBox.addItem(i);
@@ -66,6 +62,7 @@ public class PannelloFornitori extends JPanel{
             }
             double costoD = Double.parseDouble(costo);
             beniForniti.put(i,costoD);
+            ingredientiString.addElement(i.getNome()+String.format("€ %.2f",costoD));
             costoField.setText("");
         });
 

@@ -8,6 +8,8 @@ import Item.Piatto;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class PannelloPiatti extends JPanel {
@@ -53,7 +55,7 @@ public class PannelloPiatti extends JPanel {
             JOptionPane.showMessageDialog(this,"Compila tutti i campi");
             return;
         }
-        Piatto p = new Piatto(nomePiatto);
+        Piatto p = new Piatto(nomePiatto,0,new HashMap<>());
         piattoDAO.insert(p);
         aggiornaTabella();
         JOptionPane.showMessageDialog(this,"Fornitore aggiunto correttamente");
@@ -64,12 +66,13 @@ public class PannelloPiatti extends JPanel {
         PiattoDAO piattoDAO= new PiattoDAO();
         for (Piatto p : piattoDAO.findAll()) {
             StringBuilder sb = new StringBuilder();
-            for (Ingrediente i : p.getIngredienti()) {
-                StringBuilder sbA = new StringBuilder();
+            StringBuilder sbA = new StringBuilder();
+            for (Map.Entry<Ingrediente, Double> entry : p.getIngredienti().entrySet()) {
+                Ingrediente i = entry.getKey();
                 if (!sb.isEmpty()) {
                     sb.append(", ");
                 }
-                sb.append(p.getNome());
+                sb.append(i.getNome());
                 for (Allergene a : i.getAllergeni()){
                     if(!sbA.isEmpty()) {
                         sbA.append(", ");

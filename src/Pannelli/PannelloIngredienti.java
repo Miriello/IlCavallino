@@ -8,6 +8,7 @@ import Persone.Fornitore;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -48,9 +49,8 @@ public class PannelloIngredienti extends JPanel{
     }
 
     public void aggiungiIngrediente(){
+        IngredienteDAO ingredienteDAO = new IngredienteDAO();
         JTextField nomeField= new JTextField();
-
-
         JPanel panel = new JPanel(new GridLayout(6,2,5,5));
         panel.add(new JLabel("Nome: "));
         panel.add(nomeField);
@@ -71,7 +71,7 @@ public class PannelloIngredienti extends JPanel{
             return;
         }
         Map<Ingrediente,Double> beniForniti = new HashMap<>();
-        Ingrediente i = new Ingrediente(nomeIngrediente);;
+        Ingrediente i = new Ingrediente(nomeIngrediente, new LocalDate scadenza ,new List<Allergeni> allergeni,0);;
         ingredienteDAO.insert(i);
         aggiornaTabella();
         JOptionPane.showMessageDialog(this,"Ingrediente aggiunto correttamente");

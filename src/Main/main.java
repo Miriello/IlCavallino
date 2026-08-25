@@ -7,7 +7,10 @@ import javax.swing.SwingUtilities;
 
 public class main {
     public static void main(String[] args) {
-        DatabaseManager.connetti(); //
+        if(!DatabaseManager.connetti()) {
+            System.err.println("Impossibile inviare l'applicazione, connessione al DB fallita.");
+            return;
+        }
         SwingUtilities.invokeLater(PaginaLogin::new);
     }
 }

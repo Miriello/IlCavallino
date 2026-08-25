@@ -2,7 +2,6 @@ package Gestionale;
 
 import DAO.MenuDAO;
 import DAO.ScorteDAO;
-import Gestori.Scorte;
 import Item.Ingrediente;
 import Item.Piatto;
 import Persone.Persona;
@@ -62,16 +61,19 @@ public class GestionaleCucina extends JFrame {
         JPanel panel = new JPanel(new BorderLayout(5, 5));
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        String[] col = {"Ingrediente", "Tipo"};
+        String[] col = {"Ingrediente", "Quantita disponibile"};
         DefaultTableModel model = new DefaultTableModel(col, 0) {
             @Override public boolean isCellEditable(int r, int c) { return false; }
         };
         ScorteDAO scorteDao = new ScorteDAO();
         Map<Ingrediente,Double> scorte = scorteDao.findAll();
         for(Map.Entry<Ingrediente,Double> entry :scorte.entrySet()){
-            
+            Ingrediente i = entry.getKey();
+            Double quantita = entry.getValue();
+            model.addRow(new Object[]{
+                    i.getNome(),quantita
+            });
         }
-
         panel.add(new JScrollPane(new JTable(model)), BorderLayout.CENTER);
         return panel;
     }

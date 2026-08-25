@@ -17,8 +17,8 @@ public class Ruolo{
     public int getId(){
         return id;
     }
-
-    public String getNomeRuolo(){
+    @Override
+    public String toString(){
         return nomeRuolo;
     }
 }

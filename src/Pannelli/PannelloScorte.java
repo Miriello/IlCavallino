@@ -21,25 +21,36 @@ public class PannelloScorte extends JPanel {
         String[] col = {"Ingrediente", "Quantità"};
         model = new DefaultTableModel(col, 0);
         scorteDAO = new ScorteDAO();
-        Map<Ingrediente,Double> scorte = scorteDAO.findAll();
-        for (Map.Entry<Ingrediente,Double> entry:scorte.entrySet()){
-            Ingrediente i = entry.getKey();
-            double quantita = entry.getValue();
-            model.addRow(new Object[]{
-                    i.getNome(),
-                    quantita
-            });
-        }
+        aggiornaTabella();
+
         JPanel form = new JPanel(new FlowLayout(FlowLayout.LEFT,6,4));
         JComboBox<Ingrediente> ingredienteJComboBox = new JComboBox<>();
         for (Ingrediente i : IngredienteDAO.findAll()){
             ingredienteJComboBox.addItem(i);
         }
         JSpinner quantitaSpinner = new JSpinner(new SpinnerNumberModel(0.0,0.0,10000.0,0.1));
-        JButton aggiorna = new JButton("Aggiorna");
-        aggiorna.addActionListener(e-> );
-
         JSpinner sogliaSpinner = new JSpinner(new SpinnerNumberModel(5,0,10000,1));
+        
+        JButton aggiorna = new JButton("Aggiorna");
+        aggiorna.addActionListener(e-> {
+            Ingrediente i = (Ingrediente) ingredienteJComboBox.getSelectedItem();
+            if (i==null){
+                return;
+            }
+            double quantita = ((Number) quantitaSpinner.getValue()).doubleValue();
+            Double soglia = ((Number) sogliaSpinner.getValue()).doubleValue();
+            Double quantita_attuale =scorteDAO.findQuantitaIngrediente(i.getId());
+            if(quantita_attuale==null){
+                scorteDAO.insert(i,quantita,soglia);
+            }
+            else{
+                scorteDAO.updateQuantita(i.getId(),quantita);
+                scorteDAO.updateSoglia(i.getId(),soglia);
+            }
+            aggiornaTabella();
+        });
+
+
         form.add(new JLabel("Ingrediente"));
         form.add(ingredienteJComboBox);
         form.add(new JLabel("Quantita:"));
@@ -48,5 +59,18 @@ public class PannelloScorte extends JPanel {
         form.add(sogliaSpinner);
         form.add(aggiorna);
         add(form, BorderLayout.SOUTH);
+    }
+
+    public void aggiornaTabella(){
+        model.setRowCount(0);
+        Map<Ingrediente,Double> scorte = scorteDAO.findAll();
+        for(Map.Entry<Ingrediente,Double> entry : scorte.entrySet()){
+            Ingrediente i = entry.getKey();
+            double quantita = entry.getValue();
+            model.addRow(new Object[]{
+                    i.getNome(),
+                    quantita
+            });
+        }
     }
 }

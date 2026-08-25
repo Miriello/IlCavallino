@@ -18,8 +18,8 @@ public class PannelloStorico extends JPanel {
     private DefaultTableModel model;
 
     public PannelloStorico() {
-        JPanel panel = new JPanel(new BorderLayout(5, 5));
-        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        setLayout(new BorderLayout(5, 5));
+        setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         String[] colonne = {"ID", "Operatore", "Ordine", "Pagamento", "Totale"};
         model = new DefaultTableModel(colonne, 0){

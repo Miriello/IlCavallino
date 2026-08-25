@@ -1,14 +1,14 @@
 package Pannelli;
 
+import DAO.AllergeneDAO;
 import DAO.IngredienteDAO;
 import Item.Allergene;
 import Item.Ingrediente;
-import Persone.Fornitore;
-
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,7 +38,7 @@ public class PannelloIngredienti extends JPanel{
                 if (!sb.isEmpty()) {
                     sb.append(", ");
                 }
-                sb.append(a.getNome());
+                sb.append(a.toString());
             }
             model.addRow(new Object[]{
                     i.getId(),
@@ -50,10 +50,38 @@ public class PannelloIngredienti extends JPanel{
 
     public void aggiungiIngrediente(){
         IngredienteDAO ingredienteDAO = new IngredienteDAO();
+        AllergeneDAO allergeneDAO = new AllergeneDAO();
+
         JTextField nomeField= new JTextField();
-        JPanel panel = new JPanel(new GridLayout(6,2,5,5));
+        JTextField scadenzaField = new JTextField();
+        JComboBox<Allergene> allergeneJComboBox = new JComboBox<>();
+        ArrayList<Allergene> allergeni = new ArrayList<>();
+
+        for (Allergene a : allergeneDAO.findAll()){
+            allergeneJComboBox.addItem(a);
+        }
+
+        JButton aggiungiAllergene = new JButton("Aggiungi Allergene");
+        DefaultListModel<Allergene> allergeniModel = new DefaultListModel<>();
+        JList<Allergene> listaAllergeni = new JList<>(allergeniModel);
+
+        aggiungiAllergene.addActionListener(e -> {
+            Allergene a = (Allergene) allergeneJComboBox.getSelectedItem();
+            if(a!= null && !allergeni.contains(a)){
+                allergeni.add(a);
+                allergeniModel.addElement(a);
+            }
+        });
+
+        JPanel panel = new JPanel(new GridLayout(4,2,5,5));
         panel.add(new JLabel("Nome: "));
         panel.add(nomeField);
+        panel.add(new JLabel("Scadenza (GG-MM-AAAA): "));
+        panel.add(scadenzaField);
+        panel.add(allergeneJComboBox);
+        panel.add(aggiungiAllergene);
+        panel.add(new JLabel("Allergeni selezionati"));
+        panel.add(new JScrollPane(listaAllergeni));
         int scelta = JOptionPane.showConfirmDialog(
                 this,
                 panel,
@@ -64,14 +92,15 @@ public class PannelloIngredienti extends JPanel{
         if (scelta != JOptionPane.OK_OPTION) {
             return;
         }
-        String nomeIngrediente = nomeField.getText();
+        String nomeIngrediente = nomeField.getText().trim();
+        String scadenza = scadenzaField.getText().trim();
 
-        if(nomeIngrediente.isBlank()){
+        if(nomeIngrediente.isBlank()||scadenza.isBlank()){
             JOptionPane.showMessageDialog(this,"Compila tutti i campi");
             return;
         }
         Map<Ingrediente,Double> beniForniti = new HashMap<>();
-        Ingrediente i = new Ingrediente(nomeIngrediente, new LocalDate scadenza ,new List<Allergeni> allergeni,0);;
+        Ingrediente i = new Ingrediente(nomeIngrediente, LocalDate.parse(scadenza) ,allergeni,0);;
         ingredienteDAO.insert(i);
         aggiornaTabella();
         JOptionPane.showMessageDialog(this,"Ingrediente aggiunto correttamente");

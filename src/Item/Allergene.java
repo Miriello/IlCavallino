@@ -14,7 +14,8 @@ public class Allergene {
         this.codiceAllergene=a.codiceAllergene;
     }
 
-    public String getNome(){
+    @Override
+    public String toString(){
         return nome;
     }
 

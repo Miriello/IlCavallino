@@ -1,17 +1,10 @@
 package Gestionale;
 
-import DAO.MenuDAO;
-import DAO.ScorteDAO;
-import Item.Ingrediente;
-import Item.Piatto;
+import Pannelli.PannelloIngredienti;
+import Pannelli.PannelloMenu;
 import Persone.Persona;
-import Gestori.Menu;
-
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.time.LocalDate;
-import java.util.Map;
 
 public class GestionaleCucina extends JFrame {
 
@@ -22,59 +15,10 @@ public class GestionaleCucina extends JFrame {
         setLocationRelativeTo(null);
 
         JTabbedPane tabs = new JTabbedPane();
-        tabs.addTab("Menu del Giorno", creaPanelMenu());
-        tabs.addTab("Ingredienti in Magazzino", creaPanelIngredienti());
+        tabs.addTab("Menu del Giorno", new PannelloMenu());
+        tabs.addTab("Ingredienti in Magazzino", new PannelloIngredienti());
 
         add(tabs);
         setVisible(true);
-    }
-
-    private JPanel creaPanelMenu() {
-        JPanel panel = new JPanel(new BorderLayout(5, 5));
-        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-
-        String[] col = {"Piatto", "Prezzo", "Ingredienti"};
-        DefaultTableModel model = new DefaultTableModel(col, 0) {
-            @Override public boolean isCellEditable(int r, int c) { return false; }
-        };
-        MenuDAO menuDao = new MenuDAO();
-        Menu menuDelGiorno = menuDao.findByData(LocalDate.now());
-        if(menuDelGiorno != null ){
-            for(Map.Entry<Piatto,Double> entry: menuDelGiorno.getProdotti().entrySet()){
-                Piatto p = entry.getKey();
-                double prezzo = entry.getValue();
-                model.addRow(new Object[]{
-                        p.getNome(),String.format("€ %.2f",prezzo), p.getIngredienti()
-                });
-            }
-        }
-
-        JLabel nota = new JLabel("  Visualizzazione sola lettura — modifiche dal pannello Socio");
-        nota.setForeground(Color.GRAY);
-
-        panel.add(new JScrollPane(new JTable(model)), BorderLayout.CENTER);
-        panel.add(nota, BorderLayout.SOUTH);
-        return panel;
-    }
-
-    private JPanel creaPanelIngredienti() {
-        JPanel panel = new JPanel(new BorderLayout(5, 5));
-        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-
-        String[] col = {"Ingrediente", "Quantita disponibile"};
-        DefaultTableModel model = new DefaultTableModel(col, 0) {
-            @Override public boolean isCellEditable(int r, int c) { return false; }
-        };
-        ScorteDAO scorteDao = new ScorteDAO();
-        Map<Ingrediente,Double> scorte = scorteDao.findAll();
-        for(Map.Entry<Ingrediente,Double> entry :scorte.entrySet()){
-            Ingrediente i = entry.getKey();
-            Double quantita = entry.getValue();
-            model.addRow(new Object[]{
-                    i.getNome(),quantita
-            });
-        }
-        panel.add(new JScrollPane(new JTable(model)), BorderLayout.CENTER);
-        return panel;
     }
 }

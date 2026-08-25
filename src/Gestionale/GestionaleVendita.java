@@ -103,49 +103,7 @@ public class GestionaleVendita extends JFrame {
         return panel;
     }
 
-    private JPanel creaPanelStorico() {
-        JPanel panel = new JPanel(new BorderLayout(5, 5));
-        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        String[] colonne = {"ID", "Operatore", "Ordine", "Pagamento", "Totale"};
-        storicoModel = new DefaultTableModel(colonne, 0){
-            public boolean isCellEditable(int r, int c){
-                return false;
-            }
-        };
-        VenditaDAO venditaDAO = new VenditaDAO();
-        PagamentoDAO pagamentoDAO = new PagamentoDAO();
-        double incasso = 0;
-        for (Vendita v : venditaDAO.findAll()){
-            Pagamento p = pagamentoDAO.findByVendita(v.getId());
-            StringBuilder sb = new StringBuilder();
-            for(Map.Entry<Piatto,Integer> entry : v.getProdotti().entrySet()){
-                if (sb.length() > 0){
-                    sb.append(", ");
-                }
-                sb.append(entry.getValue());
-                sb.append("x ");
-                sb.append(entry.getKey().getNome());
-            }
-            if(p!= null){
-                incasso += p.getImporto();
-                storicoModel.addRow(new Object[]{
-                        v.getId(),
-                        v.getOperatore(),
-                        sb.toString(),
-                        p.getMetodoPagamento(),
-                        String.format("€ %.2f",p.getImporto())
-                });
-            }
-        }
-
-        JLabel incassoLabel = new JLabel(String.format("Incasso: € %.2f", incasso));
-        incassoLabel.setFont(incassoLabel.getFont().deriveFont(Font.BOLD));
-
-        panel.add(new JScrollPane(new JTable(storicoModel)), BorderLayout.CENTER);
-        panel.add(incassoLabel, BorderLayout.SOUTH);
-        return panel;
-    }
 
     private void aggiornaCalcolo() {
         String nome = (String) prodottoCombo.getSelectedItem();

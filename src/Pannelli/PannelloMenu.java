@@ -34,4 +34,8 @@ public class PannelloMenu extends JPanel {
         }
         add(new JScrollPane(new JTable(model)), BorderLayout.CENTER);
     }
+
+    public void aggiungiPiatto(){
+
+    }
 }

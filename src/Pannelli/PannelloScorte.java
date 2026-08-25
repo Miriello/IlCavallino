@@ -58,7 +58,6 @@ public class PannelloScorte extends JPanel {
             aggiornaTabella();
         });
 
-
         form.add(new JLabel("Ingrediente"));
         form.add(ingredienteJComboBox);
         form.add(new JLabel("Quantita:"));

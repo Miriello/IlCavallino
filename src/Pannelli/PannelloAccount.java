@@ -16,8 +16,6 @@ public class PannelloAccount extends JPanel {
     private DefaultTableModel model;
 
     public PannelloAccount(){
-
-
         setLayout(new BorderLayout(5,5));
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 

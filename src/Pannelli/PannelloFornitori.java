@@ -32,10 +32,10 @@ public class PannelloFornitori extends JPanel{
             for (Map.Entry<Ingrediente, Double> entry : f.getBeniForniti().entrySet()) {
                 if (!sb.isEmpty()) {
                     sb.append(", ");
+                }
                     sb.append(entry.getKey().getNome());
                     sb.append(String.format("€ %.2f",entry.getValue()));
                     sb.append(")");
-                }
             }
             model.addRow(new Object[]{
                     f.getPartitaIva(),

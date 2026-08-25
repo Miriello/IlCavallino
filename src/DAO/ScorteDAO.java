@@ -33,14 +33,14 @@ public class ScorteDAO {
         }
     }
 
-    public void insert(Ingrediente i, Double quantita, int sogliaMinima){
+    public void insert(Ingrediente i, Double quantita, Double sogliaMinima){
         String sql = "INSERT INTO scorte (idIngrediente,quantita,sogliaMinima) VALUES (?,?,?)";
         try{
             Connection conn = DatabaseManager.getConnessione();
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setInt(1,i.getId());
             stmt.setDouble(2,quantita);
-            stmt.setInt(3,sogliaMinima);
+            stmt.setDouble(3,sogliaMinima);
             stmt.executeUpdate();
         } catch (SQLException e){
             throw new RuntimeException("Errore nell'inserimento della scorta",e);
@@ -60,12 +60,12 @@ public class ScorteDAO {
         }
     }
 
-    public void updateSoglia(int idIngrediente, int nuovaSoglia){
+    public void updateSoglia(int idIngrediente, Double nuovaSoglia){
         String sql = "UPDATE scorte SET sogliaMinima = ? WHERE idIngrediente = ?";
         try{
             Connection conn = DatabaseManager.getConnessione();
             PreparedStatement stmt = conn.prepareStatement(sql);
-            stmt.setInt(1,nuovaSoglia);
+            stmt.setDouble(1,nuovaSoglia);
             stmt.setInt(2,idIngrediente);
             stmt.executeUpdate();
         } catch (SQLException e){

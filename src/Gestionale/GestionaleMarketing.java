@@ -1,6 +1,7 @@
 package Gestionale;
 
-import Item.Piatto;
+import Pannelli.PannelloMenu;
+import Pannelli.PannelloStorico;
 import Persone.Persona;
 import Utility.Vendita;
 
@@ -19,8 +20,8 @@ public class GestionaleMarketing extends JFrame {
         setLocationRelativeTo(null);
 
         JTabbedPane tabs = new JTabbedPane();
-        tabs.addTab("Report Vendite", creaPanelReport());
-        tabs.addTab("Analisi Menu", creaPanelMenu());
+        tabs.addTab("Report Vendite", new PannelloStorico());
+        tabs.addTab("Analisi Menu", new PannelloMenu());
 
         add(tabs);
         setVisible(true);

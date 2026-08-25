@@ -1,13 +1,14 @@
 package Gestionale;
 
+import DAO.IngredienteDAO;
+import DAO.ScorteDAO;
 import Item.Ingrediente;
 import Persone.Fornitore;
 import Persone.Persona;
-import Utilità.Data;
-
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.util.Map;
 
 public class GestionaleMagazzino extends JFrame {
 
@@ -29,34 +30,26 @@ public class GestionaleMagazzino extends JFrame {
         JPanel panel = new JPanel(new BorderLayout(5, 5));
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        String[] col = {"Articolo", "Tipo"};
+        String[] col = {"Ingrediente", "Quantità"};
         DefaultTableModel model = new DefaultTableModel(col, 0);
-        for (Articolo a : AppData.SCORTE.getMagazzino()) {
-            model.addRow(new Object[]{a.getNome(), a.getClass().getSimpleName()});
+        ScorteDAO scorteDAO = new ScorteDAO();
+        Map<Ingrediente,Double> scorte = scorteDAO.findAll();
+        for (Map.Entry<Ingrediente,Double> entry:scorte.entrySet()){
+            Ingrediente i = entry.getKey();
+            double quantita = entry.getValue();
+            model.addRow(new Object[]{
+                    i.getNome(),
+                    quantita
+            });
+
         }
-        JTable table = new JTable(model);
-
-        JPanel form = new JPanel(new FlowLayout(FlowLayout.LEFT, 6, 4));
-        JTextField nomeF  = new JTextField(14);
-        JButton addBtn    = new JButton("Aggiungi");
-        JButton removeBtn = new JButton("Rimuovi selezionato");
-
-        addBtn.addActionListener(e -> {
-            String nome = nomeF.getText().trim();
-            if (nome.isEmpty()) return;
-            Ingrediente ing = new Ingrediente(nome, new Data(31, 12, 2026));
-            AppData.SCORTE.aggiungiArticolo(ing);
-            model.addRow(new Object[]{nome, "Ingrediente"});
-            nomeF.setText("");
-        });
-
-        removeBtn.addActionListener(e -> {
-            int row = table.getSelectedRow();
-            if (row >= 0) model.removeRow(row);
-        });
-
-        form.add(new JLabel("Articolo:")); form.add(nomeF);
-        form.add(addBtn); form.add(removeBtn);
+        JPanel form = new JPanel(new FlowLayout(FlowLayout.LEFT,6,4));
+        JComboBox<Ingrediente> ingredienteJComboBox = new JComboBox<>();
+        for (Ingrediente i : IngredienteDAO.findAll()){
+            ingredienteJComboBox.addItem(i);
+        }
+        JSpinner quantitaSpinner = new JSpinner(new SpinnerNumberModel(0.0,0.0,10000.0,0.1));
+        JButton aggiorna = new JButton("Aggiorna");
 
         panel.add(new JScrollPane(table), BorderLayout.CENTER);
         panel.add(form, BorderLayout.SOUTH);

@@ -33,17 +33,18 @@ public class VenditaDAO {
     }
 
 
-    public int insert (Vendita v ){
+    public int insert (Vendita v ) {
         String sql = "INSERT INTO vendite (cfOperatore) VALUES (?)";
         String sql1 = "INSERT INTO vendita_piatto (idVendita, idPiatto, quantita) VALUES (?,?,?)";
-        try{
+        int idVendita = 0;
+        try {
             Connection conn = DatabaseManager.getConnessione();
             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             stmt.setString(1, v.getOperatore());
             stmt.executeUpdate();
             ResultSet rs = stmt.getGeneratedKeys();
-            int idVendita = rs.getInt(1);
-            if(rs.next()) {
+            if (rs.next()) {
+                idVendita = rs.getInt(1);
                 for (Map.Entry<Piatto, Integer> entry :
                         v.getProdotti().entrySet()) {
                     PreparedStatement stmt1 = conn.prepareStatement(sql1);
@@ -53,10 +54,10 @@ public class VenditaDAO {
                     stmt1.executeUpdate();
                 }
             }
-            return idVendita;
-        } catch(SQLException e ){
-            throw new RuntimeException("Errore nel caricamento della vendita",e);
+        } catch (SQLException e) {
+            throw new RuntimeException("Errore nel caricamento della vendita", e);
         }
+        return idVendita;
     }
 
 

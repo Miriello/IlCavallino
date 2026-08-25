@@ -17,7 +17,8 @@ public class GestionaleSocio extends JFrame {
         tabs.addTab("Visualizza Menu", new PannelloMenu());
         tabs.addTab("Visualizza Magazzino", new PannelloScorte());
         tabs.addTab("Visualizza Fornitori", new PannelloFornitori());
-        tabs.addTab("Visualizza Storico", new PannelloStorico());
+        tabs.addTab("Visualizza Storico Vendite", new PannelloStorico());
+        tabs.addTab("Visualizza Anagrafica",new PannelloAnagrafico());
 
         add(tabs);
         setVisible(true);

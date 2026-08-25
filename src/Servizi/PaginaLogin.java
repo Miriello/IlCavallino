@@ -42,9 +42,7 @@ public class PaginaLogin extends JFrame {
                 dispose();
             }
         });
-
         passwordField.addActionListener(loginButton.getActionListeners()[0]);
-
         add(panel);
         setVisible(true);
     }

@@ -1,9 +1,11 @@
 package Gestionale;
 
 import DAO.MenuDAO;
+import DAO.PagamentoDAO;
 import DAO.VenditaDAO;
 import Item.Piatto;
 import Persone.Persona;
+import Utility.Pagamento;
 import Utility.Vendita;
 
 import javax.swing.*;
@@ -128,7 +130,7 @@ public class GestionaleVendita extends JFrame {
     private void aggiornaCalcolo() {
         String nome = (String) prodottoCombo.getSelectedItem();
         if (nome == null || menuDelGiorno == null) return;
-        for (Map.Entry<Piatto,Integer> entry : carrello.entrySet()){
+        for (Map.Entry<Piatto,Double> entry : menuDelGiorno.getProdotti().entrySet()){
             Piatto p = entry.getKey();
             if(p.getNome().equals(nome)){
                 double prezzo = entry.getValue();
@@ -176,10 +178,25 @@ public class GestionaleVendita extends JFrame {
             JOptionPane.showMessageDialog(this,"Il carrello è vuoto");
             return;
         }
+        double totale = calcolaTotale();
+
+        String [] metodoPagamento = {"CONTANTI, CARTA"};
+        String metodo = (String) JOptionPane.showInputDialog(this,"Seleziona il metodo di pagamento: ",
+                "Pagamento",
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                metodoPagamento,
+                metodoPagamento[0]);
+        if (metodo == null){
+            return ;
+        }
         Vendita v = new Vendita(0, utente.getCodiceFiscale(),carrello);
         VenditaDAO venditaDAO = new VenditaDAO();
-        venditaDAO.insert(v);
-        JOptionPane.showMessageDialog(this,"La vendita è stata contabilizzata");
+        int idVendita = venditaDAO.insert(v);
+        Pagamento pagamento = new Pagamento(idVendita,totale,metodo);
+        PagamentoDAO pagamentoDAO = new PagamentoDAO();
+        pagamentoDAO.insert(pagamento);
+        JOptionPane.showMessageDialog(this,"La vendita è stata registrata");
         carrello.clear();
         aggiornaCarrello();
     }

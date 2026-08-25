@@ -31,7 +31,7 @@ public class PagamentoDAO {
         }
     }
 
-    public int insert(Pagamento p){
+    public void insert(Pagamento p){
         String sql = "INSERT INTO pagamenti (idVendita, importo, metodoPagamento) VALUES (?,?,?)";
         try{
             Connection conn = DatabaseManager.getConnessione();
@@ -43,11 +43,10 @@ public class PagamentoDAO {
         } catch (SQLException e ){
             throw new RuntimeException("Errore nell'inserimento del pagamento",e);
         }
-        return p.getIdVendita();
     }
 
     public void update(Pagamento p){
-        String sql = "UPDATE pagamenti SET importo =? metodoPagamento=? WHERE idVendita=?";
+        String sql = "UPDATE pagamenti SET importo = ?, metodoPagamento=? WHERE idVendita=?";
         try{
             Connection conn = DatabaseManager.getConnessione();
             PreparedStatement stmt = conn.prepareStatement(sql);

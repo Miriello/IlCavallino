@@ -52,7 +52,6 @@ public class PannelloStorico extends JPanel {
                 });
             }
         }
-
         JLabel incassoLabel = new JLabel(String.format("Incasso: € %.2f", incasso));
         incassoLabel.setFont(incassoLabel.getFont().deriveFont(Font.BOLD));
         add(new JScrollPane(new JTable(model)), BorderLayout.CENTER);

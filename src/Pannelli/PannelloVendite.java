@@ -52,6 +52,9 @@ public class PannelloVendite extends JPanel{
                 prodottoCombo.addItem(p.getNome());
             }
         }
+        else {
+            JOptionPane.showMessageDialog(this,"Nessun piatto disponibile alla vendita oggi");
+        }
 
         quantitaSpinner = new JSpinner(new SpinnerNumberModel(1, 1, 999, 1));
         prezzoLabel     = new JLabel("€ 0.00");
@@ -122,9 +125,9 @@ public class PannelloVendite extends JPanel{
             if (p.getNome().equals(nome)) {
                 carrello.put(p, carrello.getOrDefault(p, 0) + quantita);
                 JOptionPane.showMessageDialog(this, "Aggiunto all'ordine: " + quantita + "x" + p.getNome());
-
+                break;
             }
-            break;
+
         }
         aggiornaCarrello();
     }

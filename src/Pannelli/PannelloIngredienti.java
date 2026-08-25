@@ -3,10 +3,13 @@ package Pannelli;
 import DAO.IngredienteDAO;
 import Item.Allergene;
 import Item.Ingrediente;
+import Persone.Fornitore;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PannelloIngredienti extends JPanel{
 
@@ -35,13 +38,42 @@ public class PannelloIngredienti extends JPanel{
                     sb.append(", ");
                 }
                 sb.append(a.getNome());
-                sb.append(")");
             }
             model.addRow(new Object[]{
+                    i.getId(),
                     i.getNome(),
                     i.getScadenza(),
-                    sb.toString(),
-                    i.getId()});
+                    sb.toString()});
         }
+    }
+
+    public void aggiungiIngrediente(){
+        JTextField nomeField= new JTextField();
+
+
+        JPanel panel = new JPanel(new GridLayout(6,2,5,5));
+        panel.add(new JLabel("Nome: "));
+        panel.add(nomeField);
+        int scelta = JOptionPane.showConfirmDialog(
+                this,
+                panel,
+                "Aggiungi Ingrediente",
+                JOptionPane.OK_CANCEL_OPTION,
+                JOptionPane.PLAIN_MESSAGE
+        );
+        if (scelta != JOptionPane.OK_OPTION) {
+            return;
+        }
+        String nomeIngrediente = nomeField.getText();
+
+        if(nomeIngrediente.isBlank()){
+            JOptionPane.showMessageDialog(this,"Compila tutti i campi");
+            return;
+        }
+        Map<Ingrediente,Double> beniForniti = new HashMap<>();
+        Ingrediente i = new Ingrediente(nomeIngrediente);;
+        ingredienteDAO.insert(i);
+        aggiornaTabella();
+        JOptionPane.showMessageDialog(this,"Ingrediente aggiunto correttamente");
     }
 }

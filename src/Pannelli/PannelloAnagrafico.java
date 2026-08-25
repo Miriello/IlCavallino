@@ -94,7 +94,7 @@ public class PannelloAnagrafico extends JPanel {
         String password = passwordField.getText();
         Ruolo ruolo = (Ruolo) ruoloCombo.getSelectedItem();
 
-        if(nome == "" || cognome == "" || cf == "" || username== "" || password=="" || ruolo == null){
+        if(nome.isBlank()|| cognome.isBlank() || cf.isBlank() || username.isBlank() || password.isBlank() || ruolo == null){
             JOptionPane.showMessageDialog(this,"Compila tutti i campi");
             return;
         }

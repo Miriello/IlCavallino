@@ -1,8 +1,6 @@
 package Database;
 
-import Persone.Addetto;
 import Persone.Persona;
-import Persone.Socio;
 import Utility.Ruolo;
 
 import java.sql.*;
@@ -27,7 +25,8 @@ public class DatabaseManager {
 
     public static Persona autenticaUtente(String username, String password) {
         if (connessione == null) return null;
-        String sql = "SELECT * FROM utenti WHERE username = ? AND password = ?";
+        String sql = "SELECT * FROM account a JOIN persone p ON a.cfOperatore = p.cf JOIN ruoli r on p.idRuolo = r.id WHERE username = ? AND password = ?";
+
         try (PreparedStatement stmt = connessione.prepareStatement(sql)) {
             stmt.setString(1, username);
             stmt.setString(2, password);
@@ -35,13 +34,11 @@ public class DatabaseManager {
             if (rs.next()) {
                 String nome     = rs.getString("nome");
                 String cognome  = rs.getString("cognome");
-                String cf       = rs.getString("codice_fiscale");
-                Ruolo  ruolo    = Ruolo.valueOf(rs.getString("ruolo"));
-                if (ruolo == Ruolo.SOCIO) {
-                    return new Socio(nome, cognome, cf);
-                } else {
-                    return new Addetto(nome, cognome, cf, ruolo);
-                }
+                String cf       = rs.getString("cfOperatore");
+                int idRuolo = rs.getInt("id");
+                String nomeRuolo = rs.getString("nomeRuolo");
+                Ruolo ruolo = new Ruolo(idRuolo, nomeRuolo);
+                return new Persona(nome,cognome,cf,ruolo);
             }
         } catch (SQLException e) {
             System.err.println("DB Errore autenticazione: " + e.getMessage());

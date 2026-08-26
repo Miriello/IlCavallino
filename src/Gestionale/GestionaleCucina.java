@@ -14,7 +14,7 @@ public class GestionaleCucina extends JFrame {
         setLocationRelativeTo(null);
 
         JTabbedPane tabs = new JTabbedPane();
-        tabs.addTab("Menu del Giorno", new PannelloMenu());
+        tabs.addTab("Menu del Giorno", new PannelloMenu(true));
         tabs.addTab("Ingredienti in Magazzino", new PannelloIngredienti());
 
         add(tabs);

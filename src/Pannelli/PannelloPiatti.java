@@ -103,11 +103,12 @@ public class PannelloPiatti extends JPanel {
                     sb.append(", ");
                 }
                 sb.append(i.getNome());
-                for (Allergene a : i.getAllergeni()){
-                    if(!sbA.isEmpty()) {
+                for (Allergene a : i.getAllergeni()) {
+                    if (!sbA.isEmpty()) {
                         sbA.append(", ");
                     }
-                    sbA.append(a.getCodiceAllergene());
+                    sbA.append(a.getNome());
+                }
             }
             model.addRow(new Object[]{
                     p.getId(),
@@ -115,6 +116,5 @@ public class PannelloPiatti extends JPanel {
                     sb.toString(),
                     sbA.toString()});
         }
-    }
     }
 }

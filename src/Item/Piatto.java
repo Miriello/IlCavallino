@@ -57,6 +57,10 @@ public class Piatto implements Articolo {
             return false;
         if(o==this) return true;
         Piatto p = (Piatto) o;
-        return p.nome == this.nome;
+        return p.nome.equals(this.nome);
+    }
+
+    public int hashCode(){
+        return Integer.hashCode(id);
     }
 }

@@ -66,15 +66,9 @@ public class PannelloVendite extends JPanel{
         aggiornaCalcolo();
 
         JButton registraPiatto = new JButton("Aggiungi al carrello");
-        registraPiatto.setBackground(new Color(46, 139, 87));
-        registraPiatto.setForeground(Color.WHITE);
-        registraPiatto.setFont(registraPiatto.getFont().deriveFont(Font.BOLD, 13f));
         registraPiatto.addActionListener(e -> aggiungiAllOrdine());
 
         JButton registraVendita = new JButton ("Registra vendita");
-        registraVendita.setBackground(new Color(46,139,87));
-        registraVendita.setForeground((Color.WHITE));
-        registraVendita.setFont(registraVendita.getFont().deriveFont(Font.BOLD, 13f));
         registraVendita.addActionListener(e-> registraVendita(utente));
 
         form.add(new JLabel("Prodotto:"));        form.add(prodottoCombo);

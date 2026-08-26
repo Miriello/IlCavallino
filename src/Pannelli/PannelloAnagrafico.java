@@ -11,7 +11,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
-public class PannelloAnagrafico extends JPanel {
+public class PannelloAnagrafico extends JPanel{
 
     private AccountDAO accountDAO;
     private RuoloDAO ruoloDAO;

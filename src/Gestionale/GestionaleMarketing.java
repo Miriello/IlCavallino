@@ -15,7 +15,7 @@ public class GestionaleMarketing extends JFrame {
 
         JTabbedPane tabs = new JTabbedPane();
         tabs.addTab("Report Vendite", new PannelloStorico());
-        tabs.addTab("Menu", new PannelloMenu());
+        tabs.addTab("Menu", new PannelloMenu(false));
 
         add(tabs);
         setVisible(true);

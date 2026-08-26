@@ -15,7 +15,7 @@ public class GestionaleSocio extends JFrame {
         JTabbedPane tabs = new JTabbedPane();
         tabs.addTab("Ingredienti", new PannelloIngredienti());
         tabs.addTab("Piatti", new PannelloPiatti());
-        tabs.addTab("Menu", new PannelloMenu());
+        tabs.addTab("Menu", new PannelloMenu(true));
         tabs.addTab("Magazzino", new PannelloScorte());
         tabs.addTab("Nuova Vendita", new PannelloVendite(utente));
         tabs.addTab("Storico Vendite", new PannelloStorico());

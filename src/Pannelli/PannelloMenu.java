@@ -15,7 +15,7 @@ public class PannelloMenu extends JPanel {
     private MenuDAO menuDAO;
     private DefaultTableModel model;
 
-    public PannelloMenu() {
+    public PannelloMenu(boolean modifica) {
         setLayout(new BorderLayout(5, 5));
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
@@ -25,10 +25,13 @@ public class PannelloMenu extends JPanel {
         };
         aggiornaTabella();
         add(new JScrollPane(new JTable(model)), BorderLayout.CENTER);
-        JButton aggiungi = new JButton("Crea Menu");
-        aggiungi.addActionListener(e -> creaMenu());
-        JPanel pulsanti = new JPanel();
-        add(pulsanti, BorderLayout.SOUTH);
+        if (modifica) {
+            JButton crea_menu = new JButton("Crea Menu");
+            crea_menu.addActionListener(e -> creaMenu());
+            JPanel pulsanti = new JPanel();
+            pulsanti.add(crea_menu);
+            add(pulsanti, BorderLayout.SOUTH);
+        }
     }
 
     public void creaMenu(){

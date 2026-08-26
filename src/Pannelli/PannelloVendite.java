@@ -31,7 +31,7 @@ public class PannelloVendite extends JPanel{
         setLayout(new BorderLayout(10, 10));
         setBorder(BorderFactory.createEmptyBorder(25, 30, 25, 30));
 
-        JPanel form = new JPanel(new GridLayout(5, 2, 8, 12));
+        JPanel form = new JPanel(new GridLayout(6, 2, 8, 12));
         String [] colonne = {
                 "Piatto", "Quantità", "Prezzo","Totale"
         };

@@ -17,7 +17,7 @@ public class GestionaleVendita extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         JTabbedPane tabs = new JTabbedPane();
-        tabs.addTab("Nuova Vendita",      new PannelloVendite(utente));
+        tabs.addTab("Nuova Vendita",new PannelloVendite(utente));
         tabs.addTab("Storico Vendite", new PannelloStorico());
         add(tabs);
         setVisible(true);

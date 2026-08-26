@@ -9,8 +9,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+
 
 public class PannelloIngredienti extends JPanel{
 
@@ -30,7 +29,8 @@ public class PannelloIngredienti extends JPanel{
         JButton aggiungi = new JButton("Aggiungi Ingrediente");
         aggiungi.addActionListener(e -> aggiungiIngrediente());
         JPanel pulsanti = new JPanel();
-        add(pulsanti, BorderLayout.CENTER);
+        pulsanti.add(aggiungi);
+        add(pulsanti, BorderLayout.SOUTH);
     }
 
     public void aggiornaTabella(){
@@ -103,7 +103,6 @@ public class PannelloIngredienti extends JPanel{
             JOptionPane.showMessageDialog(this,"Compila tutti i campi");
             return;
         }
-        Map<Ingrediente,Double> beniForniti = new HashMap<>();
         Ingrediente i = new Ingrediente(nomeIngrediente, LocalDate.parse(scadenza) ,allergeni,0);;
         ingredienteDAO.insert(i);
         aggiornaTabella();

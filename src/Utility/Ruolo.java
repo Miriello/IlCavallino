@@ -21,4 +21,8 @@ public class Ruolo{
     public String toString(){
         return nomeRuolo;
     }
+
+    public String getNomeRuolo(){
+        return nomeRuolo;
+    }
 }

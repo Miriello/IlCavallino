@@ -14,11 +14,9 @@ public class GestionaleMagazzino extends JFrame {
         setSize(800, 550);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-
         JTabbedPane tabs = new JTabbedPane();
         tabs.addTab("Scorte Magazzino",   new PannelloScorte());
-        tabs.addTab("Fornitori", new PannelloFornitori());
-
+        tabs.addTab("Fornitori", new PannelloFornitori(false));
         add(tabs);
         setVisible(true);
     }

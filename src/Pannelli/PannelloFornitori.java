@@ -15,7 +15,7 @@ public class PannelloFornitori extends JPanel{
     private FornitoreDAO fornitoreDAO;
     private DefaultTableModel model;
 
-    public PannelloFornitori() {
+    public PannelloFornitori(boolean modifica) {
         setLayout(new BorderLayout(5, 5));
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
@@ -28,11 +28,13 @@ public class PannelloFornitori extends JPanel{
         };
         aggiornaTabella();
         add(new JScrollPane(new JTable(model)), BorderLayout.CENTER);
-        JButton aggiungi = new JButton("Aggiungi Fornitore");
-        aggiungi.addActionListener(e ->aggiungiFornitore());
-        JPanel pulsanti = new JPanel();
-        pulsanti.add(aggiungi);
-        add(pulsanti,BorderLayout.SOUTH);
+        if(modifica) {
+            JButton aggiungi = new JButton("Aggiungi Fornitore");
+            aggiungi.addActionListener(e -> aggiungiFornitore());
+            JPanel pulsanti = new JPanel();
+            pulsanti.add(aggiungi);
+            add(pulsanti, BorderLayout.SOUTH);
+        }
     }
 
     public void aggiungiFornitore(){

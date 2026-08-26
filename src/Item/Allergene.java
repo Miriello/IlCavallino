@@ -19,6 +19,10 @@ public class Allergene {
         return nome;
     }
 
+    public String getNome(){
+        return nome;
+    }
+
     public int getCodiceAllergene() {
         return codiceAllergene;
     }

@@ -27,6 +27,10 @@ public class PannelloIngredienti extends JPanel{
         };
         aggiornaTabella();
         add(new JScrollPane(new JTable(model)), BorderLayout.CENTER);
+        JButton aggiungi = new JButton("Aggiungi Ingrediente");
+        aggiungi.addActionListener(e -> aggiungiIngrediente());
+        JPanel pulsanti = new JPanel();
+        add(pulsanti, BorderLayout.CENTER);
     }
 
     public void aggiornaTabella(){

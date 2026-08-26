@@ -13,11 +13,13 @@ public class GestionaleSocio extends JFrame {
         setLocationRelativeTo(null);
 
         JTabbedPane tabs = new JTabbedPane();
-        tabs.addTab("Registra Vendita", new PannelloVendite(utente));
-        tabs.addTab("Visualizza Menu", new PannelloMenu());
-        tabs.addTab("Visualizza Magazzino", new PannelloScorte());
-        tabs.addTab("Visualizza Fornitori", new PannelloFornitori());
-        tabs.addTab("Visualizza Storico Vendite", new PannelloStorico());
+        tabs.addTab("Ingredienti", new PannelloIngredienti());
+        tabs.addTab("Piatti", new PannelloPiatti());
+        tabs.addTab("Menu", new PannelloMenu());
+        tabs.addTab("Magazzino", new PannelloScorte());
+        tabs.addTab("Nuova Vendita", new PannelloVendite(utente));
+        tabs.addTab("Storico Vendite", new PannelloStorico());
+        tabs.addTab("Fornitori", new PannelloFornitori(true));
         tabs.addTab("Visualizza Anagrafica",new PannelloAnagrafico());
 
         add(tabs);

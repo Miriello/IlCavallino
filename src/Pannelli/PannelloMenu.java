@@ -25,9 +25,13 @@ public class PannelloMenu extends JPanel {
         };
         aggiornaTabella();
         add(new JScrollPane(new JTable(model)), BorderLayout.CENTER);
+        JButton aggiungi = new JButton("Crea Menu");
+        aggiungi.addActionListener(e -> creaMenu());
+        JPanel pulsanti = new JPanel();
+        add(pulsanti, BorderLayout.SOUTH);
     }
 
-    public void aggiungiPiatto(){
+    public void creaMenu(){
         PiattoDAO piattoDAO = new PiattoDAO();
         Map<Piatto,Double> piattiMenu = new HashMap<>();
         JComboBox<Piatto> piattoJComboBox= new JComboBox<>();
@@ -77,6 +81,7 @@ public class PannelloMenu extends JPanel {
 
 
     public void aggiornaTabella(){
+        model.setRowCount(0);
         menuDAO = new MenuDAO();
         Menu menuDelGiorno = menuDAO.findByData(LocalDate.now());
         if(menuDelGiorno != null ){

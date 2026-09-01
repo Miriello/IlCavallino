@@ -136,6 +136,41 @@ CREATE TABLE IF NOT EXISTS piatti_menu(
     FOREIGN KEY(idPiatto) REFERENCES piatti(id)
 );
 
+DELIMITER $$
+CREATE TRIGGER controllo_scorte
+BEFORE INSERT ON vendita_piatto
+FOR EACH ROW
+BEGIN
+    IF EXISTS(
+        SELECT *
+        FROM ingredienti_piatto ip
+        JOIN scorte s
+            ON s.idIngrediente=ip.idIngrediente
+        WHERE ip.idPiatto = NEW.idPiatto
+            AND s.quantita < (ip.quantita*NEW.quantita)
+    ) THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Non sono presenti ingredienti a sufficienza per preparare il piatto';
+    END IF;
+END $$
+DELIMITER;
+
+
+DELIMITER $$
+CREATE TRIGGER aggiorna_scorte
+AFTER INSERT ON vendita_piatto
+FOR EACH ROW
+BEGIN
+    UPDATE scorte s
+    JOIN ingredienti_piatto ip
+        ON s.idIngrediente = ip.idIngrediente
+    SET s.quantita=s.quantita-(ip.quantita*NEW.quantita)
+    WHERE ip.idPiatto=NEW.idPiatto;
+END $$
+DELIMITER;
+
+
+
 
 
 

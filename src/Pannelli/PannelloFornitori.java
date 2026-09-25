@@ -95,11 +95,12 @@ public class PannelloFornitori extends JPanel{
             return;
         }
 
-        String pIva = pIvaField.getText();
+        String pIvaS = pIvaField.getText();
+        long pIva= Long.parseLong(pIvaS);
         String ragioneSociale = RagioneSocialeField.getText();
         String email = EmailField.getText();
 
-        if(pIva.isBlank() || ragioneSociale.isBlank()|| email.isBlank()){
+        if(pIvaS.isBlank() || ragioneSociale.isBlank()|| email.isBlank()){
             JOptionPane.showMessageDialog(this,"Compila tutti i campi");
             return;
         }

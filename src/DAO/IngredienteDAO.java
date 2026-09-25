@@ -140,13 +140,13 @@ public class IngredienteDAO {
         return ingredienti;
     }
 
-    public static Map<Ingrediente,Double> findByFornitore(String partitaIva){
+    public static Map<Ingrediente,Double> findByFornitore(long partitaIva){
         Map<Ingrediente,Double> ingredienti = new HashMap<>();
-        String sql = "SELECT * FROM ingredienti i JOIN ingredienti_fornitore if ON i.id = if.idIngrediente WHERE if.partitaIvaFornitore = ?";
+        String sql = "SELECT * FROM ingredienti i JOIN ingredienti_fornitore inf ON i.id = inf.idIngrediente WHERE inf.partitaIvaFornitore = ?";
         try{
             Connection conn = DatabaseManager.getConnessione();
             PreparedStatement stmt = conn.prepareStatement(sql);
-            stmt.setString(1, partitaIva);
+            stmt.setLong(1, partitaIva);
             ResultSet rs = stmt.executeQuery();
             while(rs.next()){
                 String nome = rs.getString("nome");

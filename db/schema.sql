@@ -3,14 +3,13 @@ USE ilcavallino;
 
 -- tabella dei fornitori
 CREATE TABLE IF NOT EXISTS fornitori (
-    partitaIva     VARCHAR(11)  PRIMARY KEY,
+    partitaIva     BIGINT  PRIMARY KEY,
     ragioneSociale VARCHAR(200) NOT NULL,
     email           VARCHAR(150)
 );
 
 
 -- tabella degli ingredienti
-
 CREATE TABLE IF NOT EXISTS ingredienti (
     id       INT AUTO_INCREMENT PRIMARY KEY,
     nome     VARCHAR(200) NOT NULL,
@@ -63,7 +62,7 @@ CREATE TABLE IF NOT EXISTS vendite(
 
 -- tabella degli ingredienti forniti da fornitore
 CREATE TABLE IF NOT EXISTS ingredienti_fornitore(
-    partitaIvaFornitore VARCHAR(11) NOT NULL,
+    partitaIvaFornitore BIGINT NOT NULL,
     idIngrediente INT NOT NULL,
     costoUnitario DECIMAL (10,2) NOT NULL,
     PRIMARY KEY (partitaIvaFornitore,idIngrediente),

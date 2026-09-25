@@ -2,6 +2,7 @@ package Pannelli;
 
 import DAO.MenuDAO;
 import DAO.PiattoDAO;
+import Gestionale.GestionaleSocio;
 import Gestori.Menu;
 import Item.Piatto;
 import javax.swing.*;

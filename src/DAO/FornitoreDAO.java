@@ -20,7 +20,7 @@ public class FornitoreDAO {
             PreparedStatement stmt = conn.prepareStatement(sql);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()){
-                String pIva = rs.getString("partitaIva");
+                long pIva = rs.getLong("partitaIva");
                 String rS = rs.getString("ragioneSociale");
                 String email = rs.getString("email");
                 Map<Ingrediente,Double> articoli = findByFornitore(pIva);
@@ -38,7 +38,7 @@ public class FornitoreDAO {
         try{
             Connection conn = DatabaseManager.getConnessione();
             PreparedStatement stmt = conn.prepareStatement(sql);
-            stmt.setString(1, f.getPartitaIva());
+            stmt.setLong(1, f.getPartitaIva());
             stmt.setString(2, f.getRagioneSociale());
             stmt.setString(3, f.getEmail());
             stmt.executeUpdate();
@@ -47,7 +47,7 @@ public class FornitoreDAO {
                 double costoUnitario =entry.getValue();
                 PreparedStatement stmt1= conn.prepareStatement(sql1);
                 stmt1.setInt(1,i.getId());
-                stmt1.setString(2,f.getPartitaIva());
+                stmt1.setLong(2,f.getPartitaIva());
                 stmt1.setDouble(3,costoUnitario);
                 stmt1.executeUpdate();
             }
@@ -63,19 +63,19 @@ public class FornitoreDAO {
         try{
             Connection conn = DatabaseManager.getConnessione();
             PreparedStatement stmt = conn.prepareStatement(sql);
-            stmt.setString(3,f.getPartitaIva());
+            stmt.setLong(3,f.getPartitaIva());
             stmt.setString(1, f.getRagioneSociale());
             stmt.setString(2,f.getEmail());
             stmt.executeUpdate();
             PreparedStatement stmt1 = conn.prepareStatement(sql1);
-            stmt1.setString(1,f.getPartitaIva());
+            stmt1.setLong(1,f.getPartitaIva());
             stmt1.executeUpdate();
             for(Map.Entry<Ingrediente, Double> entry : f.getBeniForniti().entrySet()){
                 Ingrediente i = entry.getKey();
                 Double costoUnitario = entry.getValue();
                 PreparedStatement stmt2 = conn.prepareStatement(sql2);
                 stmt2.setInt(1,i.getId());
-                stmt2.setString(2,f.getPartitaIva());
+                stmt2.setLong(2,f.getPartitaIva());
                 stmt2.setDouble(3,costoUnitario);
                 stmt2.executeUpdate();
             }
@@ -89,19 +89,19 @@ public class FornitoreDAO {
         try{
             Connection conn = DatabaseManager.getConnessione();
             PreparedStatement stmt = conn.prepareStatement(sql);
-            stmt.setString(1,f.getPartitaIva());
+            stmt.setLong(1,f.getPartitaIva());
             stmt.executeUpdate();
         } catch(SQLException e){
             throw new RuntimeException("Errore nell'eliminazione del fornitore",e);
         }
     }
 
-    public Fornitore findByPartitaIva(String pIva){
+    public Fornitore findByPartitaIva(long pIva){
         String sql = "SELECT * FROM fornitori WHERE partitaIva = ?";
         try{
             Connection conn = DatabaseManager.getConnessione();
             PreparedStatement stmt = conn.prepareStatement(sql);
-            stmt.setString(1,pIva);
+            stmt.setLong(1,pIva);
             ResultSet rs = stmt.executeQuery();
             if(rs.next()){
                 String ragioneSociale = rs.getString("ragioneSociale");

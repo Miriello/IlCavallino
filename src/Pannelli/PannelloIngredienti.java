@@ -28,8 +28,11 @@ public class PannelloIngredienti extends JPanel{
         add(new JScrollPane(new JTable(model)), BorderLayout.CENTER);
         JButton aggiungi = new JButton("Aggiungi Ingrediente");
         aggiungi.addActionListener(e -> aggiungiIngrediente());
+        JButton rimuovi = new JButton("Rimuovi ingrediente");
+        rimuovi.addActionListener(e -> rimuoviIngrediente());
         JPanel pulsanti = new JPanel();
         pulsanti.add(aggiungi);
+        pulsanti.add(rimuovi);
         add(pulsanti, BorderLayout.SOUTH);
     }
 
@@ -108,4 +111,9 @@ public class PannelloIngredienti extends JPanel{
         aggiornaTabella();
         JOptionPane.showMessageDialog(this,"Ingrediente aggiunto correttamente");
     }
+
+    public void rimuoviIngrediente(){
+        
+    }
+
 }
